@@ -1,5 +1,8 @@
 # Releasing
 
+Published releases and their verification records: [docs/releases/](releases/) (first:
+[155.8059.1](releases/155.8059.1.md)).
+
 Releases use [vl-release](https://github.com/valkyrianlabs/vl-release) (`vlr`); `release.toml` is the
 contract, `.github/workflows/release.yml` the CI transaction. This page covers what is specific to
 PDFium.
