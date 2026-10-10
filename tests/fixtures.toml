@@ -1,0 +1,111 @@
+# Semantic expectations for real PDFs from upstream's testing/resources (BSD-3-Clause, part of the
+# pinned PDFium tree, so nothing is copied into this repository). Expected text comes from the
+# fixtures themselves and, where noted, from upstream's embedder tests for the same files.
+#
+# Keys: file, password, pages, error (FPDF_ERR_* code when loading must fail), text (substrings
+# that must appear in the extracted text of the document), min_ink (minimum fraction of
+# non-background pixels on page 0), bookmarks, alpha (page 0 has transparency).
+
+[[fixture]]
+file = "hello_world.pdf"           # fpdf_text_embeddertest: "Hello, world!\r\nGoodbye, world!"
+pages = 1
+text = ["Hello, world!\r\nGoodbye, world!"]
+min_ink = 0.01
+
+[[fixture]]
+file = "hello_world_2_pages.pdf"
+pages = 2
+text = ["Hello, world!"]
+min_ink = 0.01
+
+[[fixture]]
+file = "hello_world_compressed_stream.pdf"   # FlateDecode content stream (system zlib)
+pages = 1
+text = ["Goodbye, world!"]
+
+[[fixture]]
+file = "rotated_text.pdf"
+pages = 1
+text = ["Hello, world!", "Goodbye, world!"]
+min_ink = 0.01
+
+[[fixture]]
+file = "vertical_text.pdf"         # predefined CJK CMap UniGB-UTF16-V (core/fpdfapi/cmaps)
+pages = 1
+text = ["Hello World!"]
+min_ink = 0.005
+
+[[fixture]]
+file = "arabic.pdf"                # fpdf_text_embeddertest Arabic (ICU bidi)
+pages = 1
+text = ["البحر الأزرق"]
+
+[[fixture]]
+file = "hebrew_mirrored.pdf"       # fpdf_text_embeddertest TextHebrewMirrored
+pages = 1
+text = ["בנימין"]
+
+[[fixture]]
+file = "weblinks.pdf"
+pages = 1
+text = ["http://example.com?q=foo", "This might be a link in another font."]
+
+[[fixture]]
+file = "encrypted_hello_world_r2.pdf"   # cpdf_security_handler_embeddertest: user password "âge"
+password = "âge"
+pages = 1
+text = ["Hello, world!"]
+
+[[fixture]]
+file = "encrypted_hello_world_r6.pdf"   # AES-256 (R6)
+password = "âge"
+pages = 1
+text = ["Goodbye, world!"]
+
+[[fixture]]
+file = "encrypted_hello_world_r6.pdf"   # no password: FPDF_ERR_PASSWORD
+error = 4
+
+[[fixture]]
+file = "linearized.pdf"
+pages = 3
+
+[[fixture]]
+file = "jpx_lzw.pdf"               # JPEG 2000 image (bundled libopenjpeg)
+pages = 1
+min_ink = 0.5
+
+[[fixture]]
+file = "embedded_images.pdf"       # DCT (system libjpeg) and other image filters
+pages = 1
+min_ink = 0.01
+
+[[fixture]]
+file = "annots.pdf"
+pages = 2
+min_ink = 0.005
+
+[[fixture]]
+file = "text_form.pdf"             # AcroForm field, drawn through FPDF_FFLDraw
+pages = 1
+min_ink = 0.001
+
+[[fixture]]
+file = "clip_path.pdf"             # vector graphics
+pages = 1
+min_ink = 0.005
+
+[[fixture]]
+file = "dashed_lines.pdf"
+pages = 1
+min_ink = 0.01
+
+[[fixture]]
+file = "multiple_graphics_states.pdf"
+pages = 1
+min_ink = 0.05
+
+[[fixture]]
+file = "bookmarks.pdf"            # fpdf_doc_embeddertest: three top-level outline items
+pages = 2
+bookmarks = 3

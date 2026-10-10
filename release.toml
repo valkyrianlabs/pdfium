@@ -1,0 +1,92 @@
+# vl-release repository contract: https://github.com/valkyrianlabs/vl-release
+# `vlr help config` documents every key. Release CI (.github/workflows/release.yml) only calls `vlr`
+# commands plus this repository's build/test tooling (tools/pdfium-dist, tests/).
+schema_version = 1
+
+[tool]
+requires = ">=0.3,<1"
+
+[project]
+name = "Vaulthalla PDFium"
+package = "libpdfium"
+repository = "vaulthalla/pdfium"
+
+[version]
+# <Chromium milestone>.<Chromium branch>.<release> — e.g. 155.8059.0 packages PDFium from
+# chromium/8059 (Chrome 155); the last number counts our releases of that upstream branch
+# (packaging changes, newer cherry-picks). meson.build reads VERSION itself (files('VERSION')).
+canonical = "VERSION"
+targets = []
+
+[release]
+branch = "main"
+# Fast checks `vlr cut` runs before tagging: repository consistency and the tooling's unit tests.
+# The compiled library is gated by CI (Meson build, integration tests, package tests).
+test_command = ["python3", "-m", "unittest", "discover", "-s", "tests/unit", "-t", "."]
+
+[debian]
+distribution = "unstable"
+urgency = "medium"
+maintainer = "Cooper Larson <cooper@valkyrianlabs.com>"
+# Export the locked upstream sources into upstream/ (offline when the git cache has them), then
+# write the release source package (orig tarballs + .dsc) from the prepared tree.
+pre_build = [
+  ["python3", "tools/pdfium-dist", "prepare"],
+  ["python3", "tools/pdfium-dist", "snapshot", "--output", "build/source"],
+]
+build_excludes = [".idea", ".claude", "upstream.tmp"]
+extra_artifacts = ["build/source/*"]
+
+[[debian.packages]]
+name = "libpdfium8059"
+architecture = "amd64"
+required_paths = [
+  "usr/lib/*/libpdfium.so.8059",
+  "usr/lib/*/libpdfium.so.8059.0.0",
+  "usr/share/doc/libpdfium8059/copyright",
+  "usr/share/doc/libpdfium8059/sources.lock.json",
+]
+forbidden_paths = [
+  # Upstream test assets (documents, fonts) never ship in binary packages.
+  "*.pdf", "*.ttf", "*.otf", "*.cff", "*/testing/*",
+  "usr/include/*",
+  "usr/lib/*/libpdfium.so",
+  "usr/lib/*/pkgconfig/*",
+  "usr/lib/*/*.a",
+]
+# The package records exactly the upstream inputs it was built from.
+identical_files = [
+  { member = "usr/share/doc/libpdfium8059/sources.lock.json", source = "sources.lock.json" },
+]
+
+[[debian.packages]]
+name = "libpdfium-dev"
+architecture = "amd64"
+required_paths = [
+  "usr/include/pdfium/fpdfview.h",
+  "usr/include/pdfium/fpdf_text.h",
+  "usr/include/pdfium/fpdf_thumbnail.h",
+  "usr/include/pdfium/cpp/fpdf_scopers.h",
+  "usr/include/pdfium/public",
+  "usr/lib/*/libpdfium.so",
+  "usr/lib/*/pkgconfig/pdfium.pc",
+  "usr/lib/*/cmake/pdfium/PdfiumConfig.cmake",
+  "usr/lib/*/cmake/pdfium/PdfiumConfigVersion.cmake",
+  "usr/share/doc/libpdfium-dev/copyright",
+]
+forbidden_paths = [
+  "*.pdf", "*.ttf", "*.otf", "*.cff", "*/testing/*",
+  "usr/lib/*/libpdfium.so.*",
+  "usr/lib/*/*.a",
+  "usr/include/pdfium/*.cpp",
+]
+
+[publish.apt]
+# Where Vaulthalla's builds install libpdfium-dev from. Upload URL and credentials come from the
+# environment (NEXUS_APT_REPO, NEXUS_USER, NEXUS_PASSWORD); RELEASE_PUBLISH_MODE gates uploads.
+repository_url = "https://apt.vaulthalla.sh"
+suite = "stable"
+components = ["main"]
+architectures = ["amd64"]
+verify_timeout = 1800
+verify_interval = 30

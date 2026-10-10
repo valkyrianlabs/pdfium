@@ -1,0 +1,255 @@
+name: Release
+
+# Releases are cut with vl-release: `vlr cut patch|X.Y.Z --push` bumps, commits and tags; the v* tag
+# push starts this workflow. Release semantics live in `vlr` commands (release.toml, `vlr help ci`);
+# this file provides triggers, runners, credentials and job ordering (docs/RELEASING.md).
+#
+# Transaction: check -> prepare + build + validate + package tests (artifact) -> publish APT ->
+# GitHub release -> finalize. PDFium is compiled exactly once (inside `vlr build-deb`); every later
+# job reuses the uploaded artifact. A failed run leaves the repository untouched and can be re-run;
+# publication never replaces published bytes.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or SHA to release-check (default the selected ref).
+        required: false
+        type: string
+      publish:
+        description: Publish (requires a v* tag ref) or only build and validate.
+        required: true
+        default: dry-run
+        type: choice
+        options:
+          - dry-run
+          - publish
+      verify_rebuild:
+        description: Also rebuild from the source package and compare (a second full compile).
+        required: false
+        default: false
+        type: boolean
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  RELEASE_REF: ${{ github.event.inputs.ref || github.ref }}
+  CI_CACHE_NAMES: ccache pdfium-git
+  PDFIUM_CACHE_DIR: /cache/pdfium-git
+  PDFIUM_JOBS: "4"
+  CI_MEMORY: 8g
+  DEB_BUILD_OPTIONS: parallel=4
+
+jobs:
+  release-check:
+    name: Release check
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    defaults:
+      run:
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+    timeout-minutes: 15
+    outputs:
+      version: ${{ steps.state.outputs.version }}
+      tag: ${{ steps.state.outputs.tag }}
+      publish_required: ${{ steps.state.outputs.publish_required }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+          fetch-depth: 0
+      - name: Check the release contract
+        id: state
+        env:
+          DISPATCH_PUBLISH: ${{ github.event.inputs.publish || 'dry-run' }}
+        run: |
+          version="$(tr -d '[:space:]' < VERSION)"
+          tag=""
+          case "$RELEASE_REF" in
+            refs/tags/*) tag="${RELEASE_REF#refs/tags/}" ;;
+            v[0-9]*) tag="$RELEASE_REF" ;;
+          esac
+          publish_required=false
+          if [ "${GITHUB_EVENT_NAME}" = "push" ] || [ "$DISPATCH_PUBLISH" = "publish" ]; then
+            publish_required=true
+            if [ -z "$tag" ]; then
+              echo "::error::Publication requires a v* tag ref, got '${RELEASE_REF}'."
+              exit 1
+            fi
+          fi
+          if [ -n "$tag" ]; then vlr check --release --tag "$tag"; else vlr check --release; fi
+          vlr version check
+          python3 -m unittest discover -s tests/unit -t .
+          vlr status
+          {
+            echo "version=${version}"
+            echo "tag=${tag}"
+            echo "publish_required=${publish_required}"
+          } >> "$GITHUB_OUTPUT"
+
+  release-artifacts:
+    name: Build, test and validate release artifacts
+    needs: release-check
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    defaults:
+      run:
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Prepare release history (work tree only)
+        run: vlr prepare --record release/meta/prepare.json
+
+      # The only compile of the release: upstream export, source package, Meson build and the
+      # integration tests (dh_auto_test), bounded by tools/ci-guard and PDFIUM_JOBS/CI_MEMORY.
+      - name: Build the source and binary packages
+        shell: bash ./tools/ci-guard -- ./ci/run-ci bash -euo pipefail {0}
+        run: |
+          vlr build-deb
+          echo "peak container memory: $(( $(cat /sys/fs/cgroup/memory.peak 2>/dev/null || echo 0) / 1048576 )) MiB"
+
+      - name: Checksums, artifact contracts and source provenance
+        run: |
+          vlr checksums
+          vlr validate-artifacts
+          python3 tools/pdfium-dist verify-snapshot release
+          vlr artifacts
+
+      # Install into clean stock Ubuntu containers: consumers, integration tests against the
+      # installed library, upgrade/removal, and the transition from the legacy packages.
+      - name: Package tests
+        shell: bash -euo pipefail {0}
+        run: tests/package/run release clean-install && tests/package/run release legacy-transition
+
+      - name: Rebuild from the source package and compare
+        if: github.event.inputs.verify_rebuild == 'true'
+        shell: bash ./tools/ci-guard -- bash -euo pipefail {0}
+        run: REBUILD_JOBS="$PDFIUM_JOBS" tests/package/run release rebuild-from-source
+
+      - name: Preview GitHub release
+        run: |
+          vlr release-title
+          vlr release-body
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: libpdfium-release-${{ needs.release-check.outputs.version }}
+          path: release/
+          include-hidden-files: true
+          if-no-files-found: error
+
+  publish-debian:
+    name: Publish Debian packages
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    defaults:
+      run:
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+    needs: [release-check, release-artifacts]
+    if: needs.release-check.outputs.publish_required == 'true'
+    environment: Production
+    timeout-minutes: 45
+    # One APT publication at a time across tags (and with Vaulthalla's, which shares the repository).
+    concurrency:
+      group: vaulthalla-apt-publish
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+          fetch-depth: 0
+      - name: Prepare release history (deterministic re-run)
+        run: vlr prepare
+      - uses: actions/download-artifact@v4
+        with:
+          name: libpdfium-release-${{ needs.release-check.outputs.version }}
+          path: release/
+      - name: Verify artifacts
+        run: |
+          vlr checksums --verify
+          vlr validate-artifacts
+      # Idempotent and sha256-verified: identical bytes already live are skipped, different bytes
+      # are refused. RELEASE_PUBLISH_MODE (repository variable) must be `nexus` to upload.
+      - name: Publish to the APT repository
+        env:
+          RELEASE_PUBLISH_MODE: ${{ vars.RELEASE_PUBLISH_MODE || 'disabled' }}
+          NEXUS_APT_REPO: ${{ vars.NEXUS_APT_REPO || vars.NEXUS_REPO_URL }}
+          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD || secrets.NEXUS_PASS }}
+        run: vlr publish-deb --require-enabled
+
+  github-release:
+    name: GitHub release
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    defaults:
+      run:
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+    needs: [release-check, publish-debian]
+    if: >-
+      !cancelled() &&
+      needs.release-check.outputs.publish_required == 'true' &&
+      needs.publish-debian.result == 'success'
+    permissions:
+      contents: write
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+          fetch-depth: 0
+      - name: Prepare release history (deterministic re-run)
+        run: vlr prepare
+      - uses: actions/download-artifact@v4
+        with:
+          name: libpdfium-release-${{ needs.release-check.outputs.version }}
+          path: release/
+      - name: Verify artifacts
+        run: vlr checksums --verify
+      - name: Create or update the GitHub release (packages, source package, provenance)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: vlr github-release
+
+  finalize:
+    name: Record the release on main
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    defaults:
+      run:
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+    needs: [release-check, publish-debian, github-release]
+    if: >-
+      !cancelled() &&
+      needs.release-check.outputs.publish_required == 'true' &&
+      needs.publish-debian.result == 'success' &&
+      needs.github-release.result == 'success'
+    permissions:
+      contents: write
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_FINALIZE_TOKEN || github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: libpdfium-release-${{ needs.release-check.outputs.version }}
+          path: release/
+      - name: Prepare release history (deterministic re-run)
+        run: vlr prepare
+      - name: Finalize
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          vlr finalize --record release/meta/prepare.json

@@ -1,0 +1,49 @@
+# Build/test environment for Vaulthalla PDFium: native Meson + Ninja build of PDFium, the
+# integration tests and the Debian package build. Built and run by ci/run-ci (rootless Podman);
+# nothing here touches the host, and steps may sudo freely inside the container.
+#
+# Packages: debian/control's Build-Depends (keep them in step; tests/unit/test_repository.py checks),
+# g++ 14 as the default cc/c++ (the toolchain Vaulthalla's CI uses), git (upstream acquisition),
+# Debian packaging and QA tools (lintian, abigail-tools for ABI reports), gh (vlr github-release,
+# upstream update pull requests) and vl-release.
+# No CMake, GN, depot_tools or Chromium tooling, by design. Architecture-neutral: the pinned base
+# is a multi-arch manifest (amd64 today; arm64 for the Raspberry Pi 5 node, docs/CI.md).
+FROM docker.io/library/ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55
+
+# Newest vl-release / pmdocs in the ValkyrianLabs APT index when ci/run-ci built the image; part
+# of the image tag, so a new tool release rebuilds the image.
+ARG VALKYRIANLABS_TOOLS=""
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    CCACHE_DIR=/cache/ccache \
+    CCACHE_MAXSIZE=5G \
+    HOME=/home/ci \
+    CI=true
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates curl gnupg \
+ && install -d -m 0755 /etc/apt/keyrings \
+ && curl -fsSL https://apt.valkyrianlabs.com/pubkey.gpg -o /etc/apt/keyrings/valkyrianlabs.gpg \
+ && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /etc/apt/keyrings/githubcli.gpg \
+ && chmod 0644 /etc/apt/keyrings/*.gpg \
+ && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/valkyrianlabs.gpg] https://apt.valkyrianlabs.com stable main" > /etc/apt/sources.list.d/valkyrianlabs.list \
+ && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends \
+      sudo git jq xz-utils file python3 ccache gcc-14 g++-14 build-essential \
+      debhelper devscripts dpkg-dev fakeroot lintian abigail-tools \
+      meson ninja-build pkgconf \
+      libfreetype-dev libicu-dev libjpeg-dev liblcms2-dev zlib1g-dev libabsl-dev libharfbuzz-dev \
+      gh vl-release \
+ && echo 'ALL ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/ci \
+ && chmod 0440 /etc/sudoers.d/ci \
+ && rm -rf /var/lib/apt/lists/* \
+ && echo "tools: ${VALKYRIANLABS_TOOLS}" && vlr --version \
+ && update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-14 100 \
+ && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-14 100 \
+ && c++ --version | head -1
+
+# HOME for whichever host uid ci/run-ci maps in (--userns=keep-id).
+RUN install -d -m 1777 /home/ci
+
+WORKDIR /workspace

@@ -1,0 +1,100 @@
+name: Upstream watch
+
+# Weekly: is there a newer PDFium revision in Chrome Stable? If so, build and test it as a
+# candidate (tools/upstream-candidate) and open a pull request with the report. Nothing is
+# released automatically: a maintainer reviews, reconciles anything the audit flags, merges, and
+# cuts the release with `vlr cut` (docs/MAINTENANCE.md).
+#
+# Needs "Allow GitHub Actions to create and approve pull requests" in the repository settings.
+
+on:
+  schedule:
+    - cron: "23 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: upstream-watch
+  cancel-in-progress: false
+
+env:
+  CI_CACHE_NAMES: ccache pdfium-git
+  PDFIUM_CACHE_DIR: /cache/pdfium-git
+  PDFIUM_JOBS: "4"
+  CI_MEMORY: 8g
+
+jobs:
+  discover:
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    defaults:
+      run:
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+    timeout-minutes: 10
+    outputs:
+      update: ${{ steps.discover.outputs.update }}
+      branch: ${{ steps.discover.outputs.branch }}
+      commit: ${{ steps.discover.outputs.commit }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: discover
+        run: |
+          python3 tools/pdfium-dist discover --json > discover.json
+          cat discover.json
+          python3 - <<'EOF' >> "$GITHUB_OUTPUT"
+          import json
+          d = json.load(open("discover.json"))
+          print(f"update={'true' if d['update_available'] else 'false'}")
+          print(f"branch={d['branch']}")
+          print(f"commit={d['commit']}")
+          EOF
+
+  candidate:
+    needs: discover
+    if: needs.discover.outputs.update == 'true'
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    permissions:
+      contents: write
+      pull-requests: write
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Skip if a pull request for this revision exists
+        id: existing
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: upstream/${{ needs.discover.outputs.branch }}-${{ needs.discover.outputs.commit }}
+        run: |
+          if git ls-remote --exit-code origin "refs/heads/${BRANCH//chromium\//chromium-}" >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Build and test the candidate
+        id: candidate
+        if: steps.existing.outputs.exists == 'false'
+        continue-on-error: true
+        shell: bash ./tools/ci-guard -- ./ci/run-ci bash -euo pipefail {0}
+        run: tools/upstream-candidate
+      - name: Open a pull request with the report
+        if: steps.existing.outputs.exists == 'false'
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OUTCOME: ${{ steps.candidate.outcome }}
+          BRANCH: upstream/${{ needs.discover.outputs.branch }}-${{ needs.discover.outputs.commit }}
+        run: |
+          branch="${BRANCH//chromium\//chromium-}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add -A sources.lock.json VERSION abi debian release.toml .release
+          git commit -m "Update PDFium to ${{ needs.discover.outputs.branch }} (${{ needs.discover.outputs.commit }})"
+          git push origin "$branch"
+          title="Update PDFium to ${{ needs.discover.outputs.branch }}"
+          [ "$OUTCOME" = "success" ] || title="$title (needs work)"
+          gh pr create --base main --head "$branch" --title "$title" --body-file build/upstream-candidate/report.md

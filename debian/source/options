@@ -1,0 +1,2 @@
+# Python byte code from running tools/pdfium-dist must never count as a source change.
+extend-diff-ignore = "(^|/)__pycache__(/|$)"

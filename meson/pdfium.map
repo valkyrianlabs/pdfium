@@ -1,0 +1,12 @@
+/* Linker version script for libpdfium: export exactly the public C API (FPDF*, FORM_*, FSDK_*
+   from public/*.h). Everything else, including libstdc++ template instantiations, stays local,
+   so the dynamic symbol table is the API that `tools/pdfium-dist abi` and the Debian symbols
+   file track. */
+{
+  global:
+    FPDF*;
+    FORM_*;
+    FSDK_*;
+  local:
+    *;
+};

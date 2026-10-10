@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+"""Upstream acquisition, drift audit, ABI check and source snapshots (see `--help`)."""
+import sys
+from pathlib import Path
+
+sys.dont_write_bytecode = True  # never leave __pycache__ in the (packaged) work tree
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pdfiumdist.cli import main  # noqa: E402
+
+sys.exit(main())

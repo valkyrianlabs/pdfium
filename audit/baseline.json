@@ -1,0 +1,248 @@
+{
+  "include_prefixes": {
+    "build/build_config.h": 44,
+    "third_party/abseil-cpp": 3,
+    "third_party/agg23": 9,
+    "third_party/dragonbox": 1,
+    "third_party/fast_float": 2,
+    "third_party/freetype": 1,
+    "third_party/icu": 1,
+    "third_party/libopenjpeg": 1,
+    "third_party/rust": 1,
+    "third_party/skia": 17,
+    "third_party/zlib": 1
+  },
+  "pdfium": "bc8e654f49c980f64e08067329ff35539db80610",
+  "pdfium_gni_args": [
+    "enable_callgrind",
+    "pdf_bundle_freetype",
+    "pdf_enable_brotli",
+    "pdf_enable_click_logging",
+    "pdf_enable_fontations",
+    "pdf_enable_rust_bmp",
+    "pdf_enable_rust_jpeg",
+    "pdf_enable_rust_png",
+    "pdf_enable_v8",
+    "pdf_enable_xfa",
+    "pdf_is_complete_lib",
+    "pdf_is_standalone",
+    "pdf_skia_font_manager_target",
+    "pdf_use_agg",
+    "pdf_use_partition_alloc",
+    "pdf_use_skia",
+    "use_system_lcms2",
+    "use_system_libopenjpeg2",
+    "use_system_libpng",
+    "use_system_libtiff",
+    "use_system_zlib"
+  ],
+  "system_deps": {
+    "third_party/abseil-cpp": "435e7d977fb36fb47854a4c552c0706dad0bd7cf",
+    "third_party/freetype/src": "4800589f76dc62fbe523a74a59e0d4850a5dd7df",
+    "third_party/harfbuzz/src": "886fc1e645388080b72f6d9b06347533a0018045",
+    "third_party/icu": "8cc91d9b6ab9991802fd208ee03a69714fd0251c",
+    "third_party/libjpeg_turbo": "640f254ad0fa03f6b1f29f89b7dd9366f2f6e533",
+    "third_party/zlib": "285e94b8fa95ad3b7d16b80798ec8dce6febb8c8"
+  },
+  "targets": {
+    "//:pdfium": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 0
+    },
+    "//:pdfium_public_headers": {
+      "defines": [],
+      "external_deps": [],
+      "sources": 0
+    },
+    "//:pdfium_public_headers_impl": {
+      "defines": [],
+      "external_deps": [],
+      "sources": 0
+    },
+    "//constants:constants": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 0
+    },
+    "//core/fdrm:fdrm": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 3
+    },
+    "//core/fpdfapi/cmaps:cmaps": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 54
+    },
+    "//core/fpdfapi/edit:contentstream_write_utils": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [
+        "//third_party/dragonbox:dragonbox"
+      ],
+      "sources": 1
+    },
+    "//core/fpdfapi/edit:edit": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [
+        "//third_party/harfbuzz:harfbuzz"
+      ],
+      "sources": 9
+    },
+    "//core/fpdfapi/font:font": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 15
+    },
+    "//core/fpdfapi/page:page": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 50
+    },
+    "//core/fpdfapi/parser:parser": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 34
+    },
+    "//core/fpdfapi/render:render": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 13
+    },
+    "//core/fpdfdoc:fpdfdoc": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 32
+    },
+    "//core/fpdftext:fpdftext": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 4
+    },
+    "//core/fxcodec:fxcodec": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG",
+        "USE_SYSTEM_LCMS2",
+        "USE_SYSTEM_LIBJPEG",
+        "USE_SYSTEM_ZLIB"
+      ],
+      "external_deps": [
+        "//third_party:jpeg",
+        "//third_party:lcms2",
+        "//third_party:libopenjpeg2",
+        "//third_party:zlib"
+      ],
+      "sources": 31
+    },
+    "//core/fxcrt:fxcrt": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [
+        "//:freetype_common",
+        "//third_party/abseil-cpp:absl",
+        "//third_party/fast_float:fast_float",
+        "//third_party/icu:icuuc"
+      ],
+      "sources": 39
+    },
+    "//core/fxge:fxge": {
+      "defines": [
+        "DEFINE_PS_TABLES_DATA",
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 55
+    },
+    "//fpdfsdk/formfiller:formfiller": {
+      "defines": [
+        "FPDF_IMPLEMENTATION",
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 12
+    },
+    "//fpdfsdk/pwl:pwl": {
+      "defines": [
+        "FPDF_IMPLEMENTATION",
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 13
+    },
+    "//fpdfsdk:fpdfsdk": {
+      "defines": [
+        "FPDF_IMPLEMENTATION",
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 38
+    },
+    "//fxjs:fxjs": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 3
+    },
+    "//third_party:fx_agg": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 5
+    },
+    "//third_party:fx_libopenjpeg": {
+      "defines": [
+        "OPJ_STATIC",
+        "PDF_USE_AGG"
+      ],
+      "external_deps": [],
+      "sources": 21
+    }
+  }
+}

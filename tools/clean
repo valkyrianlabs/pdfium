@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Remove disposable build output. Only ignored, regenerable paths are touched; tracked files,
+# sources.lock.json, release configuration and credentials never are.
+#
+#   tools/clean            build/ and release/ (Meson trees, rehearsals, package builds)
+#   tools/clean --all      also upstream/ (re-created by `tools/pdfium-dist prepare`) and prunes
+#                          the upstream git cache to the commits sources.lock.json pins
+set -euo pipefail
+repo=$(cd "$(dirname "$0")/.." && pwd)
+cd "$repo"
+paths=(build release)
+all=false
+[ "${1:-}" = "--all" ] && all=true && paths+=(upstream upstream.tmp)
+for path in "${paths[@]}"; do
+  [ -e "$path" ] || continue
+  # Refuse anything git tracks: these directories must be ignored, disposable output.
+  if [ -n "$(git ls-files -- "$path" | head -n1)" ]; then
+    echo "clean: $path contains tracked files; not removing it" >&2
+    exit 1
+  fi
+  # Files written as container root (rootless Podman) belong to a subordinate uid.
+  rm -rf "$path" 2>/dev/null || podman unshare rm -rf "$path"
+  echo "removed $path/"
+done
+if $all; then
+  python3 tools/pdfium-dist cache-prune
+fi

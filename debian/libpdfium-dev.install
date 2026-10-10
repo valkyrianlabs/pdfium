@@ -1,0 +1,4 @@
+usr/include/pdfium
+usr/lib/${DEB_HOST_MULTIARCH}/libpdfium.so
+usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/pdfium.pc
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/pdfium

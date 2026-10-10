@@ -1,0 +1,52 @@
+#!/usr/bin/make -f
+# Native Meson build of PDFium. The pinned upstream sources are already in upstream/ (prepared by
+# `tools/pdfium-dist prepare` before the package build, or unpacked from the source package's
+# upstream component tarball): the build never touches the network.
+
+include /usr/share/dpkg/pkg-info.mk
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export PYTHONDONTWRITEBYTECODE = 1
+
+# The toolchain the release is built and tested with; explicit, so rebuilding the source package
+# anywhere (not only in ci/Containerfile) produces the same binaries.
+export CC = gcc-14
+export CXX = g++-14
+
+# Ubuntu's default -flto=auto starts one LTO job per CPU of the machine; keep link-time
+# parallelism within the build's job limit (DEB_BUILD_OPTIONS=parallel=N).
+JOBS := $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+ifneq ($(JOBS),)
+export DEB_CFLAGS_MAINT_APPEND = -flto=$(JOBS)
+export DEB_CXXFLAGS_MAINT_APPEND = -flto=$(JOBS)
+export DEB_LDFLAGS_MAINT_APPEND = -flto=$(JOBS)
+endif
+
+%:
+	dh $@ --buildsystem=meson
+
+override_dh_auto_configure:
+	python3 tools/pdfium-dist prepare --offline
+	dh_auto_configure -- \
+		-Dupstream_dir=upstream \
+		-Dhardening=true \
+		-Dcmake_package=true \
+		-Dtests=true
+
+override_dh_auto_test:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	dh_auto_test -- --print-errorlogs
+endif
+
+# The two packages vl-release validates; no automatic -dbgsym package.
+override_dh_strip:
+	dh_strip --no-automatic-dbgsym
+
+override_dh_missing:
+	dh_missing --fail-missing
+
+# Reproducible packages: every member gets the changelog's timestamp, whether its source came from
+# the work tree, a git export or the source package tarballs.
+override_dh_builddeb:
+	find debian/libpdfium8059 debian/libpdfium-dev -exec touch --no-dereference --date=@$(SOURCE_DATE_EPOCH) {} +
+	dh_builddeb

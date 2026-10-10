@@ -1,0 +1,170 @@
+# Upstream policy for Vaulthalla PDFium (human-maintained).
+#
+# This file says *what* we track and *how* our Meson build relates to upstream's BUILD.gn.
+# The resolved, immutable pins (commits, trees, checksums) live in sources.lock.json, which
+# `tools/pdfium-dist update` rewrites. See docs/MAINTENANCE.md.
+
+[upstream]
+git = "https://pdfium.googlesource.com/pdfium"
+# PDFium publishes no release tags. Chromium cuts a `chromium/<build>` branch per milestone and
+# cherry-picks fixes onto it; Chrome ships the head of that branch.
+branch_pattern = "chromium/{branch}"
+# Upstream files never exported (so never in upstream/, source snapshots or packages): standalone
+# font binaries that only upstream's own embedder tests load. Our build and integration tests do
+# not use them, and several have licenses we have not verified for redistribution. The lock
+# records this list; `prepare` and `verify-snapshot` honour it.
+export_exclude = [
+  "testing/resources/fonts/**",
+  "testing/resources/font_tests/**",
+  "third_party/NotoSansBengali2/**",
+  "third_party/NotoSansBengali3/**",
+  "third_party/NotoSansCJK/**",
+]
+
+[tracking]
+# Adopt the PDFium revision that Chrome Stable ships on Linux, as reported by the Chromium
+# Dashboard (fetch_releases): a reviewed, fuzzed, security-maintained release-branch revision.
+channel = "Stable"
+platform = "Linux"
+dashboard = "https://chromiumdash.appspot.com"
+
+# Dependencies taken from the pinned revision's DEPS file and exported to the path gclient would
+# use (no gclient). Everything else is a Debian/Ubuntu system package (see meson.build).
+[[dependency]]
+deps_path = "build"
+# Only Chromium's two configuration headers are needed; nothing of Chromium's build system.
+files = ["build_config.h", "buildflag.h"]
+license = "BSD-3-Clause"
+license_note = "Chromium build headers; covered by the Chromium/PDFium BSD license (pdfium/LICENSE)."
+
+[[dependency]]
+deps_path = "third_party/fast_float/src"
+files = ["include/fast_float/*.h", "LICENSE-MIT", "LICENSE-APACHE", "LICENSE-BOOST", "README.md"]
+license = "Apache-2.0 OR MIT OR BSL-1.0"
+
+[[dependency]]
+deps_path = "third_party/dragonbox/src"
+files = ["include/dragonbox/dragonbox.h", "LICENSE-Apache2-LLVM", "LICENSE-Boost", "README.md"]
+license = "Apache-2.0 WITH LLVM-exception OR BSL-1.0"
+
+# --- upstream compatibility audit (tools/pdfium-dist audit) ----------------------------------
+[audit]
+root = "//:pdfium"
+# BUILD.gn conditions evaluate against these build arguments: Linux, shared library, AGG only,
+# no V8/XFA/Skia/Rust/PartitionAlloc, system freetype/zlib/libjpeg/lcms2/ICU/HarfBuzz, bundled
+# libopenjpeg and AGG (both carry PDFium-specific patches upstream).
+[audit.args]
+is_linux = true
+is_chromeos = false
+is_posix = true
+is_win = false
+is_mac = false
+is_apple = false
+is_android = false
+is_ios = false
+is_fuchsia = false
+is_component_build = true
+is_clang = false
+is_debug = false
+is_official_build = false
+is_asan = false
+is_msan = false
+is_ubsan = false
+build_with_chromium = false
+current_cpu = "x64"
+target_cpu = "x64"
+current_os = "linux"
+target_os = "linux"
+clang_use_chrome_plugins = false
+enable_rust = false
+enable_rust_cxx = false
+checkout_skia = false
+pdf_enable_v8 = false
+pdf_enable_xfa = false
+pdf_use_skia = false
+pdf_use_agg = true
+pdf_use_partition_alloc = false
+pdf_enable_fontations = false
+pdf_enable_rust_bmp = false
+pdf_enable_rust_jpeg = false
+pdf_enable_rust_png = false
+pdf_enable_brotli = false
+pdf_enable_click_logging = false
+pdf_bundle_freetype = false
+pdf_is_standalone = false
+pdf_is_complete_lib = false
+pdf_skia_font_manager_target = ""
+enable_callgrind = false
+use_system_freetype = true
+use_system_zlib = true
+use_system_libjpeg = true
+use_libjpeg_turbo = false
+use_system_lcms2 = true
+use_system_libopenjpeg2 = false
+use_system_libpng = true
+use_system_libtiff = true
+use_system_harfbuzz = true
+use_clang_modules = false
+
+# GN source sets → the Meson static_library that compiles them (meson/**/meson.build).
+[audit.targets]
+"//constants:constants" = "headers-only"
+"//core/fdrm:fdrm" = "fdrm"
+"//core/fpdfapi/cmaps:cmaps" = "fpdfapi_cmaps"
+"//core/fpdfapi/edit:edit" = "fpdfapi_edit"
+"//core/fpdfapi/edit:contentstream_write_utils" = "fpdfapi_contentstream_write_utils"
+"//core/fpdfapi/font:font" = "fpdfapi_font"
+"//core/fpdfapi/page:page" = "fpdfapi_page"
+"//core/fpdfapi/parser:parser" = "fpdfapi_parser"
+"//core/fpdfapi/render:render" = "fpdfapi_render"
+"//core/fpdfdoc:fpdfdoc" = "fpdfdoc"
+"//core/fpdftext:fpdftext" = "fpdftext"
+"//core/fxcodec:fxcodec" = "fxcodec"
+"//core/fxcrt:fxcrt" = "fxcrt"
+"//core/fxge:fxge" = "fxge"
+"//fpdfsdk:fpdfsdk" = "fpdfsdk"
+"//fpdfsdk/formfiller:formfiller" = "fpdfsdk_formfiller"
+"//fpdfsdk/pwl:pwl" = "fpdfsdk_pwl"
+"//fxjs:fxjs" = "fxjs"
+"//third_party:fx_agg" = "fx_agg"
+"//third_party:fx_libopenjpeg" = "fx_libopenjpeg"
+"//:pdfium" = "pdfium"
+"//:pdfium_public_headers_impl" = "public-headers"
+"//:pdfium_public_headers" = "public-headers"
+
+# Defines the Meson build adds beyond what upstream's BUILD.gn applies to a target, and why.
+# meson.build applies PDFium's configuration defines to every component; GN scopes some of them
+# to the targets depending on a library, which makes no difference to the compiled code.
+[audit.extra_defines]
+NDEBUG = "Chromium release builds (b_ndebug=true)"
+_FILE_OFFSET_BITS = "Meson default on Linux (large file support)"
+COMPONENT_BUILD = "Chromium //build/config for shared builds: FPDF_EXPORT visibility"
+FPDF_IMPLEMENTATION = "pdfium_implementation_config, applied to all components"
+_GLIBCXX_ASSERTIONS = "hardening option (libstdc++ analogue of Chromium's libc++ hardening)"
+USE_SYSTEM_ICUUC = "Chromium's unbundled ICU config (system ICU)"
+USE_SYSTEM_ZLIB = "//third_party:zlib system config, applied to all components"
+USE_SYSTEM_LIBJPEG = "//third_party:jpeg system config, applied to all components"
+USE_SYSTEM_LCMS2 = "//third_party:lcms2 pkg_config, applied to all components"
+NOMINMAX = "from Ubuntu's abseil pkg-config Cflags"
+PDF_USE_AGG = "pdfium_public_config, applied to all components"
+OPJ_STATIC = "pdfium_common_config, applied to all components"
+
+# Labels outside PDFium's tree (or system-library groups) and what satisfies them.
+[audit.external]
+"//third_party/icu:icuuc" = "system: icu-uc (USE_SYSTEM_ICUUC)"
+"//third_party/abseil-cpp:absl" = "system: absl_* (forwarding headers, meson/shims)"
+"//build/config/freetype:freetype" = "system: freetype2"
+"//third_party/harfbuzz:harfbuzz" = "system: harfbuzz + harfbuzz-subset"
+"//third_party/fast_float:fast_float" = "DEPS: third_party/fast_float/src (header-only)"
+"//third_party/dragonbox:dragonbox" = "DEPS: third_party/dragonbox/src (header-only)"
+"//third_party:jpeg" = "system: libjpeg (USE_SYSTEM_LIBJPEG)"
+"//third_party:zlib" = "system: zlib (USE_SYSTEM_ZLIB)"
+"//third_party:lcms2" = "system: lcms2 (USE_SYSTEM_LCMS2)"
+"//third_party:libopenjpeg2" = "bundled: //third_party:fx_libopenjpeg"
+"//:freetype_common" = "system: freetype2"
+
+# GN conditions the reader cannot decide that are known to be irrelevant for this profile.
+[audit.ignore_undecided]
+"BUILD.gn" = ["current_toolchain"]
+"third_party/BUILD.gn" = ["pkg_config()"]
+"third_party/harfbuzz/BUILD.gn" = ["use_system_harfbuzz"]

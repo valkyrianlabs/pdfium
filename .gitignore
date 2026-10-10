@@ -1,0 +1,25 @@
+# Upstream sources: acquired from sources.lock by tools/pdfium-sources, never committed
+/upstream/
+
+# Build trees and release output (vl-release: build_dir/output_dir; Meson dev builds)
+/build/
+/build-*/
+/release/
+
+# Debian build leftovers (vlr build-deb builds in build/deb/src; keep the tree clean if someone
+# builds in place)
+/debian/.debhelper/
+/debian/libpdfium*/
+/debian/tmp/
+/debian/files
+/debian/*.substvars
+/debian/*.log
+/debian/debhelper-build-stamp
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Local tooling
+/.idea/
+/.claude/settings.local.json

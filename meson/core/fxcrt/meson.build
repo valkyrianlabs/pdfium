@@ -1,0 +1,54 @@
+# Mirrors core/fxcrt/BUILD.gn for the supported configuration (upstream.toml [audit.args]).
+# Source paths are relative to that directory, as in GN; only compiled sources are listed.
+# `tools/pdfium-dist audit` reports every difference from upstream.
+
+# fxcrt: POSIX; malloc allocator (no PartitionAlloc); no XFA.
+pdfium_components += [{
+  'name': 'fxcrt',
+  'gn': '//core/fxcrt:fxcrt',
+  'dir': 'core/fxcrt',
+  'dependencies': [fast_float_dep],
+  'sources': [
+    'binary_buffer.cpp',
+    'bytestring.cpp',
+    'bytestring_pool.cpp',
+    'cfx_bidi_resolver.cpp',
+    'cfx_bitstream.cpp',
+    'cfx_datetime.cpp',
+    'cfx_fileaccess_stream.cpp',
+    'cfx_read_only_container_stream.cpp',
+    'cfx_read_only_span_stream.cpp',
+    'cfx_seekablestreamproxy.cpp',
+    'cfx_timer.cpp',
+    'debug/alias.cc',
+    'fx_bidi.cpp',
+    'fx_codepage.cpp',
+    'fx_coordinates.cpp',
+    'fx_extension.cpp',
+    'fx_memory.cpp',
+    'fx_number.cpp',
+    'fx_random.cpp',
+    'fx_stream.cpp',
+    'fx_string.cpp',
+    'fx_system.cpp',
+    'fx_unicode.cpp',
+    'observed_ptr.cpp',
+    'string_data_template.cpp',
+    'string_template.cpp',
+    'widestring.cpp',
+    'widetext_buffer.cpp',
+    'xml/cfx_xmlchardata.cpp',
+    'xml/cfx_xmldocument.cpp',
+    'xml/cfx_xmlelement.cpp',
+    'xml/cfx_xmlinstruction.cpp',
+    'xml/cfx_xmlnode.cpp',
+    'xml/cfx_xmlparser.cpp',
+    'xml/cfx_xmltext.cpp',
+    # !pdf_use_partition_alloc
+    'fx_memory_malloc.cpp',
+    # is_posix
+    'cfx_fileaccess_posix.cpp',
+    'fx_folder_posix.cpp',
+    'mapped_data_bytes.cpp',
+  ],
+}]

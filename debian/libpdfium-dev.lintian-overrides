@@ -1,0 +1,5 @@
+# public -> . lets the C++ helpers' "public/cpp/..." and "public/fpdfview.h"
+# includes (paths relative to PDFium's root) resolve below /usr/include/pdfium.
+libpdfium-dev: symlink-is-self-recursive . [usr/include/pdfium/public]
+# Not a Debian archive upload: there are no Debian bugs to close.
+libpdfium-dev: initial-upload-closes-no-bugs *

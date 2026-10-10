@@ -1,0 +1,58 @@
+Source: libpdfium
+Section: libs
+Priority: optional
+Maintainer: Cooper Larson <cooper@valkyrianlabs.com>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ g++-14,
+ meson (>= 1.3.0),
+ ninja-build,
+ pkgconf,
+ python3,
+ libabsl-dev,
+ libfreetype-dev,
+ libharfbuzz-dev,
+ libicu-dev,
+ libjpeg-dev,
+ liblcms2-dev,
+ zlib1g-dev,
+Standards-Version: 4.6.2
+Homepage: https://pdfium.googlesource.com/pdfium
+Vcs-Browser: https://github.com/vaulthalla/pdfium
+Vcs-Git: https://github.com/vaulthalla/pdfium.git
+
+Package: libpdfium8059
+Architecture: any
+Multi-Arch: same
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: PDF rendering library (PDFium from Chromium)
+ PDFium is the PDF engine of the Chromium project: it parses, renders and
+ extracts text from PDF documents and supports annotations, forms, editing and
+ saving through a C API.
+ .
+ This build is headless and server-oriented: the AGG renderer, no JavaScript
+ (V8), no XFA forms and no Skia. It is built natively with Meson from the
+ PDFium revision Chrome Stable ships (see sources.lock.json in the package
+ documentation for the exact revision).
+ .
+ This package contains the shared library. The package name carries the ABI
+ version (libpdfium.so.8059, introduced with Chromium branch 8059).
+
+Package: libpdfium-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends:
+ libpdfium8059 (= ${binary:Version}),
+ ${misc:Depends},
+Description: PDF rendering library (PDFium from Chromium) - development files
+ PDFium is the PDF engine of the Chromium project: it parses, renders and
+ extracts text from PDF documents and supports annotations, forms, editing and
+ saving through a C API.
+ .
+ This package contains the C headers (/usr/include/pdfium), the pkg-config
+ file (pdfium.pc) and CMake package files (find_package(Pdfium), target
+ Pdfium::pdfium).

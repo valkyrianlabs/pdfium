@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+# Adopt a newer upstream PDFium revision as a release *candidate* (never releases anything).
+#
+#   tools/upstream-candidate [pdfium-dist update options, e.g. --commit SHA --branch chromium/N
+#                             --chromium-version V --milestone M]
+#
+# Run inside the CI container (ci/run-ci) or an equivalent environment:
+#   1. pin the revision Chrome Stable ships (or the given one) in sources.lock.json
+#   2. VERSION: <milestone>.<branch>.0 for a new Chromium branch, a patch bump for a newer commit on
+#      the same branch (docs/RELEASING.md, version policy)
+#   3. export the sources, configure and build with Meson, run the integration tests
+#   4. upstream audit and ABI check; on an ABI break, move to the new SONAME (soname-bump) and
+#      record the new API; on additions, record them (Debian symbols file)
+#   5. stage templated release docs if none are staged
+# Every step's result goes to build/upstream-candidate/report.md; the exit status is 0 only if the
+# build, tests and audit passed. An ABI break is reported for review but is not a failure.
+set -uo pipefail
+repo=$(cd "$(dirname "$0")/.." && pwd)
+cd "$repo"
+out=build/upstream-candidate
+mkdir -p "$out"
+report="$out/report.md"
+jobs=${PDFIUM_JOBS:-4}
+status=0
+dist() { python3 tools/pdfium-dist "$@"; }
+
+old_commit=$(python3 -c 'import json; print(json.load(open("sources.lock.json"))["pdfium"]["commit"])')
+old_branch=$(python3 -c 'import json; print(json.load(open("sources.lock.json"))["pdfium"]["branch"])')
+old_version=$(tr -d '[:space:]' < VERSION)
+
+section() { printf '\n## %s\n\n' "$1" >> "$report"; }
+record() { # TITLE COMMAND... : run, append output to the report, remember failures
+  local title=$1 rc
+  shift
+  section "$title"
+  { echo '```'; "$@" 2>&1 | tail -n 60; rc=${PIPESTATUS[0]}; echo '```'; } >> "$report"
+  echo "- $title: $([ "$rc" -eq 0 ] && echo ok || echo "exit $rc")" >> "$out/summary"
+  return "$rc"
+}
+
+: > "$out/summary"
+echo "# Upstream candidate" > "$report"
+if ! dist update "$@" > "$out/update.log" 2>&1; then
+  cat "$out/update.log"
+  exit 2
+fi
+new_commit=$(python3 -c 'import json; print(json.load(open("sources.lock.json"))["pdfium"]["commit"])')
+new_branch=$(python3 -c 'import json; print(json.load(open("sources.lock.json"))["pdfium"]["branch"])')
+milestone=$(python3 -c 'import json; print(json.load(open("sources.lock.json"))["pdfium"]["milestone"])')
+chromium=$(python3 -c 'import json; print(json.load(open("sources.lock.json"))["pdfium"]["chromium_version"])')
+if [ "$new_commit" = "$old_commit" ]; then
+  echo "already at pdfium ${new_commit:0:12} (${new_branch}); nothing to do"
+  rm -rf "$out"
+  exit 0
+fi
+branch_number=${new_branch#chromium/}
+if [ "$new_branch" != "$old_branch" ]; then
+  vlr version set "${milestone}.${branch_number}.0" > /dev/null
+else
+  vlr version bump patch > /dev/null
+fi
+new_version=$(tr -d '[:space:]' < VERSION)
+{
+  echo
+  echo "| | before | candidate |"
+  echo "|---|---|---|"
+  echo "| PDFium | \`${old_commit:0:12}\` (${old_branch}) | \`${new_commit:0:12}\` (${new_branch}, Chromium ${chromium}) |"
+  echo "| VERSION | ${old_version} | ${new_version} |"
+  echo
+  echo "Upstream changes: https://pdfium.googlesource.com/pdfium/+log/${old_commit}..${new_commit}"
+} >> "$report"
+record "Lock update" cat "$out/update.log"
+
+record "Prepare upstream sources" dist prepare || status=1
+# Static first: it explains drift even when it breaks `meson setup` (a moved or renamed file).
+record "Upstream audit (static, meson/ vs BUILD.gn)" dist audit || status=1
+rm -rf build/candidate
+record "Configure (Meson)" meson setup build/candidate --wrap-mode=nodownload || status=1
+record "Compile (ninja -j${jobs})" ninja -C build/candidate -j "$jobs" || status=1
+record "Integration tests" meson test -C build/candidate --print-errorlogs || status=1
+if [ -f build/candidate/meson-info/intro-targets.json ]; then
+  record "Upstream audit (with compile defines)" dist audit --builddir build/candidate --json "$out/audit.json" || status=1
+fi
+
+abi_rc=0
+if [ -f build/candidate/libpdfium.so ]; then
+  record "ABI check" dist abi --library build/candidate/libpdfium.so || abi_rc=$?
+else
+  abi_rc=2
+  record "ABI check (public headers only; no library was built)" dist abi || true
+fi
+soversion=$(tr -d '[:space:]' < abi/soversion)
+if [ "$abi_rc" -eq 1 ]; then
+  record "SONAME bump (ABI break)" dist soname-bump "$branch_number" || status=1
+  soversion=$branch_number
+  section "ABI decision"
+  echo "Incompatible API changes: the runtime package moves to **libpdfium${soversion}**. Review the BREAK lines above." >> "$report"
+fi
+if [ "$abi_rc" -eq 1 ] || [ "$abi_rc" -eq 3 ]; then
+  record "Record the API (abi/public-api.txt, symbols file)" dist abi --library build/candidate/libpdfium.so --update || status=1
+fi
+
+if ! grep -q '^# ' .release/RELEASE_NOTES_NEXT.md; then
+  cat > .release/RELEASE_NOTES_NEXT.md <<EOF
+# PDFium from Chromium ${milestone}
+
+Updates PDFium to \`${new_branch}\` (Chromium ${chromium}, the revision Chrome Stable ships), commit
+\`${new_commit:0:12}\`.
+EOF
+  if [ "$abi_rc" -eq 1 ]; then
+    printf '\nThe ABI changed: the runtime package is now `libpdfium%s` (`libpdfium.so.%s`). Rebuild consumers against `libpdfium-dev`.\n' "$soversion" "$soversion" >> .release/RELEASE_NOTES_NEXT.md
+  fi
+fi
+if ! grep -q '^- ' .release/CHANGELOG_NEXT.md; then
+  {
+    echo "- Update PDFium to ${new_branch} (Chromium ${chromium}, ${new_commit:0:12})."
+    [ "$abi_rc" -eq 1 ] && echo "- Move to SONAME libpdfium.so.${soversion} (incompatible upstream API changes)."
+  } >> .release/CHANGELOG_NEXT.md
+fi
+record "vl-release check" vlr check || status=1
+record "Repository consistency" python3 -m unittest discover -s tests/unit -t . || status=1
+
+{ printf '\n## Summary\n\n'; cat "$out/summary"; } >> "$report"
+sed -i "1a\\
+\\
+**Result: $([ "$status" -eq 0 ] && echo 'build, tests and audit passed' || echo 'NEEDS WORK: see the failing steps')**$([ "$abi_rc" -eq 1 ] && echo ' — ABI break, SONAME bumped')" "$report"
+echo "report: $report"
+exit "$status"

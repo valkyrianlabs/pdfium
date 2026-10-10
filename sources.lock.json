@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "pdfium": {
+    "git": "https://pdfium.googlesource.com/pdfium",
+    "commit": "bc8e654f49c980f64e08067329ff35539db80610",
+    "tree": "812753f66e3b303eedb56587c78530b626543869",
+    "committed": "2026-09-24T05:43:37-07:00",
+    "subject": "[M155] Revert \"Fix mixed-direction line extraction\"",
+    "branch": "chromium/8059",
+    "chromium_version": "155.0.8059.39",
+    "milestone": 155,
+    "exclude": [
+      "testing/resources/fonts/**",
+      "testing/resources/font_tests/**",
+      "third_party/NotoSansBengali2/**",
+      "third_party/NotoSansBengali3/**",
+      "third_party/NotoSansCJK/**"
+    ],
+    "excluded_files": 18
+  },
+  "dependencies": [
+    {
+      "deps_path": "build",
+      "git": "https://chromium.googlesource.com/chromium/src/build.git",
+      "commit": "2cd94c0abeada712aeea6906d99021913c9fc28d",
+      "tree": "a9c190d0c1cef6f27702e5ad4581838ee9018454",
+      "license": "BSD-3-Clause",
+      "files": {
+        "build_config.h": "c6e3501edea0833a2ef1b50f5cd27e151d58198af0523fa4d91ebd62a1be2039",
+        "buildflag.h": "40538acaa9b39d0f68e895503752bde340f8ea1cdb67a87bfaee865dba54c5cd"
+      }
+    },
+    {
+      "deps_path": "third_party/fast_float/src",
+      "git": "https://chromium.googlesource.com/external/github.com/fastfloat/fast_float.git",
+      "commit": "34164f547b7df3f5d794ff67e9f885c36819ebfc",
+      "tree": "7be0e666e0f643d2ff82fc4b754dcbbc4673d157",
+      "license": "Apache-2.0 OR MIT OR BSL-1.0",
+      "files": {
+        "LICENSE-APACHE": "097a889aa954d04e088b790b10a4014d6189561d0a6013935a73ce3d4ddaaf06",
+        "LICENSE-BOOST": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b",
+        "LICENSE-MIT": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+        "README.md": "45e723f9b6ad43bfade4fab7564bb9e54d1cdc974253863149715f35f97253c9",
+        "include/fast_float/ascii_number.h": "10c22203dcbf1da7b75d5c1d7ee545ed7ff0a930aa454e5737faaf4059322ae7",
+        "include/fast_float/bigint.h": "1ed0b598da0b522613399897ddc748792dee6f804debf9fee131359252f80763",
+        "include/fast_float/constexpr_feature_detect.h": "2dd2dc5f98a8f1a78813e62d47e82a19ebe42af726356723d60f6eb387c6dd38",
+        "include/fast_float/decimal_to_binary.h": "82fad8134c272a3f1bc545b3ef367a2e9e3c7464b9dcef75640c37e325dfb973",
+        "include/fast_float/digit_comparison.h": "0e2e0a4aad20c0a3a647d3d5adea57ee7a843750ea989594b3ca801bd66f8264",
+        "include/fast_float/fast_float.h": "fec4c0dc177fb3986a9007824c81fb93338ef83a6dba23325d430174a8686ce1",
+        "include/fast_float/fast_table.h": "c18e0a0a2513215730557cc1dd53541cacd72855ddc0287934e78b364f989edb",
+        "include/fast_float/float_common.h": "59649a34137bf1f3094661a3b99688675d10dd5ea934c684d8ba85167b36e111",
+        "include/fast_float/parse_number.h": "cc7e47fc6e0d25926eaac14cb741bde63cf764b25bee163363d0f11ada55d4c7"
+      }
+    },
+    {
+      "deps_path": "third_party/dragonbox/src",
+      "git": "https://chromium.googlesource.com/external/github.com/jk-jeon/dragonbox.git",
+      "commit": "beeeef91cf6fef89a4d4ba5e95d47ca64ccb3a44",
+      "tree": "176383f02746d0248e7b04409367f691cc231cef",
+      "license": "Apache-2.0 WITH LLVM-exception OR BSL-1.0",
+      "files": {
+        "LICENSE-Apache2-LLVM": "9e45e856bedccee9f67254082ca11851d954de2fed7448c4bed19ad9aab99a91",
+        "LICENSE-Boost": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+        "README.md": "86e70685042c739ab08b6c11eec1e6c7ca6bb42fc331655995f7ebeb1988f0d4",
+        "include/dragonbox/dragonbox.h": "5480d282648ba168b13cd4b78bd928e992ea5a45b4ce17c45c06781025178509"
+      }
+    }
+  ],
+  "discovery": {
+    "source": "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Linux&num=1",
+    "channel": "Stable",
+    "platform": "Linux",
+    "checked": "2026-10-10"
+  }
+}

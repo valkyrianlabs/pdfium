@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Run an expensive PDFium step without destabilizing a shared runner.
+#
+#   tools/ci-guard [--min-free-gib N] [--wait-minutes M] -- COMMAND [ARGS...]
+#
+#   - one heavy PDFium build at a time per runner user: an exclusive flock on
+#     $PDFIUM_LOCK_FILE (default ~/.cache/pdfium-ci/heavy-build.lock), waiting up to M minutes
+#     (default 90) for a running build to finish instead of competing with it
+#   - refuses to start with less than N GiB (default 8) free where the work tree, the caches and
+#     the container storage live
+#   - runs COMMAND at low CPU and I/O priority (nice 10, ionice best-effort 7), so other jobs on
+#     the machine stay responsive; parallelism itself is bounded by PDFIUM_JOBS and the container
+#     memory limit by CI_MEMORY (docs/CI.md)
+#   - reports elapsed time and the disk the step consumed
+set -euo pipefail
+
+min_free=${PDFIUM_MIN_FREE_GIB:-8}
+wait_minutes=90
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --min-free-gib) min_free=$2; shift 2 ;;
+    --wait-minutes) wait_minutes=$2; shift 2 ;;
+    --) shift; break ;;
+    *) break ;;
+  esac
+done
+[ "$#" -gt 0 ] || { echo "usage: tools/ci-guard [--min-free-gib N] [--wait-minutes M] -- COMMAND..." >&2; exit 2; }
+
+repo=$(cd "$(dirname "$0")/.." && pwd)
+cache=${CI_CACHE_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/pdfium-ci}
+mkdir -p "$cache"
+lock=${PDFIUM_LOCK_FILE:-$cache/heavy-build.lock}
+
+free_gib() { df -P -k "$1" 2>/dev/null | awk 'NR == 2 { printf "%d", $4 / 1048576 }'; }
+storage=$(podman info --format '{{.Store.GraphRoot}}' 2>/dev/null || echo "$HOME")
+for path in "$repo" "$cache" "$storage"; do
+  available=$(free_gib "$path")
+  if [ -n "$available" ] && [ "$available" -lt "$min_free" ]; then
+    echo "ci-guard: only ${available} GiB free at $path (need ${min_free}); refusing to start." >&2
+    echo "ci-guard: clean up with 'tools/pdfium-dist cache-prune' and 'podman image prune'." >&2
+    exit 75
+  fi
+done
+
+exec 9>"$lock"
+if ! flock -n 9; then
+  echo "ci-guard: another PDFium build holds $lock; waiting up to ${wait_minutes} min" >&2
+  flock -w $((wait_minutes * 60)) 9 || { echo "ci-guard: timed out waiting for $lock" >&2; exit 75; }
+fi
+
+before=$(du -sk "$repo" "$cache" 2>/dev/null | awk '{ s += $1 } END { print s }')
+start=$(date +%s)
+status=0
+nice -n 10 ionice -c 2 -n 7 "$@" || status=$?
+after=$(du -sk "$repo" "$cache" 2>/dev/null | awk '{ s += $1 } END { print s }')
+echo "ci-guard: exit ${status} after $(( $(date +%s) - start ))s; work tree + caches grew by $(( (after - before) / 1024 )) MiB" >&2
+exit "$status"

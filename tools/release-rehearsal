@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Rehearse a release locally, without publishing anything.
+#
+#   tools/release-rehearsal [--skip-package-tests]
+#
+# Copies the current work tree (tracked and untracked-but-not-ignored files, so uncommitted work
+# is included) into build/rehearsal/pdfium, commits it there (never in this repository), and runs
+# what release CI runs, inside the CI container:
+#   vlr check --release, vlr prepare, vlr build-deb (prepare + source snapshot + Meson build +
+#   integration tests), vlr checksums, vlr validate-artifacts, pdfium-dist verify-snapshot
+# then the package tests (tests/package/run) against the result.
+# Output: build/rehearsal/pdfium/release/. Resource limits: see docs/CI.md (PDFIUM_JOBS, CI_MEMORY).
+# LEGACY_DEB_DIR=DIR adds the legacy-transition comparison (the legacy .debs are no longer on APT).
+set -euo pipefail
+repo=$(cd "$(dirname "$0")/.." && pwd)
+rehearsal="$repo/build/rehearsal/pdfium"
+skip_package_tests=false
+[ "${1:-}" = "--skip-package-tests" ] && skip_package_tests=true
+
+jobs=${PDFIUM_JOBS:-4}
+export CI_CACHE_DIR=${CI_CACHE_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/pdfium-ci}
+export CI_CACHE_NAMES="ccache pdfium-git"
+export CI_MEMORY=${CI_MEMORY:-8g}
+export PDFIUM_CACHE_DIR=/cache/pdfium-git
+export DEB_BUILD_OPTIONS="parallel=$jobs"
+
+rm -rf "$rehearsal"
+mkdir -p "$rehearsal"
+(cd "$repo" && git ls-files -z --cached --others --exclude-standard) |
+  (cd "$repo" && xargs -0 -I{} sh -c 'test -e "{}" -o -L "{}" && printf "%s\0" "{}"' ) |
+  rsync -a --from0 --files-from=- "$repo/" "$rehearsal/"
+cd "$rehearsal"
+git init -q -b main
+git add -A
+git -c user.name="Release Rehearsal" -c user.email=rehearsal@localhost.invalid commit -qm "release rehearsal"
+echo "rehearsal tree: $rehearsal ($(git ls-files | wc -l) files)"
+if [ -n "${LEGACY_DEB_DIR:-}" ]; then  # legacy .debs for the transition test (ignored files)
+  mkdir -p "$rehearsal/build/legacy-debs"
+  cp "$repo/$LEGACY_DEB_DIR"/*.deb "$rehearsal/build/legacy-debs/" 2>/dev/null || cp "$LEGACY_DEB_DIR"/*.deb "$rehearsal/build/legacy-debs/"
+  export LEGACY_DEB_DIR=build/legacy-debs
+fi
+
+# shellcheck disable=SC2016 # expanded inside the container
+"$rehearsal/ci/run-ci" bash -euo pipefail -c '
+  vlr check --release
+  vlr prepare --record release/meta/prepare.json
+  vlr build-deb
+  vlr checksums
+  vlr validate-artifacts
+  python3 tools/pdfium-dist verify-snapshot release
+  vlr artifacts
+'
+if ! $skip_package_tests; then
+  REBUILD_JOBS=$jobs "$rehearsal/tests/package/run" release all
+fi
+echo "rehearsal: ok ($rehearsal/release)"

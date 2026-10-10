@@ -1,0 +1,8 @@
+option('upstream_dir', type: 'string', value: 'upstream',
+       description: 'Directory prepared by `tools/pdfium-dist prepare` (relative to the source root, or absolute)')
+option('hardening', type: 'boolean', value: true,
+       description: 'Pattern-initialize locals and enable libstdc++ assertions (recommended for untrusted PDFs)')
+option('cmake_package', type: 'boolean', value: true,
+       description: 'Install PdfiumConfig.cmake for find_package(Pdfium) consumers')
+option('tests', type: 'boolean', value: true,
+       description: 'Build the integration test programs (tests/)')

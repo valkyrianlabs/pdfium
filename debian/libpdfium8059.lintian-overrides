@@ -1,0 +1,6 @@
+# PDFium's own copy of OpenJPEG carries PDFium-specific security patches
+# (upstream/pdfium/third_party/libopenjpeg/*.patch) and allocator hooks; it is
+# upstream's default configuration and was bundled by the legacy package too.
+libpdfium8059: embedded-library openjpeg [usr/lib/*/libpdfium.so.8059.0.0]
+# Not a Debian archive upload: there are no Debian bugs to close.
+libpdfium8059: initial-upload-closes-no-bugs *

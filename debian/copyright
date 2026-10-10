@@ -1,0 +1,472 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: PDFium
+Upstream-Contact: https://pdfium.googlesource.com/pdfium
+Source: https://pdfium.googlesource.com/pdfium
+Comment:
+ The source package consists of this repository (Meson build definitions,
+ acquisition and test tooling, Debian packaging; BSD-3-Clause, see "Files: *")
+ and, as the "upstream" component, the PDFium revision pinned in
+ sources.lock.json plus the files of its DEPS dependencies listed there,
+ exported unmodified from their official Git repositories (googlesource.com).
+ Paths below upstream/pdfium/ are PDFium's own layout.
+ .
+ Not exported (upstream.toml export_exclude, recorded in sources.lock.json):
+ the standalone test font binaries under testing/resources/fonts/,
+ testing/resources/font_tests/ and third_party/NotoSans*/, which only
+ upstream's own tests use.
+ .
+ The binary packages contain object code from: PDFium (BSD-3-Clause, including
+ its built-in Foxit fonts in core/fxge/fontdata), the Chromium build headers
+ (BSD-3-Clause), AGG (AGG license), OpenJPEG (BSD-2-Clause), the FreeType
+ PostScript glyph name tables (FTL), and the header-only fast_float (used
+ under MIT) and dragonbox (used under BSL-1.0) libraries. No test documents or
+ fonts from upstream's testing/ directory are installed. The other
+ directories listed below are part of the source only and are not compiled.
+
+Files: *
+Copyright: 2025-2026 Cooper Larson <cooper@valkyrianlabs.com>
+License: BSD-3-Clause
+Comment: This repository's independently authored tooling, build definitions,
+ tests and packaging. It does not relicense anything under upstream/.
+
+Files: upstream/pdfium/*
+Copyright: 2014-2026 The PDFium Authors
+License: BSD-3-Clause-PDFium
+Comment: Large parts carry "Original code copyright 2014 Foxit Software Inc."
+ (http://www.foxitsoftware.com), contributed under the same license. Full
+ notice: upstream/pdfium/LICENSE.
+
+Files: upstream/pdfium/fxbarcode/*
+Copyright: 2006-2014 ZXing authors
+           2007-2009 Jeremias Maerki
+           2014-2026 The PDFium Authors
+License: Apache-2.0
+Comment: Barcode support derived from ZXing (XFA only; not compiled). PDFium's
+ LICENSE file includes the Apache License 2.0 text for it.
+
+Files: upstream/pdfium/build/*
+Copyright: 2012-2015 The Chromium Authors
+License: BSD-3-Clause-PDFium
+Comment: build_config.h and buildflag.h from chromium/src/build (DEPS "build"),
+ under the Chromium BSD license (same terms).
+
+Files: upstream/pdfium/third_party/agg23/*
+Copyright: 2002-2005 Maxim Shemanarev (McSeem)
+           2005 Tony Juricic
+           2014-2026 The PDFium Authors
+License: AGG
+
+Files: upstream/pdfium/third_party/libopenjpeg/*
+Copyright: 2001-2003 David Janssens
+           2002-2003 Yannick Verschueren
+           2002-2014 Universite catholique de Louvain (UCL), Belgium
+           2002-2014 Professor Benoit Macq
+           2003-2014 Antonin Descampe
+           2003-2009 Francois-Olivier Devaux
+           2005 Herve Drolon, FreeImage Team
+           2006-2007 Parvatha Elangovan
+           2007 Callum Lerwick
+           2007 Jonathan Ballard
+           2008 Jerome Fimes, Communications & Systemes
+           2008-2012 Centre National d'Etudes Spatiales (CNES), France
+           2010-2011 Kaori Hagihara
+           2012 CS Systemes d'Information, France
+           2012 Carl Hetherington
+           2016 Even Rouault
+           2017 IntoPIX SA
+           2021 Aous Naman
+           2021 Kakadu Software Pty Ltd, Australia
+           2021 The University of New South Wales, Australia
+           2014-2026 The PDFium Authors
+License: BSD-2-Clause
+
+Files: upstream/pdfium/third_party/freetype/*
+Copyright: 1996-2026 David Turner, Robert Wilhelm, and Werner Lemberg
+License: FTL
+Comment: PDFium's FreeType configuration headers and include/pstables.h; only
+ the PostScript glyph name tables of pstables.h are compiled into libpdfium
+ (FreeType itself is the system library). Portions of this software are
+ copyright (C) 2026 The FreeType Project (www.freetype.org). All rights
+ reserved.
+
+Files: upstream/pdfium/third_party/fast_float/src/*
+Copyright: 2021 The fast_float authors
+License: Apache-2.0 or MIT or BSL-1.0
+Comment: DEPS "third_party/fast_float/src" (header-only); used under MIT.
+
+Files: upstream/pdfium/third_party/dragonbox/src/*
+Copyright: 2020-2025 Junekey Jeon
+License: Apache-2.0-with-LLVM-exception or BSL-1.0
+Comment: DEPS "third_party/dragonbox/src" (header-only); used under BSL-1.0.
+
+Files: upstream/pdfium/third_party/lcms/*
+Copyright: 1998-2026 Marti Maria Saguer
+License: MIT
+Comment: Not compiled (the system lcms2 is used).
+
+Files: upstream/pdfium/third_party/libtiff/*
+Copyright: 1988-1997 Sam Leffler
+           1991-1997 Silicon Graphics, Inc.
+License: libtiff
+Comment: Not compiled (XFA only).
+
+Files: upstream/pdfium/third_party/bigint/*
+Copyright: none; placed in the public domain by its author, Matt McCutchen
+License: public-domain
+ The C++ Big Integer Library was written by Matt McCutchen, who has waived
+ copyright to it, placing it in the public domain
+ (upstream/pdfium/third_party/bigint/LICENSE). Not compiled (XFA only).
+
+Files: upstream/pdfium/third_party/fp16/*
+Copyright: 2017 Facebook Inc.
+           2017 Georgia Institute of Technology
+           2019 Google LLC
+License: MIT
+Comment: Build files only; not compiled.
+
+Files: upstream/pdfium/third_party/highway/*
+Copyright: Google LLC
+License: Apache-2.0
+Comment: Build files only; not compiled.
+
+Files: upstream/pdfium/testing/resources/*
+Copyright: 2014-2026 The PDFium Authors
+License: BSD-3-Clause-PDFium
+Comment: Upstream's test documents (PDF files and reference images), used by
+ this package's build-time integration tests only; nothing from testing/ is
+ installed. The standalone font binaries of upstream's test resources are not
+ part of the source package (see the header).
+
+License: BSD-3-Clause
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+ .
+ 1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+ .
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+ .
+ 3. Neither the name of the copyright holder nor the names of its
+    contributors may be used to endorse or promote products derived from
+    this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+
+License: BSD-3-Clause-PDFium
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+ .
+    * Redistributions of source code must retain the above copyright
+ notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+ copyright notice, this list of conditions and the following disclaimer
+ in the documentation and/or other materials provided with the
+ distribution.
+    * Neither the name of Google Inc. nor the names of its
+ contributors may be used to endorse or promote products derived from
+ this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: BSD-2-Clause
+ The copyright in this software is being made available under the 2-clauses
+ BSD License, included below. This software may be subject to other third
+ party and contributor rights, including patent rights, and no such rights
+ are granted under this license.
+ .
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+ 1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS `AS IS'
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+
+License: AGG
+ Permission to copy, use, modify, sell and distribute this software is granted
+ provided this copyright notice appears in all copies. This software is
+ provided "as is" without express or implied warranty, and with no claim as to
+ its suitability for any purpose.
+
+License: FTL
+                     The FreeType Project LICENSE
+                     ----------------------------
+ .
+                             2006-Jan-27
+ .
+                     Copyright 1996-2002, 2006 by
+           David Turner, Robert Wilhelm, and Werner Lemberg
+ .
+ .
+ .
+ Introduction
+ ============
+ .
+   The FreeType  Project is distributed in  several archive packages;
+   some of them may contain, in addition to the FreeType font engine,
+   various tools and  contributions which rely on, or  relate to, the
+   FreeType Project.
+ .
+   This  license applies  to all  files found  in such  packages, and
+   which do not  fall under their own explicit  license.  The license
+   affects  thus  the  FreeType   font  engine,  the  test  programs,
+   documentation and makefiles, at the very least.
+ .
+   This  license   was  inspired  by  the  BSD,   Artistic,  and  IJG
+   (Independent JPEG  Group) licenses, which  all encourage inclusion
+   and  use of  free  software in  commercial  and freeware  products
+   alike.  As a consequence, its main points are that:
+ .
+     o We don't promise that this software works. However, we will be
+       interested in any kind of bug reports. (`as is' distribution)
+ .
+     o You can  use this software for whatever you  want, in parts or
+       full form, without having to pay us. (`royalty-free' usage)
+ .
+     o You may not pretend that  you wrote this software.  If you use
+       it, or  only parts of it,  in a program,  you must acknowledge
+       somewhere  in  your  documentation  that  you  have  used  the
+       FreeType code. (`credits')
+ .
+   We  specifically  permit  and  encourage  the  inclusion  of  this
+   software, with  or without modifications,  in commercial products.
+   We  disclaim  all warranties  covering  The  FreeType Project  and
+   assume no liability related to The FreeType Project.
+ .
+ .
+   Finally,  many  people  asked  us  for  a  preferred  form  for  a
+   credit/disclaimer to use in compliance with this license.  We thus
+   encourage you to use the following text:
+ .
+    """
+     Portions of this software are copyright © <year> The FreeType
+     Project (www.freetype.org).  All rights reserved.
+    """
+ .
+   Please replace <year> with the value from the FreeType version you
+   actually use.
+ .
+ .
+ Legal Terms
+ ===========
+ .
+ 0. Definitions
+ --------------
+ .
+   Throughout this license,  the terms `package', `FreeType Project',
+   and  `FreeType  archive' refer  to  the  set  of files  originally
+   distributed  by the  authors  (David Turner,  Robert Wilhelm,  and
+   Werner Lemberg) as the `FreeType Project', be they named as alpha,
+   beta or final release.
+ .
+   `You' refers to  the licensee, or person using  the project, where
+   `using' is a generic term including compiling the project's source
+   code as  well as linking it  to form a  `program' or `executable'.
+   This  program is  referred to  as  `a program  using the  FreeType
+   engine'.
+ .
+   This  license applies  to all  files distributed  in  the original
+   FreeType  Project,   including  all  source   code,  binaries  and
+   documentation,  unless  otherwise  stated   in  the  file  in  its
+   original, unmodified form as  distributed in the original archive.
+   If you are  unsure whether or not a particular  file is covered by
+   this license, you must contact us to verify this.
+ .
+   The FreeType  Project is copyright (C) 1996-2000  by David Turner,
+   Robert Wilhelm, and Werner Lemberg.  All rights reserved except as
+   specified below.
+ .
+ 1. No Warranty
+ --------------
+ .
+   THE FREETYPE PROJECT  IS PROVIDED `AS IS' WITHOUT  WARRANTY OF ANY
+   KIND, EITHER  EXPRESS OR IMPLIED,  INCLUDING, BUT NOT  LIMITED TO,
+   WARRANTIES  OF  MERCHANTABILITY   AND  FITNESS  FOR  A  PARTICULAR
+   PURPOSE.  IN NO EVENT WILL ANY OF THE AUTHORS OR COPYRIGHT HOLDERS
+   BE LIABLE  FOR ANY DAMAGES CAUSED  BY THE USE OR  THE INABILITY TO
+   USE, OF THE FREETYPE PROJECT.
+ .
+ 2. Redistribution
+ -----------------
+ .
+   This  license  grants  a  worldwide, royalty-free,  perpetual  and
+   irrevocable right  and license to use,  execute, perform, compile,
+   display,  copy,   create  derivative  works   of,  distribute  and
+   sublicense the  FreeType Project (in  both source and  object code
+   forms)  and  derivative works  thereof  for  any  purpose; and  to
+   authorize others  to exercise  some or all  of the  rights granted
+   herein, subject to the following conditions:
+ .
+     o Redistribution of  source code  must retain this  license file
+       (`FTL.TXT') unaltered; any  additions, deletions or changes to
+       the original  files must be clearly  indicated in accompanying
+       documentation.   The  copyright   notices  of  the  unaltered,
+       original  files must  be  preserved in  all  copies of  source
+       files.
+ .
+     o Redistribution in binary form must provide a  disclaimer  that
+       states  that  the software is based in part of the work of the
+       FreeType Team,  in  the  distribution  documentation.  We also
+       encourage you to put an URL to the FreeType web page  in  your
+       documentation, though this isn't mandatory.
+ .
+   These conditions  apply to any  software derived from or  based on
+   the FreeType Project,  not just the unmodified files.   If you use
+   our work, you  must acknowledge us.  However, no  fee need be paid
+   to us.
+ .
+ 3. Advertising
+ --------------
+ .
+   Neither the  FreeType authors and  contributors nor you  shall use
+   the name of the  other for commercial, advertising, or promotional
+   purposes without specific prior written permission.
+ .
+   We suggest,  but do not require, that  you use one or  more of the
+   following phrases to refer  to this software in your documentation
+   or advertising  materials: `FreeType Project',  `FreeType Engine',
+   `FreeType library', or `FreeType Distribution'.
+ .
+   As  you have  not signed  this license,  you are  not  required to
+   accept  it.   However,  as  the FreeType  Project  is  copyrighted
+   material, only  this license, or  another one contracted  with the
+   authors, grants you  the right to use, distribute,  and modify it.
+   Therefore,  by  using,  distributing,  or modifying  the  FreeType
+   Project, you indicate that you understand and accept all the terms
+   of this license.
+ .
+ 4. Contacts
+ -----------
+ .
+   There are two mailing lists related to FreeType:
+ .
+     o freetype@nongnu.org
+ .
+       Discusses general use and applications of FreeType, as well as
+       future and  wanted additions to the  library and distribution.
+       If  you are looking  for support,  start in  this list  if you
+       haven't found anything to help you in the documentation.
+ .
+     o freetype-devel@nongnu.org
+ .
+       Discusses bugs,  as well  as engine internals,  design issues,
+       specific licenses, porting, etc.
+ .
+   Our home page can be found at
+ .
+     http://www.freetype.org
+ .
+ .
+ --- end of FTL.TXT ---
+
+License: BSL-1.0
+ Boost Software License - Version 1.0 - August 17th, 2003
+ .
+ Permission is hereby granted, free of charge, to any person or organization
+ obtaining a copy of the software and accompanying documentation covered by
+ this license (the "Software") to use, reproduce, display, distribute,
+ execute, and transmit the Software, and to prepare derivative works of the
+ Software, and to permit third-parties to whom the Software is furnished to
+ do so, all subject to the following:
+ .
+ The copyright notices in the Software and this entire statement, including
+ the above license grant, this restriction and the following disclaimer,
+ must be included in all copies of the Software, in whole or in part, and
+ all derivative works of the Software, unless such copies or derivative
+ works are solely in the form of machine-executable object code generated by
+ a source language processor.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
+ SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
+ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
+ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ DEALINGS IN THE SOFTWARE.
+
+License: MIT
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+License: Apache-2.0
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ use this file except in compliance with the License. You may obtain a copy of
+ the License at http://www.apache.org/licenses/LICENSE-2.0
+ .
+ On Debian systems, the complete text of the Apache License, Version 2.0 can
+ be found in /usr/share/common-licenses/Apache-2.0.
+
+License: Apache-2.0-with-LLVM-exception
+ The Apache License, Version 2.0 (/usr/share/common-licenses/Apache-2.0) with
+ the LLVM Exceptions, as given in
+ upstream/pdfium/third_party/dragonbox/src/LICENSE-Apache2-LLVM. (dragonbox is
+ used under BSL-1.0 in the binary packages.)
+
+License: libtiff
+ Permission to use, copy, modify, distribute, and sell this software and its
+ documentation for any purpose is hereby granted without fee, provided that
+ (i) the above copyright notices and this permission notice appear in all
+ copies of the software and related documentation, and (ii) the names of Sam
+ Leffler and Silicon Graphics may not be used in any advertising or publicity
+ relating to the software without the specific, prior written permission of
+ Sam Leffler and Silicon Graphics.
+ .
+ THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, EXPRESS,
+ IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF
+ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+ .
+ IN NO EVENT SHALL SAM LEFFLER OR SILICON GRAPHICS BE LIABLE FOR ANY SPECIAL,
+ INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND, OR ANY DAMAGES
+ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER OR NOT
+ ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF LIABILITY, ARISING
+ OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.

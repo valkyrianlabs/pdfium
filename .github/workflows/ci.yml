@@ -1,0 +1,79 @@
+name: CI
+
+# Push/PR gate: tooling unit tests and repository consistency, then one bounded native Meson build
+# of the pinned PDFium with the integration tests, the upstream audit and the ABI check.
+# Every run step executes in the disposable CI container (ci/run-ci, rootless Podman); heavy steps
+# also go through tools/ci-guard (one PDFium build at a time per runner, disk check, low priority).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI_CACHE_NAMES: ccache pdfium-git
+  PDFIUM_CACHE_DIR: /cache/pdfium-git
+  PDFIUM_JOBS: "4"
+  CI_MEMORY: 8g
+
+jobs:
+  checks:
+    name: Unit tests and repository checks
+    # Self-hosted runner: never run code from forks on it.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    defaults:
+      run:
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tooling unit tests and repository consistency
+        run: python3 -m unittest discover -s tests/unit -t . -v
+      - name: Release contract
+        run: |
+          vlr check
+          vlr version check
+      - name: Acquire and verify the pinned upstream sources
+        run: |
+          python3 tools/pdfium-dist prepare
+          python3 tools/pdfium-dist verify
+
+  build:
+    name: Meson build, integration tests, audit, ABI
+    needs: checks
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    defaults:
+      run:
+        shell: bash ./tools/ci-guard -- ./ci/run-ci bash -euo pipefail {0}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and test
+        run: |
+          python3 tools/pdfium-dist prepare
+          meson setup build/ci --wrap-mode=nodownload
+          ninja -C build/ci -j "$PDFIUM_JOBS"
+          meson test -C build/ci --print-errorlogs
+          python3 tools/pdfium-dist audit --builddir build/ci --json build/ci/audit.json
+          python3 tools/pdfium-dist abi --library build/ci/libpdfium.so
+          echo "peak container memory: $(( $(cat /sys/fs/cgroup/memory.peak 2>/dev/null || echo 0) / 1048576 )) MiB"
+      - name: Upload test and audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-reports
+          path: |
+            build/ci/meson-logs/testlog.txt
+            build/ci/audit.json
+          if-no-files-found: ignore

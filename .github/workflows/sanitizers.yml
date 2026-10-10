@@ -1,0 +1,57 @@
+name: Sanitizers
+
+# ASan + UBSan build of the pinned PDFium against every upstream test document and the malformed
+# inputs. Too expensive for every push; runs monthly, on demand, and on upstream update PRs'
+# request (workflow_dispatch with their ref).
+
+on:
+  schedule:
+    - cron: "17 4 3 * *"
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or SHA to test (default the selected ref).
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sanitizers-${{ github.event.inputs.ref || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI_CACHE_NAMES: ccache pdfium-git
+  PDFIUM_CACHE_DIR: /cache/pdfium-git
+  PDFIUM_JOBS: "4"
+  CI_MEMORY: 10g
+
+jobs:
+  asan-ubsan:
+    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    defaults:
+      run:
+        shell: bash ./tools/ci-guard -- ./ci/run-ci bash -euo pipefail {0}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+      - name: Build with ASan + UBSan and run the integration tests
+        env:
+          ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
+          UBSAN_OPTIONS: print_stacktrace=1:halt_on_error=1
+        run: |
+          python3 tools/pdfium-dist prepare
+          meson setup build/asan --wrap-mode=nodownload -Dbuildtype=debugoptimized -Db_sanitize=address,undefined -Db_lundef=false
+          ninja -C build/asan -j "$PDFIUM_JOBS"
+          python3 tests/integration.py --probe build/asan/tests/pdfium_probe \
+            --resources upstream/pdfium/testing/resources --work build/asan/integration \
+            --checks fixtures,malformed,corpus,consistency --report build/asan/sanitizer-report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sanitizer-report
+          path: build/asan/sanitizer-report.json
+          if-no-files-found: ignore

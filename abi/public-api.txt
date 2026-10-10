@@ -1,0 +1,766 @@
+# libpdfium public API of the current SONAME (tools/pdfium-dist abi --update; do not edit).
+# soversion 8059
+# pdfium bc8e654f49c980f64e08067329ff35539db80610
+const FLATTEN_FAIL	0
+const FLATTEN_NOTHINGTODO	2
+const FLATTEN_SUCCESS	1
+const FORMTYPE_ACRO_FORM	1
+const FORMTYPE_COUNT	4
+const FORMTYPE_NONE	0
+const FORMTYPE_XFA_FOREGROUND	3
+const FORMTYPE_XFA_FULL	2
+const FPDFBitmap_BGR	2
+const FPDFBitmap_BGRA	4
+const FPDFBitmap_BGRA_Premul	5
+const FPDFBitmap_BGRx	3
+const FPDFBitmap_Gray	1
+const FPDFBitmap_Unknown	0
+const FPDFDOC_AACTION_DP	0x14
+const FPDFDOC_AACTION_DS	0x12
+const FPDFDOC_AACTION_WC	0x10
+const FPDFDOC_AACTION_WP	0x13
+const FPDFDOC_AACTION_WS	0x11
+const FPDFPAGE_AACTION_CLOSE	1
+const FPDFPAGE_AACTION_OPEN	0
+const FPDF_ANNOT	0x01
+const FPDF_ANNOT_AACTION_CALCULATE	15
+const FPDF_ANNOT_AACTION_FORMAT	13
+const FPDF_ANNOT_AACTION_KEY_STROKE	12
+const FPDF_ANNOT_AACTION_VALIDATE	14
+const FPDF_ANNOT_APPEARANCEMODE_COUNT	3
+const FPDF_ANNOT_APPEARANCEMODE_DOWN	2
+const FPDF_ANNOT_APPEARANCEMODE_NORMAL	0
+const FPDF_ANNOT_APPEARANCEMODE_ROLLOVER	1
+const FPDF_ANNOT_CARET	14
+const FPDF_ANNOT_CIRCLE	6
+const FPDF_ANNOT_FILEATTACHMENT	17
+const FPDF_ANNOT_FLAG_HIDDEN	(1 << 1)
+const FPDF_ANNOT_FLAG_INVISIBLE	(1 << 0)
+const FPDF_ANNOT_FLAG_LOCKED	(1 << 7)
+const FPDF_ANNOT_FLAG_NONE	0
+const FPDF_ANNOT_FLAG_NOROTATE	(1 << 4)
+const FPDF_ANNOT_FLAG_NOVIEW	(1 << 5)
+const FPDF_ANNOT_FLAG_NOZOOM	(1 << 3)
+const FPDF_ANNOT_FLAG_PRINT	(1 << 2)
+const FPDF_ANNOT_FLAG_READONLY	(1 << 6)
+const FPDF_ANNOT_FLAG_TOGGLENOVIEW	(1 << 8)
+const FPDF_ANNOT_FREETEXT	3
+const FPDF_ANNOT_HIGHLIGHT	9
+const FPDF_ANNOT_INK	15
+const FPDF_ANNOT_LINE	4
+const FPDF_ANNOT_LINK	2
+const FPDF_ANNOT_MOVIE	19
+const FPDF_ANNOT_POLYGON	7
+const FPDF_ANNOT_POLYLINE	8
+const FPDF_ANNOT_POPUP	16
+const FPDF_ANNOT_PRINTERMARK	22
+const FPDF_ANNOT_REDACT	28
+const FPDF_ANNOT_RICHMEDIA	26
+const FPDF_ANNOT_SCREEN	21
+const FPDF_ANNOT_SOUND	18
+const FPDF_ANNOT_SQUARE	5
+const FPDF_ANNOT_SQUIGGLY	11
+const FPDF_ANNOT_STAMP	13
+const FPDF_ANNOT_STRIKEOUT	12
+const FPDF_ANNOT_TEXT	1
+const FPDF_ANNOT_THREED	25
+const FPDF_ANNOT_TRAPNET	23
+const FPDF_ANNOT_UNDERLINE	10
+const FPDF_ANNOT_UNKNOWN	0
+const FPDF_ANNOT_WATERMARK	24
+const FPDF_ANNOT_WIDGET	20
+const FPDF_ANNOT_XFAWIDGET	27
+const FPDF_CALLCONV	#endif
+const FPDF_COLORSPACE_CALGRAY	4
+const FPDF_COLORSPACE_CALRGB	5
+const FPDF_COLORSPACE_DEVICECMYK	3
+const FPDF_COLORSPACE_DEVICEGRAY	1
+const FPDF_COLORSPACE_DEVICEN	9
+const FPDF_COLORSPACE_DEVICERGB	2
+const FPDF_COLORSPACE_ICCBASED	7
+const FPDF_COLORSPACE_INDEXED	10
+const FPDF_COLORSPACE_LAB	6
+const FPDF_COLORSPACE_PATTERN	11
+const FPDF_COLORSPACE_SEPARATION	8
+const FPDF_COLORSPACE_UNKNOWN	0
+const FPDF_CONSECUTIVE	0x00000004
+const FPDF_CONVERT_FILL_TO_STROKE	0x20
+const FPDF_DEBUG_INFO	0x80
+const FPDF_ERR_FILE	2
+const FPDF_ERR_FORMAT	3
+const FPDF_ERR_PAGE	6
+const FPDF_ERR_PASSWORD	4
+const FPDF_ERR_SECURITY	5
+const FPDF_ERR_SUCCESS	0
+const FPDF_ERR_UNKNOWN	1
+const FPDF_ERR_XFALAYOUT	8
+const FPDF_ERR_XFALOAD	7
+const FPDF_EXPORT	#endif
+const FPDF_FILLMODE_ALTERNATE	1
+const FPDF_FILLMODE_NONE	0
+const FPDF_FILLMODE_WINDING	2
+const FPDF_FONT_TRUETYPE	2
+const FPDF_FONT_TYPE1	1
+const FPDF_FORMFIELD_CHECKBOX	2
+const FPDF_FORMFIELD_COMBOBOX	4
+const FPDF_FORMFIELD_COUNT	8
+const FPDF_FORMFIELD_LISTBOX	5
+const FPDF_FORMFIELD_PUSHBUTTON	1
+const FPDF_FORMFIELD_RADIOBUTTON	3
+const FPDF_FORMFIELD_SIGNATURE	7
+const FPDF_FORMFIELD_TEXTFIELD	6
+const FPDF_FORMFIELD_UNKNOWN	0
+const FPDF_FORMFIELD_XFA	8
+const FPDF_FORMFIELD_XFA_CHECKBOX	9
+const FPDF_FORMFIELD_XFA_COMBOBOX	10
+const FPDF_FORMFIELD_XFA_IMAGEFIELD	11
+const FPDF_FORMFIELD_XFA_LISTBOX	12
+const FPDF_FORMFIELD_XFA_PUSHBUTTON	13
+const FPDF_FORMFIELD_XFA_SIGNATURE	14
+const FPDF_FORMFIELD_XFA_TEXTFIELD	15
+const FPDF_FORMFLAG_CHOICE_COMBO	(1 << 17)
+const FPDF_FORMFLAG_CHOICE_EDIT	(1 << 18)
+const FPDF_FORMFLAG_CHOICE_MULTI_SELECT	(1 << 21)
+const FPDF_FORMFLAG_NOEXPORT	(1 << 2)
+const FPDF_FORMFLAG_NONE	0
+const FPDF_FORMFLAG_READONLY	(1 << 0)
+const FPDF_FORMFLAG_REQUIRED	(1 << 1)
+const FPDF_FORMFLAG_TEXT_MULTILINE	(1 << 12)
+const FPDF_FORMFLAG_TEXT_PASSWORD	(1 << 13)
+const FPDF_GRAYSCALE	0x08
+const FPDF_INCREMENTAL	(1 << 0)
+const FPDF_LCD_TEXT	0x02
+const FPDF_LINECAP_BUTT	0
+const FPDF_LINECAP_PROJECTING_SQUARE	2
+const FPDF_LINECAP_ROUND	1
+const FPDF_LINEJOIN_BEVEL	2
+const FPDF_LINEJOIN_MITER	0
+const FPDF_LINEJOIN_ROUND	1
+const FPDF_MATCHCASE	0x00000001
+const FPDF_MATCHWHOLEWORD	0x00000002
+const FPDF_NO_CATCH	0x100
+const FPDF_NO_INCREMENTAL	(1 << 1)
+const FPDF_NO_NATIVETEXT	0x04
+const FPDF_OBJECT_ARRAY	5
+const FPDF_OBJECT_BOOLEAN	1
+const FPDF_OBJECT_DICTIONARY	6
+const FPDF_OBJECT_NAME	4
+const FPDF_OBJECT_NULLOBJ	8
+const FPDF_OBJECT_NUMBER	2
+const FPDF_OBJECT_REFERENCE	9
+const FPDF_OBJECT_STREAM	7
+const FPDF_OBJECT_STRING	3
+const FPDF_OBJECT_UNKNOWN	0
+const FPDF_PAGEOBJ_FORM	5
+const FPDF_PAGEOBJ_IMAGE	3
+const FPDF_PAGEOBJ_PATH	2
+const FPDF_PAGEOBJ_SHADING	4
+const FPDF_PAGEOBJ_TEXT	1
+const FPDF_PAGEOBJ_UNKNOWN	0
+const FPDF_POLICY_MACHINETIME_ACCESS	0
+const FPDF_PRINTING	0x800
+const FPDF_PRINTMODE_EMF	0
+const FPDF_PRINTMODE_EMF_IMAGE_MASKS	6
+const FPDF_PRINTMODE_POSTSCRIPT2	2
+const FPDF_PRINTMODE_POSTSCRIPT2_PASSTHROUGH	4
+const FPDF_PRINTMODE_POSTSCRIPT3	3
+const FPDF_PRINTMODE_POSTSCRIPT3_PASSTHROUGH	5
+const FPDF_PRINTMODE_POSTSCRIPT3_TYPE42	7
+const FPDF_PRINTMODE_POSTSCRIPT3_TYPE42_PASSTHROUGH	8
+const FPDF_PRINTMODE_TEXTONLY	1
+const FPDF_REMOVE_SECURITY	(1 << 2)
+const FPDF_REMOVE_SECURITY_DEPRECATED	3
+const FPDF_RENDER_DONE	2
+const FPDF_RENDER_FAILED	3
+const FPDF_RENDER_FORCEHALFTONE	0x400
+const FPDF_RENDER_LIMITEDIMAGECACHE	0x200
+const FPDF_RENDER_NO_SMOOTHIMAGE	0x2000
+const FPDF_RENDER_NO_SMOOTHPATH	0x4000
+const FPDF_RENDER_NO_SMOOTHTEXT	0x1000
+const FPDF_RENDER_READY	0
+const FPDF_RENDER_TOBECONTINUED	1
+const FPDF_REVERSE_BYTE_ORDER	0x10
+const FPDF_SEGMENT_BEZIERTO	1
+const FPDF_SEGMENT_LINETO	0
+const FPDF_SEGMENT_MOVETO	2
+const FPDF_SEGMENT_UNKNOWN	-1
+const FPDF_SUBSET_NEW_FONTS	(1 << 3)
+const FPDF_UNSP_ANNOT_3DANNOT	11
+const FPDF_UNSP_ANNOT_ATTACHMENT	16
+const FPDF_UNSP_ANNOT_MOVIE	12
+const FPDF_UNSP_ANNOT_SCREEN_MEDIA	14
+const FPDF_UNSP_ANNOT_SCREEN_RICHMEDIA	15
+const FPDF_UNSP_ANNOT_SIG	17
+const FPDF_UNSP_ANNOT_SOUND	13
+const FPDF_UNSP_DOC_ATTACHMENT	3
+const FPDF_UNSP_DOC_PORTABLECOLLECTION	2
+const FPDF_UNSP_DOC_SECURITY	4
+const FPDF_UNSP_DOC_SHAREDFORM_ACROBAT	6
+const FPDF_UNSP_DOC_SHAREDFORM_EMAIL	8
+const FPDF_UNSP_DOC_SHAREDFORM_FILESYSTEM	7
+const FPDF_UNSP_DOC_SHAREDREVIEW	5
+const FPDF_UNSP_DOC_XFAFORM	1
+const FXCT_ARROW	0
+const FXCT_HAND	5
+const FXCT_HBEAM	4
+const FXCT_NESW	1
+const FXCT_NWSE	2
+const FXCT_VBEAM	3
+const FXFONT_ANSI_CHARSET	0
+const FXFONT_ARABIC_CHARSET	178
+const FXFONT_CHINESEBIG5_CHARSET	136
+const FXFONT_CYRILLIC_CHARSET	204
+const FXFONT_DEFAULT_CHARSET	1
+const FXFONT_EASTERNEUROPEAN_CHARSET	238
+const FXFONT_FF_FIXEDPITCH	(1 << 0)
+const FXFONT_FF_ROMAN	(1 << 4)
+const FXFONT_FF_SCRIPT	(4 << 4)
+const FXFONT_FW_BOLD	700
+const FXFONT_FW_NORMAL	400
+const FXFONT_GB2312_CHARSET	134
+const FXFONT_GREEK_CHARSET	161
+const FXFONT_HANGEUL_CHARSET	129
+const FXFONT_HEBREW_CHARSET	177
+const FXFONT_SHIFTJIS_CHARSET	128
+const FXFONT_SYMBOL_CHARSET	2
+const FXFONT_THAI_CHARSET	222
+const FXFONT_VIETNAMESE_CHARSET	163
+const JSPLATFORM_ALERT_BUTTON_DEFAULT	JSPLATFORM_ALERT_BUTTON_OK
+const JSPLATFORM_ALERT_BUTTON_OK	0
+const JSPLATFORM_ALERT_BUTTON_OKCANCEL	1
+const JSPLATFORM_ALERT_BUTTON_YESNO	2
+const JSPLATFORM_ALERT_BUTTON_YESNOCANCEL	3
+const JSPLATFORM_ALERT_ICON_ASTERISK	4
+const JSPLATFORM_ALERT_ICON_DEFAULT	JSPLATFORM_ALERT_ICON_ERROR
+const JSPLATFORM_ALERT_ICON_ERROR	0
+const JSPLATFORM_ALERT_ICON_QUESTION	2
+const JSPLATFORM_ALERT_ICON_STATUS	3
+const JSPLATFORM_ALERT_ICON_WARNING	1
+const JSPLATFORM_ALERT_RETURN_CANCEL	2
+const JSPLATFORM_ALERT_RETURN_NO	3
+const JSPLATFORM_ALERT_RETURN_OK	1
+const JSPLATFORM_ALERT_RETURN_YES	4
+const JSPLATFORM_BEEP_DEFAULT	4
+const JSPLATFORM_BEEP_ERROR	0
+const JSPLATFORM_BEEP_QUESTION	2
+const JSPLATFORM_BEEP_STATUS	3
+const JSPLATFORM_BEEP_WARNING	1
+const PDFACTION_EMBEDDEDGOTO	5
+const PDFACTION_GOTO	1
+const PDFACTION_LAUNCH	4
+const PDFACTION_REMOTEGOTO	2
+const PDFACTION_UNSUPPORTED	0
+const PDFACTION_URI	3
+const PDFDEST_VIEW_FIT	2
+const PDFDEST_VIEW_FITB	6
+const PDFDEST_VIEW_FITBH	7
+const PDFDEST_VIEW_FITBV	8
+const PDFDEST_VIEW_FITH	3
+const PDFDEST_VIEW_FITR	5
+const PDFDEST_VIEW_FITV	4
+const PDFDEST_VIEW_UNKNOWN_MODE	0
+const PDFDEST_VIEW_XYZ	1
+const PDF_DATA_AVAIL	1
+const PDF_DATA_ERROR	-1
+const PDF_DATA_NOTAVAIL	0
+const PDF_FORM_AVAIL	1
+const PDF_FORM_ERROR	-1
+const PDF_FORM_NOTAVAIL	0
+const PDF_FORM_NOTEXIST	2
+const PDF_LINEARIZATION_UNKNOWN	-1
+const PDF_LINEARIZED	1
+const PDF_NOT_LINEARIZED	0
+const PDF_USE_XFA	#endif
+enum FPDFANNOT_COLORTYPE	{ FPDFANNOT_COLORTYPE_Color = 0, FPDFANNOT_COLORTYPE_InteriorColor }
+enum FPDF_DUPLEXTYPE	{ DuplexUndefined = 0, Simplex, DuplexFlipShortEdge, DuplexFlipLongEdge }
+enum FPDF_FILEIDTYPE	{ FILEIDTYPE_PERMANENT = 0, FILEIDTYPE_CHANGING = 1 }
+enum FPDF_FONT_BACKEND_TYPE	{ FPDF_FONTBACKENDTYPE_FREETYPE = 0, FPDF_FONTBACKENDTYPE_FONTATIONS = 1 }
+enum FPDF_RENDERER_TYPE	{ FPDF_RENDERERTYPE_AGG = 0, FPDF_RENDERERTYPE_SKIA = 1 }
+enum FPDF_TEXT_DIRECTION	{ FPDF_TEXTDIR_UNKNOWN = 0, FPDF_TEXTDIR_AUTO = 1, FPDF_TEXTDIR_LTR = 2, FPDF_TEXTDIR_RTL = 3 }
+enum FPDF_TEXT_RENDERMODE	{ FPDF_TEXTRENDERMODE_UNKNOWN = -1, FPDF_TEXTRENDERMODE_FILL = 0, FPDF_TEXTRENDERMODE_STROKE = 1, FPDF_TEXTRENDERMODE_FILL_STROKE = 2, FPDF_TEXTRENDERMODE_INVISIBLE = 3, FPDF_TEXTRENDERMODE_FILL_CLIP = 4, FPDF_TEXTRENDERMODE_STROKE_CLIP = 5, FPDF_TEXTRENDERMODE_FILL_STROKE_CLIP = 6, FPDF_TEXTRENDERMODE_CLIP = 7, FPDF_TEXTRENDERMODE_LAST = FPDF_TEXTRENDERMODE_CLIP }
+enum FWL_EVENTFLAG	{ FWL_EVENTFLAG_ShiftKey = 1 << 0, FWL_EVENTFLAG_ControlKey = 1 << 1, FWL_EVENTFLAG_AltKey = 1 << 2, FWL_EVENTFLAG_MetaKey = 1 << 3, FWL_EVENTFLAG_KeyPad = 1 << 4, FWL_EVENTFLAG_AutoRepeat = 1 << 5, FWL_EVENTFLAG_LeftButtonDown = 1 << 6, FWL_EVENTFLAG_MiddleButtonDown = 1 << 7, FWL_EVENTFLAG_RightButtonDown = 1 << 8 }
+enum FWL_VKEYCODE	{ FWL_VKEY_Back = 0x08, FWL_VKEY_Tab = 0x09, FWL_VKEY_NewLine = 0x0A, FWL_VKEY_Clear = 0x0C, FWL_VKEY_Return = 0x0D, FWL_VKEY_Shift = 0x10, FWL_VKEY_Control = 0x11, FWL_VKEY_Menu = 0x12, FWL_VKEY_Pause = 0x13, FWL_VKEY_Capital = 0x14, FWL_VKEY_Kana = 0x15, FWL_VKEY_Hangul = 0x15, FWL_VKEY_Junja = 0x17, FWL_VKEY_Final = 0x18, FWL_VKEY_Hanja = 0x19, FWL_VKEY_Kanji = 0x19, FWL_VKEY_Escape = 0x1B, FWL_VKEY_Convert = 0x1C, FWL_VKEY_NonConvert = 0x1D, FWL_VKEY_Accept = 0x1E, FWL_VKEY_ModeChange = 0x1F, FWL_VKEY_Space = 0x20, FWL_VKEY_Prior = 0x21, FWL_VKEY_Next = 0x22, FWL_VKEY_End = 0x23, FWL_VKEY_Home = 0x24, FWL_VKEY_Left = 0x25, FWL_VKEY_Up = 0x26, FWL_VKEY_Right = 0x27, FWL_VKEY_Down = 0x28, FWL_VKEY_Select = 0x29, FWL_VKEY_Print = 0x2A, FWL_VKEY_Execute = 0x2B, FWL_VKEY_Snapshot = 0x2C, FWL_VKEY_Insert = 0x2D, FWL_VKEY_Delete = 0x2E, FWL_VKEY_Help = 0x2F, FWL_VKEY_0 = 0x30, FWL_VKEY_1 = 0x31, FWL_VKEY_2 = 0x32, FWL_VKEY_3 = 0x33, FWL_VKEY_4 = 0x34, FWL_VKEY_5 = 0x35, FWL_VKEY_6 = 0x36, FWL_VKEY_7 = 0x37, FWL_VKEY_8 = 0x38, FWL_VKEY_9 = 0x39, FWL_VKEY_A = 0x41, FWL_VKEY_B = 0x42, FWL_VKEY_C = 0x43, FWL_VKEY_D = 0x44, FWL_VKEY_E = 0x45, FWL_VKEY_F = 0x46, FWL_VKEY_G = 0x47, FWL_VKEY_H = 0x48, FWL_VKEY_I = 0x49, FWL_VKEY_J = 0x4A, FWL_VKEY_K = 0x4B, FWL_VKEY_L = 0x4C, FWL_VKEY_M = 0x4D, FWL_VKEY_N = 0x4E, FWL_VKEY_O = 0x4F, FWL_VKEY_P = 0x50, FWL_VKEY_Q = 0x51, FWL_VKEY_R = 0x52, FWL_VKEY_S = 0x53, FWL_VKEY_T = 0x54, FWL_VKEY_U = 0x55, FWL_VKEY_V = 0x56, FWL_VKEY_W = 0x57, FWL_VKEY_X = 0x58, FWL_VKEY_Y = 0x59, FWL_VKEY_Z = 0x5A, FWL_VKEY_LWin = 0x5B, FWL_VKEY_Command = 0x5B, FWL_VKEY_RWin = 0x5C, FWL_VKEY_Apps = 0x5D, FWL_VKEY_Sleep = 0x5F, FWL_VKEY_NumPad0 = 0x60, FWL_VKEY_NumPad1 = 0x61, FWL_VKEY_NumPad2 = 0x62, FWL_VKEY_NumPad3 = 0x63, FWL_VKEY_NumPad4 = 0x64, FWL_VKEY_NumPad5 = 0x65, FWL_VKEY_NumPad6 = 0x66, FWL_VKEY_NumPad7 = 0x67, FWL_VKEY_NumPad8 = 0x68, FWL_VKEY_NumPad9 = 0x69, FWL_VKEY_Multiply = 0x6A, FWL_VKEY_Add = 0x6B, FWL_VKEY_Separator = 0x6C, FWL_VKEY_Subtract = 0x6D, FWL_VKEY_Decimal = 0x6E, FWL_VKEY_Divide = 0x6F, FWL_VKEY_F1 = 0x70, FWL_VKEY_F2 = 0x71, FWL_VKEY_F3 = 0x72, FWL_VKEY_F4 = 0x73, FWL_VKEY_F5 = 0x74, FWL_VKEY_F6 = 0x75, FWL_VKEY_F7 = 0x76, FWL_VKEY_F8 = 0x77, FWL_VKEY_F9 = 0x78, FWL_VKEY_F10 = 0x79, FWL_VKEY_F11 = 0x7A, FWL_VKEY_F12 = 0x7B, FWL_VKEY_F13 = 0x7C, FWL_VKEY_F14 = 0x7D, FWL_VKEY_F15 = 0x7E, FWL_VKEY_F16 = 0x7F, FWL_VKEY_F17 = 0x80, FWL_VKEY_F18 = 0x81, FWL_VKEY_F19 = 0x82, FWL_VKEY_F20 = 0x83, FWL_VKEY_F21 = 0x84, FWL_VKEY_F22 = 0x85, FWL_VKEY_F23 = 0x86, FWL_VKEY_F24 = 0x87, FWL_VKEY_NunLock = 0x90, FWL_VKEY_Scroll = 0x91, FWL_VKEY_LShift = 0xA0, FWL_VKEY_RShift = 0xA1, FWL_VKEY_LControl = 0xA2, FWL_VKEY_RControl = 0xA3, FWL_VKEY_LMenu = 0xA4, FWL_VKEY_RMenu = 0xA5, FWL_VKEY_BROWSER_Back = 0xA6, FWL_VKEY_BROWSER_Forward = 0xA7, FWL_VKEY_BROWSER_Refresh = 0xA8, FWL_VKEY_BROWSER_Stop = 0xA9, FWL_VKEY_BROWSER_Search = 0xAA, FWL_VKEY_BROWSER_Favorites = 0xAB, FWL_VKEY_BROWSER_Home = 0xAC, FWL_VKEY_VOLUME_Mute = 0xAD, FWL_VKEY_VOLUME_Down = 0xAE, FWL_VKEY_VOLUME_Up = 0xAF, FWL_VKEY_MEDIA_NEXT_Track = 0xB0, FWL_VKEY_MEDIA_PREV_Track = 0xB1, FWL_VKEY_MEDIA_Stop = 0xB2, FWL_VKEY_MEDIA_PLAY_Pause = 0xB3, FWL_VKEY_MEDIA_LAUNCH_Mail = 0xB4, FWL_VKEY_MEDIA_LAUNCH_MEDIA_Select = 0xB5, FWL_VKEY_MEDIA_LAUNCH_APP1 = 0xB6, FWL_VKEY_MEDIA_LAUNCH_APP2 = 0xB7, FWL_VKEY_OEM_1 = 0xBA, FWL_VKEY_OEM_Plus = 0xBB, FWL_VKEY_OEM_Comma = 0xBC, FWL_VKEY_OEM_Minus = 0xBD, FWL_VKEY_OEM_Period = 0xBE, FWL_VKEY_OEM_2 = 0xBF, FWL_VKEY_OEM_3 = 0xC0, FWL_VKEY_OEM_4 = 0xDB, FWL_VKEY_OEM_5 = 0xDC, FWL_VKEY_OEM_6 = 0xDD, FWL_VKEY_OEM_7 = 0xDE, FWL_VKEY_OEM_8 = 0xDF, FWL_VKEY_OEM_102 = 0xE2, FWL_VKEY_ProcessKey = 0xE5, FWL_VKEY_Packet = 0xE7, FWL_VKEY_Attn = 0xF6, FWL_VKEY_Crsel = 0xF7, FWL_VKEY_Exsel = 0xF8, FWL_VKEY_Ereof = 0xF9, FWL_VKEY_Play = 0xFA, FWL_VKEY_Zoom = 0xFB, FWL_VKEY_NoName = 0xFC, FWL_VKEY_PA1 = 0xFD, FWL_VKEY_OEM_Clear = 0xFE, FWL_VKEY_Unknown = 0 }
+func FORM_CanRedo	FPDF_BOOL FORM_CanRedo(FPDF_FORMHANDLE, FPDF_PAGE)
+func FORM_CanUndo	FPDF_BOOL FORM_CanUndo(FPDF_FORMHANDLE, FPDF_PAGE)
+func FORM_DoDocumentAAction	void FORM_DoDocumentAAction(FPDF_FORMHANDLE, int)
+func FORM_DoDocumentJSAction	void FORM_DoDocumentJSAction(FPDF_FORMHANDLE)
+func FORM_DoDocumentOpenAction	void FORM_DoDocumentOpenAction(FPDF_FORMHANDLE)
+func FORM_DoPageAAction	void FORM_DoPageAAction(FPDF_PAGE, FPDF_FORMHANDLE, int)
+func FORM_ForceToKillFocus	FPDF_BOOL FORM_ForceToKillFocus(FPDF_FORMHANDLE)
+func FORM_GetFocusedAnnot	FPDF_BOOL FORM_GetFocusedAnnot(FPDF_FORMHANDLE, int*, FPDF_ANNOTATION*)
+func FORM_GetFocusedText	unsigned long FORM_GetFocusedText(FPDF_FORMHANDLE, FPDF_PAGE, void*, unsigned long)
+func FORM_GetSelectedText	unsigned long FORM_GetSelectedText(FPDF_FORMHANDLE, FPDF_PAGE, void*, unsigned long)
+func FORM_GetTextDirection	FPDF_TEXT_DIRECTION FORM_GetTextDirection(FPDF_FORMHANDLE, FPDF_ANNOTATION)
+func FORM_IsIndexSelected	FPDF_BOOL FORM_IsIndexSelected(FPDF_FORMHANDLE, FPDF_PAGE, int)
+func FORM_OnAfterLoadPage	void FORM_OnAfterLoadPage(FPDF_PAGE, FPDF_FORMHANDLE)
+func FORM_OnBeforeClosePage	void FORM_OnBeforeClosePage(FPDF_PAGE, FPDF_FORMHANDLE)
+func FORM_OnChar	FPDF_BOOL FORM_OnChar(FPDF_FORMHANDLE, FPDF_PAGE, int, int)
+func FORM_OnFocus	FPDF_BOOL FORM_OnFocus(FPDF_FORMHANDLE, FPDF_PAGE, int, double, double)
+func FORM_OnKeyDown	FPDF_BOOL FORM_OnKeyDown(FPDF_FORMHANDLE, FPDF_PAGE, int, int)
+func FORM_OnKeyUp	FPDF_BOOL FORM_OnKeyUp(FPDF_FORMHANDLE, FPDF_PAGE, int, int)
+func FORM_OnLButtonDoubleClick	FPDF_BOOL FORM_OnLButtonDoubleClick(FPDF_FORMHANDLE, FPDF_PAGE, int, double, double)
+func FORM_OnLButtonDown	FPDF_BOOL FORM_OnLButtonDown(FPDF_FORMHANDLE, FPDF_PAGE, int, double, double)
+func FORM_OnLButtonUp	FPDF_BOOL FORM_OnLButtonUp(FPDF_FORMHANDLE, FPDF_PAGE, int, double, double)
+func FORM_OnMouseMove	FPDF_BOOL FORM_OnMouseMove(FPDF_FORMHANDLE, FPDF_PAGE, int, double, double)
+func FORM_OnMouseWheel	FPDF_BOOL FORM_OnMouseWheel(FPDF_FORMHANDLE, FPDF_PAGE, int, const FS_POINTF*, int, int)
+func FORM_OnRButtonDown	FPDF_BOOL FORM_OnRButtonDown(FPDF_FORMHANDLE, FPDF_PAGE, int, double, double)
+func FORM_OnRButtonUp	FPDF_BOOL FORM_OnRButtonUp(FPDF_FORMHANDLE, FPDF_PAGE, int, double, double)
+func FORM_Redo	FPDF_BOOL FORM_Redo(FPDF_FORMHANDLE, FPDF_PAGE)
+func FORM_ReplaceAndKeepSelection	void FORM_ReplaceAndKeepSelection(FPDF_FORMHANDLE, FPDF_PAGE, FPDF_WIDESTRING)
+func FORM_ReplaceSelection	void FORM_ReplaceSelection(FPDF_FORMHANDLE, FPDF_PAGE, FPDF_WIDESTRING)
+func FORM_SelectAllText	FPDF_BOOL FORM_SelectAllText(FPDF_FORMHANDLE, FPDF_PAGE)
+func FORM_SetFocusedAnnot	FPDF_BOOL FORM_SetFocusedAnnot(FPDF_FORMHANDLE, FPDF_ANNOTATION)
+func FORM_SetIndexSelected	FPDF_BOOL FORM_SetIndexSelected(FPDF_FORMHANDLE, FPDF_PAGE, int, FPDF_BOOL)
+func FORM_SetTextDirection	FPDF_BOOL FORM_SetTextDirection(FPDF_FORMHANDLE, FPDF_ANNOTATION, FPDF_TEXT_DIRECTION)
+func FORM_Undo	FPDF_BOOL FORM_Undo(FPDF_FORMHANDLE, FPDF_PAGE)
+func FPDFAction_GetDest	FPDF_DEST FPDFAction_GetDest(FPDF_DOCUMENT, FPDF_ACTION)
+func FPDFAction_GetFilePath	unsigned long FPDFAction_GetFilePath(FPDF_ACTION, void*, unsigned long)
+func FPDFAction_GetType	unsigned long FPDFAction_GetType(FPDF_ACTION)
+func FPDFAction_GetURIPath	unsigned long FPDFAction_GetURIPath(FPDF_DOCUMENT, FPDF_ACTION, void*, unsigned long)
+func FPDFAnnot_AddFileAttachment	FPDF_ATTACHMENT FPDFAnnot_AddFileAttachment(FPDF_ANNOTATION, FPDF_WIDESTRING)
+func FPDFAnnot_AddInkStroke	int FPDFAnnot_AddInkStroke(FPDF_ANNOTATION, const FS_POINTF*, size_t)
+func FPDFAnnot_AppendAttachmentPoints	FPDF_BOOL FPDFAnnot_AppendAttachmentPoints(FPDF_ANNOTATION, const FS_QUADPOINTSF*)
+func FPDFAnnot_AppendObject	FPDF_BOOL FPDFAnnot_AppendObject(FPDF_ANNOTATION, FPDF_PAGEOBJECT)
+func FPDFAnnot_CountAttachmentPoints	size_t FPDFAnnot_CountAttachmentPoints(FPDF_ANNOTATION)
+func FPDFAnnot_GetAP	unsigned long FPDFAnnot_GetAP(FPDF_ANNOTATION, FPDF_ANNOT_APPEARANCEMODE, FPDF_WCHAR*, unsigned long)
+func FPDFAnnot_GetAttachmentPoints	FPDF_BOOL FPDFAnnot_GetAttachmentPoints(FPDF_ANNOTATION, size_t, FS_QUADPOINTSF*)
+func FPDFAnnot_GetBorder	FPDF_BOOL FPDFAnnot_GetBorder(FPDF_ANNOTATION, float*, float*, float*)
+func FPDFAnnot_GetColor	FPDF_BOOL FPDFAnnot_GetColor(FPDF_ANNOTATION, FPDFANNOT_COLORTYPE, unsigned int*, unsigned int*, unsigned int*, unsigned int*)
+func FPDFAnnot_GetFileAttachment	FPDF_ATTACHMENT FPDFAnnot_GetFileAttachment(FPDF_ANNOTATION)
+func FPDFAnnot_GetFlags	int FPDFAnnot_GetFlags(FPDF_ANNOTATION)
+func FPDFAnnot_GetFocusableSubtypes	FPDF_BOOL FPDFAnnot_GetFocusableSubtypes(FPDF_FORMHANDLE, FPDF_ANNOTATION_SUBTYPE*, size_t)
+func FPDFAnnot_GetFocusableSubtypesCount	int FPDFAnnot_GetFocusableSubtypesCount(FPDF_FORMHANDLE)
+func FPDFAnnot_GetFontColor	FPDF_BOOL FPDFAnnot_GetFontColor(FPDF_FORMHANDLE, FPDF_ANNOTATION, unsigned int*, unsigned int*, unsigned int*)
+func FPDFAnnot_GetFontSize	FPDF_BOOL FPDFAnnot_GetFontSize(FPDF_FORMHANDLE, FPDF_ANNOTATION, float*)
+func FPDFAnnot_GetFormAdditionalActionJavaScript	unsigned long FPDFAnnot_GetFormAdditionalActionJavaScript(FPDF_FORMHANDLE, FPDF_ANNOTATION, int, FPDF_WCHAR*, unsigned long)
+func FPDFAnnot_GetFormControlCount	int FPDFAnnot_GetFormControlCount(FPDF_FORMHANDLE, FPDF_ANNOTATION)
+func FPDFAnnot_GetFormControlIndex	int FPDFAnnot_GetFormControlIndex(FPDF_FORMHANDLE, FPDF_ANNOTATION)
+func FPDFAnnot_GetFormFieldAlternateName	unsigned long FPDFAnnot_GetFormFieldAlternateName(FPDF_FORMHANDLE, FPDF_ANNOTATION, FPDF_WCHAR*, unsigned long)
+func FPDFAnnot_GetFormFieldAtPoint	FPDF_ANNOTATION FPDFAnnot_GetFormFieldAtPoint(FPDF_FORMHANDLE, FPDF_PAGE, const FS_POINTF*)
+func FPDFAnnot_GetFormFieldExportValue	unsigned long FPDFAnnot_GetFormFieldExportValue(FPDF_FORMHANDLE, FPDF_ANNOTATION, FPDF_WCHAR*, unsigned long)
+func FPDFAnnot_GetFormFieldFlags	int FPDFAnnot_GetFormFieldFlags(FPDF_FORMHANDLE, FPDF_ANNOTATION)
+func FPDFAnnot_GetFormFieldName	unsigned long FPDFAnnot_GetFormFieldName(FPDF_FORMHANDLE, FPDF_ANNOTATION, FPDF_WCHAR*, unsigned long)
+func FPDFAnnot_GetFormFieldType	int FPDFAnnot_GetFormFieldType(FPDF_FORMHANDLE, FPDF_ANNOTATION)
+func FPDFAnnot_GetFormFieldValue	unsigned long FPDFAnnot_GetFormFieldValue(FPDF_FORMHANDLE, FPDF_ANNOTATION, FPDF_WCHAR*, unsigned long)
+func FPDFAnnot_GetInkListCount	unsigned long FPDFAnnot_GetInkListCount(FPDF_ANNOTATION)
+func FPDFAnnot_GetInkListPath	unsigned long FPDFAnnot_GetInkListPath(FPDF_ANNOTATION, unsigned long, FS_POINTF*, unsigned long)
+func FPDFAnnot_GetLine	FPDF_BOOL FPDFAnnot_GetLine(FPDF_ANNOTATION, FS_POINTF*, FS_POINTF*)
+func FPDFAnnot_GetLink	FPDF_LINK FPDFAnnot_GetLink(FPDF_ANNOTATION)
+func FPDFAnnot_GetLinkedAnnot	FPDF_ANNOTATION FPDFAnnot_GetLinkedAnnot(FPDF_ANNOTATION, FPDF_BYTESTRING)
+func FPDFAnnot_GetNumberValue	FPDF_BOOL FPDFAnnot_GetNumberValue(FPDF_ANNOTATION, FPDF_BYTESTRING, float*)
+func FPDFAnnot_GetObject	FPDF_PAGEOBJECT FPDFAnnot_GetObject(FPDF_ANNOTATION, int)
+func FPDFAnnot_GetObjectCount	int FPDFAnnot_GetObjectCount(FPDF_ANNOTATION)
+func FPDFAnnot_GetOptionCount	int FPDFAnnot_GetOptionCount(FPDF_FORMHANDLE, FPDF_ANNOTATION)
+func FPDFAnnot_GetOptionLabel	unsigned long FPDFAnnot_GetOptionLabel(FPDF_FORMHANDLE, FPDF_ANNOTATION, int, FPDF_WCHAR*, unsigned long)
+func FPDFAnnot_GetRect	FPDF_BOOL FPDFAnnot_GetRect(FPDF_ANNOTATION, FS_RECTF*)
+func FPDFAnnot_GetStringValue	unsigned long FPDFAnnot_GetStringValue(FPDF_ANNOTATION, FPDF_BYTESTRING, FPDF_WCHAR*, unsigned long)
+func FPDFAnnot_GetSubtype	FPDF_ANNOTATION_SUBTYPE FPDFAnnot_GetSubtype(FPDF_ANNOTATION)
+func FPDFAnnot_GetValueType	FPDF_OBJECT_TYPE FPDFAnnot_GetValueType(FPDF_ANNOTATION, FPDF_BYTESTRING)
+func FPDFAnnot_GetVertices	unsigned long FPDFAnnot_GetVertices(FPDF_ANNOTATION, FS_POINTF*, unsigned long)
+func FPDFAnnot_HasAttachmentPoints	FPDF_BOOL FPDFAnnot_HasAttachmentPoints(FPDF_ANNOTATION)
+func FPDFAnnot_HasKey	FPDF_BOOL FPDFAnnot_HasKey(FPDF_ANNOTATION, FPDF_BYTESTRING)
+func FPDFAnnot_IsChecked	FPDF_BOOL FPDFAnnot_IsChecked(FPDF_FORMHANDLE, FPDF_ANNOTATION)
+func FPDFAnnot_IsObjectSupportedSubtype	FPDF_BOOL FPDFAnnot_IsObjectSupportedSubtype(FPDF_ANNOTATION_SUBTYPE)
+func FPDFAnnot_IsOptionSelected	FPDF_BOOL FPDFAnnot_IsOptionSelected(FPDF_FORMHANDLE, FPDF_ANNOTATION, int)
+func FPDFAnnot_IsSupportedSubtype	FPDF_BOOL FPDFAnnot_IsSupportedSubtype(FPDF_ANNOTATION_SUBTYPE)
+func FPDFAnnot_RemoveInkList	FPDF_BOOL FPDFAnnot_RemoveInkList(FPDF_ANNOTATION)
+func FPDFAnnot_RemoveObject	FPDF_BOOL FPDFAnnot_RemoveObject(FPDF_ANNOTATION, int)
+func FPDFAnnot_SetAP	FPDF_BOOL FPDFAnnot_SetAP(FPDF_ANNOTATION, FPDF_ANNOT_APPEARANCEMODE, FPDF_WIDESTRING)
+func FPDFAnnot_SetAttachmentPoints	FPDF_BOOL FPDFAnnot_SetAttachmentPoints(FPDF_ANNOTATION, size_t, const FS_QUADPOINTSF*)
+func FPDFAnnot_SetBorder	FPDF_BOOL FPDFAnnot_SetBorder(FPDF_ANNOTATION, float, float, float)
+func FPDFAnnot_SetColor	FPDF_BOOL FPDFAnnot_SetColor(FPDF_ANNOTATION, FPDFANNOT_COLORTYPE, unsigned int, unsigned int, unsigned int, unsigned int)
+func FPDFAnnot_SetFlags	FPDF_BOOL FPDFAnnot_SetFlags(FPDF_ANNOTATION, int)
+func FPDFAnnot_SetFocusableSubtypes	FPDF_BOOL FPDFAnnot_SetFocusableSubtypes(FPDF_FORMHANDLE, const FPDF_ANNOTATION_SUBTYPE*, size_t)
+func FPDFAnnot_SetFontColor	FPDF_BOOL FPDFAnnot_SetFontColor(FPDF_FORMHANDLE, FPDF_ANNOTATION, unsigned int, unsigned int, unsigned int)
+func FPDFAnnot_SetFormFieldFlags	FPDF_BOOL FPDFAnnot_SetFormFieldFlags(FPDF_FORMHANDLE, FPDF_ANNOTATION, int)
+func FPDFAnnot_SetRect	FPDF_BOOL FPDFAnnot_SetRect(FPDF_ANNOTATION, const FS_RECTF*)
+func FPDFAnnot_SetStringValue	FPDF_BOOL FPDFAnnot_SetStringValue(FPDF_ANNOTATION, FPDF_BYTESTRING, FPDF_WIDESTRING)
+func FPDFAnnot_SetURI	FPDF_BOOL FPDFAnnot_SetURI(FPDF_ANNOTATION, const char*)
+func FPDFAnnot_UpdateObject	FPDF_BOOL FPDFAnnot_UpdateObject(FPDF_ANNOTATION, FPDF_PAGEOBJECT)
+func FPDFAttachment_GetDescription	unsigned long FPDFAttachment_GetDescription(FPDF_ATTACHMENT, FPDF_WCHAR*, unsigned long)
+func FPDFAttachment_GetFile	FPDF_BOOL FPDFAttachment_GetFile(FPDF_ATTACHMENT, void*, unsigned long, unsigned long*)
+func FPDFAttachment_GetName	unsigned long FPDFAttachment_GetName(FPDF_ATTACHMENT, FPDF_WCHAR*, unsigned long)
+func FPDFAttachment_GetStringValue	unsigned long FPDFAttachment_GetStringValue(FPDF_ATTACHMENT, FPDF_BYTESTRING, FPDF_WCHAR*, unsigned long)
+func FPDFAttachment_GetSubtype	unsigned long FPDFAttachment_GetSubtype(FPDF_ATTACHMENT, FPDF_WCHAR*, unsigned long)
+func FPDFAttachment_GetValueType	FPDF_OBJECT_TYPE FPDFAttachment_GetValueType(FPDF_ATTACHMENT, FPDF_BYTESTRING)
+func FPDFAttachment_HasKey	FPDF_BOOL FPDFAttachment_HasKey(FPDF_ATTACHMENT, FPDF_BYTESTRING)
+func FPDFAttachment_SetDescription	FPDF_BOOL FPDFAttachment_SetDescription(FPDF_ATTACHMENT, FPDF_WIDESTRING)
+func FPDFAttachment_SetFile	FPDF_BOOL FPDFAttachment_SetFile(FPDF_ATTACHMENT, FPDF_DOCUMENT, const void*, unsigned long)
+func FPDFAttachment_SetStringValue	FPDF_BOOL FPDFAttachment_SetStringValue(FPDF_ATTACHMENT, FPDF_BYTESTRING, FPDF_WIDESTRING)
+func FPDFAvail_Create	FPDF_AVAIL FPDFAvail_Create(FX_FILEAVAIL*, FPDF_FILEACCESS*)
+func FPDFAvail_Destroy	void FPDFAvail_Destroy(FPDF_AVAIL)
+func FPDFAvail_GetDocument	FPDF_DOCUMENT FPDFAvail_GetDocument(FPDF_AVAIL, FPDF_BYTESTRING)
+func FPDFAvail_GetFirstPageNum	int FPDFAvail_GetFirstPageNum(FPDF_DOCUMENT)
+func FPDFAvail_IsDocAvail	int FPDFAvail_IsDocAvail(FPDF_AVAIL, FX_DOWNLOADHINTS*)
+func FPDFAvail_IsFormAvail	int FPDFAvail_IsFormAvail(FPDF_AVAIL, FX_DOWNLOADHINTS*)
+func FPDFAvail_IsLinearized	int FPDFAvail_IsLinearized(FPDF_AVAIL)
+func FPDFAvail_IsPageAvail	int FPDFAvail_IsPageAvail(FPDF_AVAIL, int, FX_DOWNLOADHINTS*)
+func FPDFBitmap_Create	FPDF_BITMAP FPDFBitmap_Create(int, int, int)
+func FPDFBitmap_CreateEx	FPDF_BITMAP FPDFBitmap_CreateEx(int, int, int, void*, int)
+func FPDFBitmap_Destroy	void FPDFBitmap_Destroy(FPDF_BITMAP)
+func FPDFBitmap_FillRect	FPDF_BOOL FPDFBitmap_FillRect(FPDF_BITMAP, int, int, int, int, FPDF_DWORD)
+func FPDFBitmap_GetBuffer	void* FPDFBitmap_GetBuffer(FPDF_BITMAP)
+func FPDFBitmap_GetFormat	int FPDFBitmap_GetFormat(FPDF_BITMAP)
+func FPDFBitmap_GetHeight	int FPDFBitmap_GetHeight(FPDF_BITMAP)
+func FPDFBitmap_GetStride	int FPDFBitmap_GetStride(FPDF_BITMAP)
+func FPDFBitmap_GetWidth	int FPDFBitmap_GetWidth(FPDF_BITMAP)
+func FPDFBookmark_Find	FPDF_BOOKMARK FPDFBookmark_Find(FPDF_DOCUMENT, FPDF_WIDESTRING)
+func FPDFBookmark_GetAction	FPDF_ACTION FPDFBookmark_GetAction(FPDF_BOOKMARK)
+func FPDFBookmark_GetColor	FPDF_BOOL FPDFBookmark_GetColor(FPDF_BOOKMARK, float*, float*, float*)
+func FPDFBookmark_GetCount	int FPDFBookmark_GetCount(FPDF_BOOKMARK)
+func FPDFBookmark_GetDest	FPDF_DEST FPDFBookmark_GetDest(FPDF_DOCUMENT, FPDF_BOOKMARK)
+func FPDFBookmark_GetFirstChild	FPDF_BOOKMARK FPDFBookmark_GetFirstChild(FPDF_DOCUMENT, FPDF_BOOKMARK)
+func FPDFBookmark_GetNextSibling	FPDF_BOOKMARK FPDFBookmark_GetNextSibling(FPDF_DOCUMENT, FPDF_BOOKMARK)
+func FPDFBookmark_GetStyle	int FPDFBookmark_GetStyle(FPDF_BOOKMARK)
+func FPDFBookmark_GetTitle	unsigned long FPDFBookmark_GetTitle(FPDF_BOOKMARK, void*, unsigned long)
+func FPDFCatalog_GetLanguage	unsigned long FPDFCatalog_GetLanguage(FPDF_DOCUMENT, FPDF_WCHAR*, unsigned long)
+func FPDFCatalog_IsTagged	FPDF_BOOL FPDFCatalog_IsTagged(FPDF_DOCUMENT)
+func FPDFCatalog_SetLanguage	FPDF_BOOL FPDFCatalog_SetLanguage(FPDF_DOCUMENT, FPDF_WIDESTRING)
+func FPDFClipPath_CountPathSegments	int FPDFClipPath_CountPathSegments(FPDF_CLIPPATH, int)
+func FPDFClipPath_CountPaths	int FPDFClipPath_CountPaths(FPDF_CLIPPATH)
+func FPDFClipPath_GetPathSegment	FPDF_PATHSEGMENT FPDFClipPath_GetPathSegment(FPDF_CLIPPATH, int, int)
+func FPDFDOC_ExitFormFillEnvironment	void FPDFDOC_ExitFormFillEnvironment(FPDF_FORMHANDLE)
+func FPDFDOC_InitFormFillEnvironment	FPDF_FORMHANDLE FPDFDOC_InitFormFillEnvironment(FPDF_DOCUMENT, FPDF_FORMFILLINFO*)
+func FPDFDest_GetDestPageIndex	int FPDFDest_GetDestPageIndex(FPDF_DOCUMENT, FPDF_DEST)
+func FPDFDest_GetLocationInPage	FPDF_BOOL FPDFDest_GetLocationInPage(FPDF_DEST, FPDF_BOOL*, FPDF_BOOL*, FPDF_BOOL*, FS_FLOAT*, FS_FLOAT*, FS_FLOAT*)
+func FPDFDest_GetView	unsigned long FPDFDest_GetView(FPDF_DEST, unsigned long*, FS_FLOAT*)
+func FPDFDoc_AddAttachment	FPDF_ATTACHMENT FPDFDoc_AddAttachment(FPDF_DOCUMENT, FPDF_WIDESTRING)
+func FPDFDoc_CloseJavaScriptAction	void FPDFDoc_CloseJavaScriptAction(FPDF_JAVASCRIPT_ACTION)
+func FPDFDoc_DeleteAttachment	FPDF_BOOL FPDFDoc_DeleteAttachment(FPDF_DOCUMENT, int)
+func FPDFDoc_GetAttachment	FPDF_ATTACHMENT FPDFDoc_GetAttachment(FPDF_DOCUMENT, int)
+func FPDFDoc_GetAttachmentCount	int FPDFDoc_GetAttachmentCount(FPDF_DOCUMENT)
+func FPDFDoc_GetJavaScriptAction	FPDF_JAVASCRIPT_ACTION FPDFDoc_GetJavaScriptAction(FPDF_DOCUMENT, int)
+func FPDFDoc_GetJavaScriptActionCount	int FPDFDoc_GetJavaScriptActionCount(FPDF_DOCUMENT)
+func FPDFDoc_GetPageMode	int FPDFDoc_GetPageMode(FPDF_DOCUMENT)
+func FPDFFont_Close	void FPDFFont_Close(FPDF_FONT)
+func FPDFFont_GetAscent	FPDF_BOOL FPDFFont_GetAscent(FPDF_FONT, float, float*)
+func FPDFFont_GetBaseFontName	size_t FPDFFont_GetBaseFontName(FPDF_FONT, char*, size_t)
+func FPDFFont_GetDescent	FPDF_BOOL FPDFFont_GetDescent(FPDF_FONT, float, float*)
+func FPDFFont_GetFamilyName	size_t FPDFFont_GetFamilyName(FPDF_FONT, char*, size_t)
+func FPDFFont_GetFlags	int FPDFFont_GetFlags(FPDF_FONT)
+func FPDFFont_GetFontData	FPDF_BOOL FPDFFont_GetFontData(FPDF_FONT, uint8_t*, size_t, size_t*)
+func FPDFFont_GetGlyphPath	FPDF_GLYPHPATH FPDFFont_GetGlyphPath(FPDF_FONT, uint32_t, float)
+func FPDFFont_GetGlyphWidth	FPDF_BOOL FPDFFont_GetGlyphWidth(FPDF_FONT, uint32_t, float, float*)
+func FPDFFont_GetIsEmbedded	int FPDFFont_GetIsEmbedded(FPDF_FONT)
+func FPDFFont_GetItalicAngle	FPDF_BOOL FPDFFont_GetItalicAngle(FPDF_FONT, int*)
+func FPDFFont_GetWeight	int FPDFFont_GetWeight(FPDF_FONT)
+func FPDFFormObj_CountObjects	int FPDFFormObj_CountObjects(FPDF_PAGEOBJECT)
+func FPDFFormObj_GetObject	FPDF_PAGEOBJECT FPDFFormObj_GetObject(FPDF_PAGEOBJECT, unsigned long)
+func FPDFFormObj_RemoveObject	FPDF_BOOL FPDFFormObj_RemoveObject(FPDF_PAGEOBJECT, FPDF_PAGEOBJECT)
+func FPDFGlyphPath_CountGlyphSegments	int FPDFGlyphPath_CountGlyphSegments(FPDF_GLYPHPATH)
+func FPDFGlyphPath_GetGlyphPathSegment	FPDF_PATHSEGMENT FPDFGlyphPath_GetGlyphPathSegment(FPDF_GLYPHPATH, int)
+func FPDFImageObj_GetBitmap	FPDF_BITMAP FPDFImageObj_GetBitmap(FPDF_PAGEOBJECT)
+func FPDFImageObj_GetIccProfileDataDecoded	FPDF_BOOL FPDFImageObj_GetIccProfileDataDecoded(FPDF_PAGEOBJECT, FPDF_PAGE, uint8_t*, size_t, size_t*)
+func FPDFImageObj_GetImageDataDecoded	unsigned long FPDFImageObj_GetImageDataDecoded(FPDF_PAGEOBJECT, void*, unsigned long)
+func FPDFImageObj_GetImageDataRaw	unsigned long FPDFImageObj_GetImageDataRaw(FPDF_PAGEOBJECT, void*, unsigned long)
+func FPDFImageObj_GetImageFilter	unsigned long FPDFImageObj_GetImageFilter(FPDF_PAGEOBJECT, int, void*, unsigned long)
+func FPDFImageObj_GetImageFilterCount	int FPDFImageObj_GetImageFilterCount(FPDF_PAGEOBJECT)
+func FPDFImageObj_GetImageMetadata	FPDF_BOOL FPDFImageObj_GetImageMetadata(FPDF_PAGEOBJECT, FPDF_PAGE, FPDF_IMAGEOBJ_METADATA*)
+func FPDFImageObj_GetImagePixelSize	FPDF_BOOL FPDFImageObj_GetImagePixelSize(FPDF_PAGEOBJECT, unsigned int*, unsigned int*)
+func FPDFImageObj_GetRenderedBitmap	FPDF_BITMAP FPDFImageObj_GetRenderedBitmap(FPDF_DOCUMENT, FPDF_PAGE, FPDF_PAGEOBJECT)
+func FPDFImageObj_LoadJpegFile	FPDF_BOOL FPDFImageObj_LoadJpegFile(FPDF_PAGE*, int, FPDF_PAGEOBJECT, FPDF_FILEACCESS*)
+func FPDFImageObj_LoadJpegFileInline	FPDF_BOOL FPDFImageObj_LoadJpegFileInline(FPDF_PAGE*, int, FPDF_PAGEOBJECT, FPDF_FILEACCESS*)
+func FPDFImageObj_SetBitmap	FPDF_BOOL FPDFImageObj_SetBitmap(FPDF_PAGE*, int, FPDF_PAGEOBJECT, FPDF_BITMAP)
+func FPDFImageObj_SetMatrix	FPDF_BOOL FPDFImageObj_SetMatrix(FPDF_PAGEOBJECT, double, double, double, double, double, double)
+func FPDFJavaScriptAction_GetName	unsigned long FPDFJavaScriptAction_GetName(FPDF_JAVASCRIPT_ACTION, FPDF_WCHAR*, unsigned long)
+func FPDFJavaScriptAction_GetScript	unsigned long FPDFJavaScriptAction_GetScript(FPDF_JAVASCRIPT_ACTION, FPDF_WCHAR*, unsigned long)
+func FPDFLink_CloseWebLinks	void FPDFLink_CloseWebLinks(FPDF_PAGELINK)
+func FPDFLink_CountQuadPoints	int FPDFLink_CountQuadPoints(FPDF_LINK)
+func FPDFLink_CountRects	int FPDFLink_CountRects(FPDF_PAGELINK, int)
+func FPDFLink_CountWebLinks	int FPDFLink_CountWebLinks(FPDF_PAGELINK)
+func FPDFLink_Enumerate	FPDF_BOOL FPDFLink_Enumerate(FPDF_PAGE, int*, FPDF_LINK*)
+func FPDFLink_GetAction	FPDF_ACTION FPDFLink_GetAction(FPDF_LINK)
+func FPDFLink_GetAnnot	FPDF_ANNOTATION FPDFLink_GetAnnot(FPDF_PAGE, FPDF_LINK)
+func FPDFLink_GetAnnotRect	FPDF_BOOL FPDFLink_GetAnnotRect(FPDF_LINK, FS_RECTF*)
+func FPDFLink_GetDest	FPDF_DEST FPDFLink_GetDest(FPDF_DOCUMENT, FPDF_LINK)
+func FPDFLink_GetLinkAtPoint	FPDF_LINK FPDFLink_GetLinkAtPoint(FPDF_PAGE, double, double)
+func FPDFLink_GetLinkZOrderAtPoint	int FPDFLink_GetLinkZOrderAtPoint(FPDF_PAGE, double, double)
+func FPDFLink_GetQuadPoints	FPDF_BOOL FPDFLink_GetQuadPoints(FPDF_LINK, int, FS_QUADPOINTSF*)
+func FPDFLink_GetRect	FPDF_BOOL FPDFLink_GetRect(FPDF_PAGELINK, int, int, double*, double*, double*, double*)
+func FPDFLink_GetTextRange	FPDF_BOOL FPDFLink_GetTextRange(FPDF_PAGELINK, int, int*, int*)
+func FPDFLink_GetURL	int FPDFLink_GetURL(FPDF_PAGELINK, int, unsigned short*, int)
+func FPDFLink_LoadWebLinks	FPDF_PAGELINK FPDFLink_LoadWebLinks(FPDF_TEXTPAGE)
+func FPDFPageObjMark_CountParams	int FPDFPageObjMark_CountParams(FPDF_PAGEOBJECTMARK)
+func FPDFPageObjMark_GetName	FPDF_BOOL FPDFPageObjMark_GetName(FPDF_PAGEOBJECTMARK, FPDF_WCHAR*, unsigned long, unsigned long*)
+func FPDFPageObjMark_GetParamBlobValue	FPDF_BOOL FPDFPageObjMark_GetParamBlobValue(FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING, unsigned char*, unsigned long, unsigned long*)
+func FPDFPageObjMark_GetParamFloatValue	FPDF_BOOL FPDFPageObjMark_GetParamFloatValue(FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING, float*)
+func FPDFPageObjMark_GetParamIntValue	FPDF_BOOL FPDFPageObjMark_GetParamIntValue(FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING, int*)
+func FPDFPageObjMark_GetParamKey	FPDF_BOOL FPDFPageObjMark_GetParamKey(FPDF_PAGEOBJECTMARK, unsigned long, FPDF_WCHAR*, unsigned long, unsigned long*)
+func FPDFPageObjMark_GetParamStringValue	FPDF_BOOL FPDFPageObjMark_GetParamStringValue(FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING, FPDF_WCHAR*, unsigned long, unsigned long*)
+func FPDFPageObjMark_GetParamValueType	FPDF_OBJECT_TYPE FPDFPageObjMark_GetParamValueType(FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING)
+func FPDFPageObjMark_RemoveParam	FPDF_BOOL FPDFPageObjMark_RemoveParam(FPDF_PAGEOBJECT, FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING)
+func FPDFPageObjMark_SetBlobParam	FPDF_BOOL FPDFPageObjMark_SetBlobParam(FPDF_DOCUMENT, FPDF_PAGEOBJECT, FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING, const unsigned char*, unsigned long)
+func FPDFPageObjMark_SetFloatParam	FPDF_BOOL FPDFPageObjMark_SetFloatParam(FPDF_DOCUMENT, FPDF_PAGEOBJECT, FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING, float)
+func FPDFPageObjMark_SetIntParam	FPDF_BOOL FPDFPageObjMark_SetIntParam(FPDF_DOCUMENT, FPDF_PAGEOBJECT, FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING, int)
+func FPDFPageObjMark_SetStringParam	FPDF_BOOL FPDFPageObjMark_SetStringParam(FPDF_DOCUMENT, FPDF_PAGEOBJECT, FPDF_PAGEOBJECTMARK, FPDF_BYTESTRING, FPDF_BYTESTRING)
+func FPDFPageObj_AddExistingMark	FPDF_BOOL FPDFPageObj_AddExistingMark(FPDF_PAGEOBJECT, FPDF_PAGEOBJECTMARK)
+func FPDFPageObj_AddMark	FPDF_PAGEOBJECTMARK FPDFPageObj_AddMark(FPDF_PAGEOBJECT, FPDF_BYTESTRING)
+func FPDFPageObj_CountMarks	int FPDFPageObj_CountMarks(FPDF_PAGEOBJECT)
+func FPDFPageObj_CreateNewPath	FPDF_PAGEOBJECT FPDFPageObj_CreateNewPath(float, float)
+func FPDFPageObj_CreateNewRect	FPDF_PAGEOBJECT FPDFPageObj_CreateNewRect(float, float, float, float)
+func FPDFPageObj_CreateTextObj	FPDF_PAGEOBJECT FPDFPageObj_CreateTextObj(FPDF_DOCUMENT, FPDF_FONT, float)
+func FPDFPageObj_Destroy	void FPDFPageObj_Destroy(FPDF_PAGEOBJECT)
+func FPDFPageObj_GetBounds	FPDF_BOOL FPDFPageObj_GetBounds(FPDF_PAGEOBJECT, float*, float*, float*, float*)
+func FPDFPageObj_GetClipPath	FPDF_CLIPPATH FPDFPageObj_GetClipPath(FPDF_PAGEOBJECT)
+func FPDFPageObj_GetDashArray	FPDF_BOOL FPDFPageObj_GetDashArray(FPDF_PAGEOBJECT, float*, size_t)
+func FPDFPageObj_GetDashCount	int FPDFPageObj_GetDashCount(FPDF_PAGEOBJECT)
+func FPDFPageObj_GetDashPhase	FPDF_BOOL FPDFPageObj_GetDashPhase(FPDF_PAGEOBJECT, float*)
+func FPDFPageObj_GetFillColor	FPDF_BOOL FPDFPageObj_GetFillColor(FPDF_PAGEOBJECT, unsigned int*, unsigned int*, unsigned int*, unsigned int*)
+func FPDFPageObj_GetIsActive	FPDF_BOOL FPDFPageObj_GetIsActive(FPDF_PAGEOBJECT, FPDF_BOOL*)
+func FPDFPageObj_GetLineCap	int FPDFPageObj_GetLineCap(FPDF_PAGEOBJECT)
+func FPDFPageObj_GetLineJoin	int FPDFPageObj_GetLineJoin(FPDF_PAGEOBJECT)
+func FPDFPageObj_GetMark	FPDF_PAGEOBJECTMARK FPDFPageObj_GetMark(FPDF_PAGEOBJECT, unsigned long)
+func FPDFPageObj_GetMarkedContentID	int FPDFPageObj_GetMarkedContentID(FPDF_PAGEOBJECT)
+func FPDFPageObj_GetMatrix	FPDF_BOOL FPDFPageObj_GetMatrix(FPDF_PAGEOBJECT, FS_MATRIX*)
+func FPDFPageObj_GetRenderedStrokePattern	FPDF_BITMAP FPDFPageObj_GetRenderedStrokePattern(FPDF_DOCUMENT, FPDF_PAGEOBJECT)
+func FPDFPageObj_GetRotatedBounds	FPDF_BOOL FPDFPageObj_GetRotatedBounds(FPDF_PAGEOBJECT, FS_QUADPOINTSF*)
+func FPDFPageObj_GetStrokeColor	FPDF_BOOL FPDFPageObj_GetStrokeColor(FPDF_PAGEOBJECT, unsigned int*, unsigned int*, unsigned int*, unsigned int*)
+func FPDFPageObj_GetStrokeWidth	FPDF_BOOL FPDFPageObj_GetStrokeWidth(FPDF_PAGEOBJECT, float*)
+func FPDFPageObj_GetType	int FPDFPageObj_GetType(FPDF_PAGEOBJECT)
+func FPDFPageObj_HasTransparency	FPDF_BOOL FPDFPageObj_HasTransparency(FPDF_PAGEOBJECT)
+func FPDFPageObj_NewImageObj	FPDF_PAGEOBJECT FPDFPageObj_NewImageObj(FPDF_DOCUMENT)
+func FPDFPageObj_NewTextObj	FPDF_PAGEOBJECT FPDFPageObj_NewTextObj(FPDF_DOCUMENT, FPDF_BYTESTRING, float)
+func FPDFPageObj_RemoveMark	FPDF_BOOL FPDFPageObj_RemoveMark(FPDF_PAGEOBJECT, FPDF_PAGEOBJECTMARK)
+func FPDFPageObj_SetBlendMode	void FPDFPageObj_SetBlendMode(FPDF_PAGEOBJECT, FPDF_BYTESTRING)
+func FPDFPageObj_SetDashArray	FPDF_BOOL FPDFPageObj_SetDashArray(FPDF_PAGEOBJECT, const float*, size_t, float)
+func FPDFPageObj_SetDashPhase	FPDF_BOOL FPDFPageObj_SetDashPhase(FPDF_PAGEOBJECT, float)
+func FPDFPageObj_SetFillColor	FPDF_BOOL FPDFPageObj_SetFillColor(FPDF_PAGEOBJECT, unsigned int, unsigned int, unsigned int, unsigned int)
+func FPDFPageObj_SetIsActive	FPDF_BOOL FPDFPageObj_SetIsActive(FPDF_PAGEOBJECT, FPDF_BOOL)
+func FPDFPageObj_SetLineCap	FPDF_BOOL FPDFPageObj_SetLineCap(FPDF_PAGEOBJECT, int)
+func FPDFPageObj_SetLineJoin	FPDF_BOOL FPDFPageObj_SetLineJoin(FPDF_PAGEOBJECT, int)
+func FPDFPageObj_SetMatrix	FPDF_BOOL FPDFPageObj_SetMatrix(FPDF_PAGEOBJECT, const FS_MATRIX*)
+func FPDFPageObj_SetStrokeColor	FPDF_BOOL FPDFPageObj_SetStrokeColor(FPDF_PAGEOBJECT, unsigned int, unsigned int, unsigned int, unsigned int)
+func FPDFPageObj_SetStrokeWidth	FPDF_BOOL FPDFPageObj_SetStrokeWidth(FPDF_PAGEOBJECT, float)
+func FPDFPageObj_Transform	void FPDFPageObj_Transform(FPDF_PAGEOBJECT, double, double, double, double, double, double)
+func FPDFPageObj_TransformClipPath	void FPDFPageObj_TransformClipPath(FPDF_PAGEOBJECT, double, double, double, double, double, double)
+func FPDFPageObj_TransformF	FPDF_BOOL FPDFPageObj_TransformF(FPDF_PAGEOBJECT, const FS_MATRIX*)
+func FPDFPage_CloseAnnot	void FPDFPage_CloseAnnot(FPDF_ANNOTATION)
+func FPDFPage_CountObjects	int FPDFPage_CountObjects(FPDF_PAGE)
+func FPDFPage_CreateAnnot	FPDF_ANNOTATION FPDFPage_CreateAnnot(FPDF_PAGE, FPDF_ANNOTATION_SUBTYPE)
+func FPDFPage_Delete	void FPDFPage_Delete(FPDF_DOCUMENT, int)
+func FPDFPage_Flatten	int FPDFPage_Flatten(FPDF_PAGE, int)
+func FPDFPage_FormFieldZOrderAtPoint	int FPDFPage_FormFieldZOrderAtPoint(FPDF_FORMHANDLE, FPDF_PAGE, double, double)
+func FPDFPage_GenerateContent	FPDF_BOOL FPDFPage_GenerateContent(FPDF_PAGE)
+func FPDFPage_GetAnnot	FPDF_ANNOTATION FPDFPage_GetAnnot(FPDF_PAGE, int)
+func FPDFPage_GetAnnotCount	int FPDFPage_GetAnnotCount(FPDF_PAGE)
+func FPDFPage_GetAnnotIndex	int FPDFPage_GetAnnotIndex(FPDF_PAGE, FPDF_ANNOTATION)
+func FPDFPage_GetArtBox	FPDF_BOOL FPDFPage_GetArtBox(FPDF_PAGE, float*, float*, float*, float*)
+func FPDFPage_GetBleedBox	FPDF_BOOL FPDFPage_GetBleedBox(FPDF_PAGE, float*, float*, float*, float*)
+func FPDFPage_GetCropBox	FPDF_BOOL FPDFPage_GetCropBox(FPDF_PAGE, float*, float*, float*, float*)
+func FPDFPage_GetDecodedThumbnailData	unsigned long FPDFPage_GetDecodedThumbnailData(FPDF_PAGE, void*, unsigned long)
+func FPDFPage_GetMediaBox	FPDF_BOOL FPDFPage_GetMediaBox(FPDF_PAGE, float*, float*, float*, float*)
+func FPDFPage_GetObject	FPDF_PAGEOBJECT FPDFPage_GetObject(FPDF_PAGE, int)
+func FPDFPage_GetRawThumbnailData	unsigned long FPDFPage_GetRawThumbnailData(FPDF_PAGE, void*, unsigned long)
+func FPDFPage_GetRotation	int FPDFPage_GetRotation(FPDF_PAGE)
+func FPDFPage_GetThumbnailAsBitmap	FPDF_BITMAP FPDFPage_GetThumbnailAsBitmap(FPDF_PAGE)
+func FPDFPage_GetTrimBox	FPDF_BOOL FPDFPage_GetTrimBox(FPDF_PAGE, float*, float*, float*, float*)
+func FPDFPage_HasFormFieldAtPoint	int FPDFPage_HasFormFieldAtPoint(FPDF_FORMHANDLE, FPDF_PAGE, double, double)
+func FPDFPage_HasTransparency	FPDF_BOOL FPDFPage_HasTransparency(FPDF_PAGE)
+func FPDFPage_InsertClipPath	void FPDFPage_InsertClipPath(FPDF_PAGE, FPDF_CLIPPATH)
+func FPDFPage_InsertObject	FPDF_BOOL FPDFPage_InsertObject(FPDF_PAGE, FPDF_PAGEOBJECT)
+func FPDFPage_InsertObjectAtIndex	FPDF_BOOL FPDFPage_InsertObjectAtIndex(FPDF_PAGE, FPDF_PAGEOBJECT, size_t)
+func FPDFPage_New	FPDF_PAGE FPDFPage_New(FPDF_DOCUMENT, int, double, double)
+func FPDFPage_RemoveAnnot	FPDF_BOOL FPDFPage_RemoveAnnot(FPDF_PAGE, int)
+func FPDFPage_RemoveObject	FPDF_BOOL FPDFPage_RemoveObject(FPDF_PAGE, FPDF_PAGEOBJECT)
+func FPDFPage_SetArtBox	void FPDFPage_SetArtBox(FPDF_PAGE, float, float, float, float)
+func FPDFPage_SetBleedBox	void FPDFPage_SetBleedBox(FPDF_PAGE, float, float, float, float)
+func FPDFPage_SetCropBox	void FPDFPage_SetCropBox(FPDF_PAGE, float, float, float, float)
+func FPDFPage_SetMediaBox	void FPDFPage_SetMediaBox(FPDF_PAGE, float, float, float, float)
+func FPDFPage_SetRotation	void FPDFPage_SetRotation(FPDF_PAGE, int)
+func FPDFPage_SetTrimBox	void FPDFPage_SetTrimBox(FPDF_PAGE, float, float, float, float)
+func FPDFPage_TransFormWithClip	FPDF_BOOL FPDFPage_TransFormWithClip(FPDF_PAGE, const FS_MATRIX*, const FS_RECTF*)
+func FPDFPage_TransformAnnots	void FPDFPage_TransformAnnots(FPDF_PAGE, double, double, double, double, double, double)
+func FPDFPathSegment_GetClose	FPDF_BOOL FPDFPathSegment_GetClose(FPDF_PATHSEGMENT)
+func FPDFPathSegment_GetPoint	FPDF_BOOL FPDFPathSegment_GetPoint(FPDF_PATHSEGMENT, float*, float*)
+func FPDFPathSegment_GetType	int FPDFPathSegment_GetType(FPDF_PATHSEGMENT)
+func FPDFPath_BezierTo	FPDF_BOOL FPDFPath_BezierTo(FPDF_PAGEOBJECT, float, float, float, float, float, float)
+func FPDFPath_Close	FPDF_BOOL FPDFPath_Close(FPDF_PAGEOBJECT)
+func FPDFPath_CountSegments	int FPDFPath_CountSegments(FPDF_PAGEOBJECT)
+func FPDFPath_GetBezierControlPoints	FPDF_BOOL FPDFPath_GetBezierControlPoints(FPDF_PAGEOBJECT, size_t, FS_POINTF*, FS_POINTF*)
+func FPDFPath_GetDrawMode	FPDF_BOOL FPDFPath_GetDrawMode(FPDF_PAGEOBJECT, int*, FPDF_BOOL*)
+func FPDFPath_GetPathSegment	FPDF_PATHSEGMENT FPDFPath_GetPathSegment(FPDF_PAGEOBJECT, int)
+func FPDFPath_LineTo	FPDF_BOOL FPDFPath_LineTo(FPDF_PAGEOBJECT, float, float)
+func FPDFPath_MoveTo	FPDF_BOOL FPDFPath_MoveTo(FPDF_PAGEOBJECT, float, float)
+func FPDFPath_SetDrawMode	FPDF_BOOL FPDFPath_SetDrawMode(FPDF_PAGEOBJECT, int, FPDF_BOOL)
+func FPDFSignatureObj_GetByteRange	unsigned long FPDFSignatureObj_GetByteRange(FPDF_SIGNATURE, int*, unsigned long)
+func FPDFSignatureObj_GetContents	unsigned long FPDFSignatureObj_GetContents(FPDF_SIGNATURE, void*, unsigned long)
+func FPDFSignatureObj_GetDocMDPPermission	unsigned int FPDFSignatureObj_GetDocMDPPermission(FPDF_SIGNATURE)
+func FPDFSignatureObj_GetReason	unsigned long FPDFSignatureObj_GetReason(FPDF_SIGNATURE, void*, unsigned long)
+func FPDFSignatureObj_GetSubFilter	unsigned long FPDFSignatureObj_GetSubFilter(FPDF_SIGNATURE, char*, unsigned long)
+func FPDFSignatureObj_GetTime	unsigned long FPDFSignatureObj_GetTime(FPDF_SIGNATURE, char*, unsigned long)
+func FPDFTextObj_GetFont	FPDF_FONT FPDFTextObj_GetFont(FPDF_PAGEOBJECT)
+func FPDFTextObj_GetFontSize	FPDF_BOOL FPDFTextObj_GetFontSize(FPDF_PAGEOBJECT, float*)
+func FPDFTextObj_GetRenderedBitmap	FPDF_BITMAP FPDFTextObj_GetRenderedBitmap(FPDF_DOCUMENT, FPDF_PAGE, FPDF_PAGEOBJECT, float)
+func FPDFTextObj_GetText	unsigned long FPDFTextObj_GetText(FPDF_PAGEOBJECT, FPDF_TEXTPAGE, FPDF_WCHAR*, unsigned long)
+func FPDFTextObj_GetTextRenderMode	FPDF_TEXT_RENDERMODE FPDFTextObj_GetTextRenderMode(FPDF_PAGEOBJECT)
+func FPDFTextObj_SetFontSize	FPDF_BOOL FPDFTextObj_SetFontSize(FPDF_PAGEOBJECT, float)
+func FPDFTextObj_SetTextRenderMode	FPDF_BOOL FPDFTextObj_SetTextRenderMode(FPDF_PAGEOBJECT, FPDF_TEXT_RENDERMODE)
+func FPDFText_ClosePage	void FPDFText_ClosePage(FPDF_TEXTPAGE)
+func FPDFText_CountChars	int FPDFText_CountChars(FPDF_TEXTPAGE)
+func FPDFText_CountRects	int FPDFText_CountRects(FPDF_TEXTPAGE, int, int)
+func FPDFText_FindClose	void FPDFText_FindClose(FPDF_SCHHANDLE)
+func FPDFText_FindNext	FPDF_BOOL FPDFText_FindNext(FPDF_SCHHANDLE)
+func FPDFText_FindPrev	FPDF_BOOL FPDFText_FindPrev(FPDF_SCHHANDLE)
+func FPDFText_FindStart	FPDF_SCHHANDLE FPDFText_FindStart(FPDF_TEXTPAGE, FPDF_WIDESTRING, unsigned long, int)
+func FPDFText_GetBoundedText	int FPDFText_GetBoundedText(FPDF_TEXTPAGE, double, double, double, double, unsigned short*, int)
+func FPDFText_GetCharAngle	float FPDFText_GetCharAngle(FPDF_TEXTPAGE, int)
+func FPDFText_GetCharBox	FPDF_BOOL FPDFText_GetCharBox(FPDF_TEXTPAGE, int, double*, double*, double*, double*)
+func FPDFText_GetCharIndexAtPos	int FPDFText_GetCharIndexAtPos(FPDF_TEXTPAGE, double, double, double, double)
+func FPDFText_GetCharIndexFromTextIndex	int FPDFText_GetCharIndexFromTextIndex(FPDF_TEXTPAGE, int)
+func FPDFText_GetCharOrigin	FPDF_BOOL FPDFText_GetCharOrigin(FPDF_TEXTPAGE, int, double*, double*)
+func FPDFText_GetFillColor	FPDF_BOOL FPDFText_GetFillColor(FPDF_TEXTPAGE, int, unsigned int*, unsigned int*, unsigned int*, unsigned int*)
+func FPDFText_GetFontInfo	unsigned long FPDFText_GetFontInfo(FPDF_TEXTPAGE, int, void*, unsigned long, int*)
+func FPDFText_GetFontSize	double FPDFText_GetFontSize(FPDF_TEXTPAGE, int)
+func FPDFText_GetFontWeight	int FPDFText_GetFontWeight(FPDF_TEXTPAGE, int)
+func FPDFText_GetLooseCharBox	FPDF_BOOL FPDFText_GetLooseCharBox(FPDF_TEXTPAGE, int, FS_RECTF*)
+func FPDFText_GetMatrix	FPDF_BOOL FPDFText_GetMatrix(FPDF_TEXTPAGE, int, FS_MATRIX*)
+func FPDFText_GetRect	FPDF_BOOL FPDFText_GetRect(FPDF_TEXTPAGE, int, double*, double*, double*, double*)
+func FPDFText_GetSchCount	int FPDFText_GetSchCount(FPDF_SCHHANDLE)
+func FPDFText_GetSchResultIndex	int FPDFText_GetSchResultIndex(FPDF_SCHHANDLE)
+func FPDFText_GetStrokeColor	FPDF_BOOL FPDFText_GetStrokeColor(FPDF_TEXTPAGE, int, unsigned int*, unsigned int*, unsigned int*, unsigned int*)
+func FPDFText_GetText	int FPDFText_GetText(FPDF_TEXTPAGE, int, int, unsigned short*)
+func FPDFText_GetTextIndexFromCharIndex	int FPDFText_GetTextIndexFromCharIndex(FPDF_TEXTPAGE, int)
+func FPDFText_GetTextObject	FPDF_PAGEOBJECT FPDFText_GetTextObject(FPDF_TEXTPAGE, int)
+func FPDFText_GetUnicode	unsigned int FPDFText_GetUnicode(FPDF_TEXTPAGE, int)
+func FPDFText_HasUnicodeMapError	int FPDFText_HasUnicodeMapError(FPDF_TEXTPAGE, int)
+func FPDFText_IsGenerated	int FPDFText_IsGenerated(FPDF_TEXTPAGE, int)
+func FPDFText_IsHyphen	int FPDFText_IsHyphen(FPDF_TEXTPAGE, int)
+func FPDFText_LoadCidType2Font	FPDF_FONT FPDFText_LoadCidType2Font(FPDF_DOCUMENT, const uint8_t*, uint32_t, FPDF_BYTESTRING, const uint8_t*, uint32_t)
+func FPDFText_LoadFont	FPDF_FONT FPDFText_LoadFont(FPDF_DOCUMENT, const uint8_t*, uint32_t, int, FPDF_BOOL)
+func FPDFText_LoadPage	FPDF_TEXTPAGE FPDFText_LoadPage(FPDF_PAGE)
+func FPDFText_LoadStandardFont	FPDF_FONT FPDFText_LoadStandardFont(FPDF_DOCUMENT, FPDF_BYTESTRING)
+func FPDFText_SetCharcodes	FPDF_BOOL FPDFText_SetCharcodes(FPDF_PAGEOBJECT, const uint32_t*, size_t)
+func FPDFText_SetPositions	FPDF_BOOL FPDFText_SetPositions(FPDF_PAGEOBJECT, const float*, size_t)
+func FPDFText_SetText	FPDF_BOOL FPDFText_SetText(FPDF_PAGEOBJECT, FPDF_WIDESTRING)
+func FPDF_AddInstalledFont	void FPDF_AddInstalledFont(void*, const char*, int)
+func FPDF_CloseDocument	void FPDF_CloseDocument(FPDF_DOCUMENT)
+func FPDF_ClosePage	void FPDF_ClosePage(FPDF_PAGE)
+func FPDF_CloseXObject	void FPDF_CloseXObject(FPDF_XOBJECT)
+func FPDF_CopyViewerPreferences	FPDF_BOOL FPDF_CopyViewerPreferences(FPDF_DOCUMENT, FPDF_DOCUMENT)
+func FPDF_CountNamedDests	FPDF_DWORD FPDF_CountNamedDests(FPDF_DOCUMENT)
+func FPDF_CreateClipPath	FPDF_CLIPPATH FPDF_CreateClipPath(float, float, float, float)
+func FPDF_CreateNewDocument	FPDF_DOCUMENT FPDF_CreateNewDocument(void)
+func FPDF_DestroyClipPath	void FPDF_DestroyClipPath(FPDF_CLIPPATH)
+func FPDF_DestroyLibrary	void FPDF_DestroyLibrary(void)
+func FPDF_DeviceToPage	FPDF_BOOL FPDF_DeviceToPage(FPDF_PAGE, int, int, int, int, int, int, int, double*, double*)
+func FPDF_DocumentHasValidCrossReferenceTable	FPDF_BOOL FPDF_DocumentHasValidCrossReferenceTable(FPDF_DOCUMENT)
+func FPDF_FFLDraw	void FPDF_FFLDraw(FPDF_FORMHANDLE, FPDF_BITMAP, FPDF_PAGE, int, int, int, int, int, int)
+func FPDF_FreeDefaultSystemFontInfo	void FPDF_FreeDefaultSystemFontInfo(FPDF_SYSFONTINFO*)
+func FPDF_GetDefaultSystemFontInfo	FPDF_SYSFONTINFO* FPDF_GetDefaultSystemFontInfo(void)
+func FPDF_GetDefaultTTFMap	const FPDF_CharsetFontMap* FPDF_GetDefaultTTFMap(void)
+func FPDF_GetDefaultTTFMapCount	size_t FPDF_GetDefaultTTFMapCount(void)
+func FPDF_GetDefaultTTFMapEntry	const FPDF_CharsetFontMap* FPDF_GetDefaultTTFMapEntry(size_t)
+func FPDF_GetDocPermissions	unsigned long FPDF_GetDocPermissions(FPDF_DOCUMENT)
+func FPDF_GetDocUserPermissions	unsigned long FPDF_GetDocUserPermissions(FPDF_DOCUMENT)
+func FPDF_GetFileIdentifier	unsigned long FPDF_GetFileIdentifier(FPDF_DOCUMENT, FPDF_FILEIDTYPE, void*, unsigned long)
+func FPDF_GetFileVersion	FPDF_BOOL FPDF_GetFileVersion(FPDF_DOCUMENT, int*)
+func FPDF_GetFormType	int FPDF_GetFormType(FPDF_DOCUMENT)
+func FPDF_GetLastError	unsigned long FPDF_GetLastError(void)
+func FPDF_GetMetaText	unsigned long FPDF_GetMetaText(FPDF_DOCUMENT, FPDF_BYTESTRING, void*, unsigned long)
+func FPDF_GetNamedDest	FPDF_DEST FPDF_GetNamedDest(FPDF_DOCUMENT, int, void*, long*)
+func FPDF_GetNamedDestByName	FPDF_DEST FPDF_GetNamedDestByName(FPDF_DOCUMENT, FPDF_BYTESTRING)
+func FPDF_GetPageAAction	FPDF_ACTION FPDF_GetPageAAction(FPDF_PAGE, int)
+func FPDF_GetPageBoundingBox	FPDF_BOOL FPDF_GetPageBoundingBox(FPDF_PAGE, FS_RECTF*)
+func FPDF_GetPageCount	int FPDF_GetPageCount(FPDF_DOCUMENT)
+func FPDF_GetPageHeight	double FPDF_GetPageHeight(FPDF_PAGE)
+func FPDF_GetPageHeightF	float FPDF_GetPageHeightF(FPDF_PAGE)
+func FPDF_GetPageLabel	unsigned long FPDF_GetPageLabel(FPDF_DOCUMENT, int, void*, unsigned long)
+func FPDF_GetPageSizeByIndex	int FPDF_GetPageSizeByIndex(FPDF_DOCUMENT, int, double*, double*)
+func FPDF_GetPageSizeByIndexF	FPDF_BOOL FPDF_GetPageSizeByIndexF(FPDF_DOCUMENT, int, FS_SIZEF*)
+func FPDF_GetPageWidth	double FPDF_GetPageWidth(FPDF_PAGE)
+func FPDF_GetPageWidthF	float FPDF_GetPageWidthF(FPDF_PAGE)
+func FPDF_GetSecurityHandlerRevision	int FPDF_GetSecurityHandlerRevision(FPDF_DOCUMENT)
+func FPDF_GetSignatureCount	int FPDF_GetSignatureCount(FPDF_DOCUMENT)
+func FPDF_GetSignatureObject	FPDF_SIGNATURE FPDF_GetSignatureObject(FPDF_DOCUMENT, int)
+func FPDF_GetTrailerEnds	unsigned long FPDF_GetTrailerEnds(FPDF_DOCUMENT, unsigned int*, unsigned long)
+func FPDF_GetXFAPacketContent	FPDF_BOOL FPDF_GetXFAPacketContent(FPDF_DOCUMENT, int, void*, unsigned long, unsigned long*)
+func FPDF_GetXFAPacketCount	int FPDF_GetXFAPacketCount(FPDF_DOCUMENT)
+func FPDF_GetXFAPacketName	unsigned long FPDF_GetXFAPacketName(FPDF_DOCUMENT, int, void*, unsigned long)
+func FPDF_ImportNPagesToOne	FPDF_DOCUMENT FPDF_ImportNPagesToOne(FPDF_DOCUMENT, float, float, size_t, size_t)
+func FPDF_ImportPages	FPDF_BOOL FPDF_ImportPages(FPDF_DOCUMENT, FPDF_DOCUMENT, FPDF_BYTESTRING, int)
+func FPDF_ImportPagesByIndex	FPDF_BOOL FPDF_ImportPagesByIndex(FPDF_DOCUMENT, FPDF_DOCUMENT, const int*, unsigned long, int)
+func FPDF_InitLibrary	void FPDF_InitLibrary(void)
+func FPDF_InitLibraryWithConfig	void FPDF_InitLibraryWithConfig(const FPDF_LIBRARY_CONFIG*)
+func FPDF_LoadCustomDocument	FPDF_DOCUMENT FPDF_LoadCustomDocument(FPDF_FILEACCESS*, FPDF_BYTESTRING)
+func FPDF_LoadDocument	FPDF_DOCUMENT FPDF_LoadDocument(FPDF_STRING, FPDF_BYTESTRING)
+func FPDF_LoadMemDocument	FPDF_DOCUMENT FPDF_LoadMemDocument(const void*, int, FPDF_BYTESTRING)
+func FPDF_LoadMemDocument64	FPDF_DOCUMENT FPDF_LoadMemDocument64(const void*, size_t, FPDF_BYTESTRING)
+func FPDF_LoadPage	FPDF_PAGE FPDF_LoadPage(FPDF_DOCUMENT, int)
+func FPDF_LoadXFA	FPDF_BOOL FPDF_LoadXFA(FPDF_DOCUMENT)
+func FPDF_MovePages	FPDF_BOOL FPDF_MovePages(FPDF_DOCUMENT, const int*, unsigned long, int)
+func FPDF_NewFormObjectFromXObject	FPDF_PAGEOBJECT FPDF_NewFormObjectFromXObject(FPDF_XOBJECT)
+func FPDF_NewXObjectFromPage	FPDF_XOBJECT FPDF_NewXObjectFromPage(FPDF_DOCUMENT, FPDF_DOCUMENT, int)
+func FPDF_PageToDevice	FPDF_BOOL FPDF_PageToDevice(FPDF_PAGE, int, int, int, int, int, double, double, int*, int*)
+func FPDF_RemoveFormFieldHighlight	void FPDF_RemoveFormFieldHighlight(FPDF_FORMHANDLE)
+func FPDF_RenderPageBitmap	void FPDF_RenderPageBitmap(FPDF_BITMAP, FPDF_PAGE, int, int, int, int, int, int)
+func FPDF_RenderPageBitmapWithColorScheme_Start	int FPDF_RenderPageBitmapWithColorScheme_Start(FPDF_BITMAP, FPDF_PAGE, int, int, int, int, int, int, const FPDF_COLORSCHEME*, IFSDK_PAUSE*)
+func FPDF_RenderPageBitmapWithMatrix	void FPDF_RenderPageBitmapWithMatrix(FPDF_BITMAP, FPDF_PAGE, const FS_MATRIX*, const FS_RECTF*, int)
+func FPDF_RenderPageBitmap_Start	int FPDF_RenderPageBitmap_Start(FPDF_BITMAP, FPDF_PAGE, int, int, int, int, int, int, IFSDK_PAUSE*)
+func FPDF_RenderPage_Close	void FPDF_RenderPage_Close(FPDF_PAGE)
+func FPDF_RenderPage_Continue	int FPDF_RenderPage_Continue(FPDF_PAGE, IFSDK_PAUSE*)
+func FPDF_SaveAsCopy	FPDF_BOOL FPDF_SaveAsCopy(FPDF_DOCUMENT, FPDF_FILEWRITE*, FPDF_DWORD)
+func FPDF_SaveWithVersion	FPDF_BOOL FPDF_SaveWithVersion(FPDF_DOCUMENT, FPDF_FILEWRITE*, FPDF_DWORD, int)
+func FPDF_SetFormFieldHighlightAlpha	void FPDF_SetFormFieldHighlightAlpha(FPDF_FORMHANDLE, unsigned char)
+func FPDF_SetFormFieldHighlightColor	void FPDF_SetFormFieldHighlightColor(FPDF_FORMHANDLE, int, unsigned long)
+func FPDF_SetSandBoxPolicy	void FPDF_SetSandBoxPolicy(FPDF_DWORD, FPDF_BOOL)
+func FPDF_SetSystemFontInfo	void FPDF_SetSystemFontInfo(FPDF_SYSFONTINFO*)
+func FPDF_StructElement_Attr_CountChildren	int FPDF_StructElement_Attr_CountChildren(FPDF_STRUCTELEMENT_ATTR_VALUE)
+func FPDF_StructElement_Attr_GetBlobValue	FPDF_BOOL FPDF_StructElement_Attr_GetBlobValue(FPDF_STRUCTELEMENT_ATTR_VALUE, void*, unsigned long, unsigned long*)
+func FPDF_StructElement_Attr_GetBooleanValue	FPDF_BOOL FPDF_StructElement_Attr_GetBooleanValue(FPDF_STRUCTELEMENT_ATTR_VALUE, FPDF_BOOL*)
+func FPDF_StructElement_Attr_GetChildAtIndex	FPDF_STRUCTELEMENT_ATTR_VALUE FPDF_StructElement_Attr_GetChildAtIndex(FPDF_STRUCTELEMENT_ATTR_VALUE, int)
+func FPDF_StructElement_Attr_GetCount	int FPDF_StructElement_Attr_GetCount(FPDF_STRUCTELEMENT_ATTR)
+func FPDF_StructElement_Attr_GetName	FPDF_BOOL FPDF_StructElement_Attr_GetName(FPDF_STRUCTELEMENT_ATTR, int, void*, unsigned long, unsigned long*)
+func FPDF_StructElement_Attr_GetNumberValue	FPDF_BOOL FPDF_StructElement_Attr_GetNumberValue(FPDF_STRUCTELEMENT_ATTR_VALUE, float*)
+func FPDF_StructElement_Attr_GetStringValue	FPDF_BOOL FPDF_StructElement_Attr_GetStringValue(FPDF_STRUCTELEMENT_ATTR_VALUE, void*, unsigned long, unsigned long*)
+func FPDF_StructElement_Attr_GetType	FPDF_OBJECT_TYPE FPDF_StructElement_Attr_GetType(FPDF_STRUCTELEMENT_ATTR_VALUE)
+func FPDF_StructElement_Attr_GetValue	FPDF_STRUCTELEMENT_ATTR_VALUE FPDF_StructElement_Attr_GetValue(FPDF_STRUCTELEMENT_ATTR, FPDF_BYTESTRING)
+func FPDF_StructElement_CountChildren	int FPDF_StructElement_CountChildren(FPDF_STRUCTELEMENT)
+func FPDF_StructElement_GetActualText	unsigned long FPDF_StructElement_GetActualText(FPDF_STRUCTELEMENT, void*, unsigned long)
+func FPDF_StructElement_GetAltText	unsigned long FPDF_StructElement_GetAltText(FPDF_STRUCTELEMENT, void*, unsigned long)
+func FPDF_StructElement_GetAttributeAtIndex	FPDF_STRUCTELEMENT_ATTR FPDF_StructElement_GetAttributeAtIndex(FPDF_STRUCTELEMENT, int)
+func FPDF_StructElement_GetAttributeCount	int FPDF_StructElement_GetAttributeCount(FPDF_STRUCTELEMENT)
+func FPDF_StructElement_GetChildAtIndex	FPDF_STRUCTELEMENT FPDF_StructElement_GetChildAtIndex(FPDF_STRUCTELEMENT, int)
+func FPDF_StructElement_GetChildMarkedContentID	int FPDF_StructElement_GetChildMarkedContentID(FPDF_STRUCTELEMENT, int)
+func FPDF_StructElement_GetExpansion	unsigned long FPDF_StructElement_GetExpansion(FPDF_STRUCTELEMENT, void*, unsigned long)
+func FPDF_StructElement_GetID	unsigned long FPDF_StructElement_GetID(FPDF_STRUCTELEMENT, void*, unsigned long)
+func FPDF_StructElement_GetLang	unsigned long FPDF_StructElement_GetLang(FPDF_STRUCTELEMENT, void*, unsigned long)
+func FPDF_StructElement_GetMarkedContentID	int FPDF_StructElement_GetMarkedContentID(FPDF_STRUCTELEMENT)
+func FPDF_StructElement_GetMarkedContentIdAtIndex	int FPDF_StructElement_GetMarkedContentIdAtIndex(FPDF_STRUCTELEMENT, int)
+func FPDF_StructElement_GetMarkedContentIdCount	int FPDF_StructElement_GetMarkedContentIdCount(FPDF_STRUCTELEMENT)
+func FPDF_StructElement_GetObjType	unsigned long FPDF_StructElement_GetObjType(FPDF_STRUCTELEMENT, void*, unsigned long)
+func FPDF_StructElement_GetParent	FPDF_STRUCTELEMENT FPDF_StructElement_GetParent(FPDF_STRUCTELEMENT)
+func FPDF_StructElement_GetStringAttribute	unsigned long FPDF_StructElement_GetStringAttribute(FPDF_STRUCTELEMENT, FPDF_BYTESTRING, void*, unsigned long)
+func FPDF_StructElement_GetTitle	unsigned long FPDF_StructElement_GetTitle(FPDF_STRUCTELEMENT, void*, unsigned long)
+func FPDF_StructElement_GetType	unsigned long FPDF_StructElement_GetType(FPDF_STRUCTELEMENT, void*, unsigned long)
+func FPDF_StructTree_Close	void FPDF_StructTree_Close(FPDF_STRUCTTREE)
+func FPDF_StructTree_CountChildren	int FPDF_StructTree_CountChildren(FPDF_STRUCTTREE)
+func FPDF_StructTree_GetChildAtIndex	FPDF_STRUCTELEMENT FPDF_StructTree_GetChildAtIndex(FPDF_STRUCTTREE, int)
+func FPDF_StructTree_GetForPage	FPDF_STRUCTTREE FPDF_StructTree_GetForPage(FPDF_PAGE)
+func FPDF_VIEWERREF_GetDuplex	FPDF_DUPLEXTYPE FPDF_VIEWERREF_GetDuplex(FPDF_DOCUMENT)
+func FPDF_VIEWERREF_GetName	unsigned long FPDF_VIEWERREF_GetName(FPDF_DOCUMENT, FPDF_BYTESTRING, char*, unsigned long)
+func FPDF_VIEWERREF_GetNumCopies	int FPDF_VIEWERREF_GetNumCopies(FPDF_DOCUMENT)
+func FPDF_VIEWERREF_GetPrintPageRange	FPDF_PAGERANGE FPDF_VIEWERREF_GetPrintPageRange(FPDF_DOCUMENT)
+func FPDF_VIEWERREF_GetPrintPageRangeCount	size_t FPDF_VIEWERREF_GetPrintPageRangeCount(FPDF_PAGERANGE)
+func FPDF_VIEWERREF_GetPrintPageRangeElement	int FPDF_VIEWERREF_GetPrintPageRangeElement(FPDF_PAGERANGE, size_t)
+func FPDF_VIEWERREF_GetPrintScaling	FPDF_BOOL FPDF_VIEWERREF_GetPrintScaling(FPDF_DOCUMENT)
+func FSDK_SetLocaltimeFunction	void FSDK_SetLocaltimeFunction(struct tm* (*)(const time_t*))
+func FSDK_SetTimeFunction	void FSDK_SetTimeFunction(time_t (*)(void))
+func FSDK_SetUnSpObjProcessHandler	FPDF_BOOL FSDK_SetUnSpObjProcessHandler(UNSUPPORT_INFO*)
+struct FPDF_BSTR	{ char*; int }
+struct FPDF_COLORSCHEME	{ FPDF_DWORD; FPDF_DWORD; FPDF_DWORD; FPDF_DWORD }
+struct FPDF_CharsetFontMap	{ int; const char* }
+struct FPDF_FILEACCESS	{ unsigned long; int (*)(void*, unsigned long, unsigned char*, unsigned long); void* }
+struct FPDF_FILEHANDLER	{ void*; void (*)(void*); FPDF_DWORD (*)(void*); FPDF_RESULT (*)(void*, FPDF_DWORD, void*, FPDF_DWORD); FPDF_RESULT (*)(void*, FPDF_DWORD, const void*, FPDF_DWORD); FPDF_RESULT (*)(void*); FPDF_RESULT (*)(void*, FPDF_DWORD) }
+struct FPDF_FILEWRITE	{ int; int (*)(struct FPDF_FILEWRITE_*, const void*, unsigned long) }
+struct FPDF_FORMFILLINFO	{ int; void (*)(struct _FPDF_FORMFILLINFO*); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_PAGE, double, double, double, double); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_PAGE, double, double, double, double); void (*)(struct _FPDF_FORMFILLINFO*, int); int (*)(struct _FPDF_FORMFILLINFO*, int, TimerCallback); void (*)(struct _FPDF_FORMFILLINFO*, int); FPDF_SYSTEMTIME (*)(struct _FPDF_FORMFILLINFO*); void (*)(struct _FPDF_FORMFILLINFO*); FPDF_PAGE (*)(struct _FPDF_FORMFILLINFO*, FPDF_DOCUMENT, int); FPDF_PAGE (*)(struct _FPDF_FORMFILLINFO*, FPDF_DOCUMENT); int (*)(struct _FPDF_FORMFILLINFO*, FPDF_PAGE); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_BYTESTRING); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_WIDESTRING, FPDF_DWORD, FPDF_BOOL); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_BYTESTRING); void (*)(struct _FPDF_FORMFILLINFO*, int, int, float*, int); IPDF_JSPLATFORM*; FPDF_BOOL; void (*)(struct _FPDF_FORMFILLINFO*, FPDF_PAGE, FPDF_BOOL, double, double, double, double); int (*)(struct _FPDF_FORMFILLINFO*, FPDF_DOCUMENT); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_DOCUMENT, int); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_DOCUMENT, FPDF_WIDESTRING); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_PAGE, double*, double*, double*, double*); void (*)(struct _FPDF_FORMFILLINFO*, int, FPDF_DWORD); FPDF_BOOL (*)(struct _FPDF_FORMFILLINFO*, FPDF_PAGE, FPDF_WIDGET, int, float, float); FPDF_FILEHANDLER* (*)(struct _FPDF_FORMFILLINFO*, int, FPDF_WIDESTRING, const char*); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_FILEHANDLER*, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_FILEHANDLER*, int, FPDF_WIDESTRING); int (*)(struct _FPDF_FORMFILLINFO*, void*, int); int (*)(struct _FPDF_FORMFILLINFO*, void*, int); FPDF_FILEHANDLER* (*)(struct _FPDF_FORMFILLINFO*, FPDF_WIDESTRING); FPDF_BOOL (*)(struct _FPDF_FORMFILLINFO*, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_BSTR*); FPDF_BOOL (*)(struct _FPDF_FORMFILLINFO*, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING); void (*)(struct _FPDF_FORMFILLINFO*, FPDF_ANNOTATION, int); void(*)(struct _FPDF_FORMFILLINFO*, FPDF_BYTESTRING, int) }
+struct FPDF_IMAGEOBJ_METADATA	{ unsigned int; unsigned int; float; float; unsigned int; int; int }
+struct FPDF_LIBRARY_CONFIG	{ int; const char**; void*; unsigned int; void*; FPDF_RENDERER_TYPE; FPDF_FONT_BACKEND_TYPE; FPDF_BOOL; FPDF_BOOL }
+struct FPDF_SYSFONTINFO	{ int; void (*)(struct _FPDF_SYSFONTINFO*); void (*)(struct _FPDF_SYSFONTINFO*, void*); void* (*)(struct _FPDF_SYSFONTINFO*, int, FPDF_BOOL, int, int, const char*, FPDF_BOOL*); void* (*)(struct _FPDF_SYSFONTINFO*, const char*); unsigned long (*)(struct _FPDF_SYSFONTINFO*, void*, unsigned int, unsigned char*, unsigned long); unsigned long (*)(struct _FPDF_SYSFONTINFO*, void*, char*, unsigned long); int (*)(struct _FPDF_SYSFONTINFO*, void*); void (*)(struct _FPDF_SYSFONTINFO*, void*) }
+struct FPDF_SYSTEMTIME	{ unsigned short; unsigned short; unsigned short; unsigned short; unsigned short; unsigned short; unsigned short; unsigned short }
+struct FS_MATRIX	{ float; float; float; float; float; float }
+struct FS_QUADPOINTSF	{ float; float; float; float; }* FS_LPRECTF, FS_RECTF; typedef const FS_RECTF* FS_LPCRECTF; typedef struct FS_SIZEF_ { float; float; }* FS_LPSIZEF, FS_SIZEF; typedef const FS_SIZEF* FS_LPCSIZEF; typedef struct FS_POINTF_ { float; float; }* FS_LPPOINTF, FS_POINTF; typedef const FS_POINTF* FS_LPCPOINTF; typedef struct _FS_QUADPOINTSF { FS_FLOAT; FS_FLOAT; FS_FLOAT; FS_FLOAT; FS_FLOAT; FS_FLOAT; FS_FLOAT; FS_FLOAT }
+struct FX_DOWNLOADHINTS	{ int; void (*)(struct _FX_DOWNLOADHINTS*, size_t, size_t) }
+struct FX_FILEAVAIL	{ int; FPDF_BOOL (*)(struct _FX_FILEAVAIL*, size_t, size_t) }
+struct IFSDK_PAUSE	{ int; FPDF_BOOL (*)(struct _IFSDK_PAUSE*); void* }
+struct IPDF_JSPLATFORM	{ int; int (*)(struct _IPDF_JsPlatform*, FPDF_WIDESTRING, FPDF_WIDESTRING, int, int); void (*)(struct _IPDF_JsPlatform*, int); int (*)(struct _IPDF_JsPlatform*, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_BOOL, void*, int); int (*)(struct _IPDF_JsPlatform*, void*, int); void (*)(struct _IPDF_JsPlatform*, void*, int, FPDF_BOOL, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING, FPDF_WIDESTRING); void (*)(struct _IPDF_JsPlatform*, FPDF_BOOL, int, int, FPDF_BOOL, FPDF_BOOL, FPDF_BOOL, FPDF_BOOL, FPDF_BOOL); void (*)(struct _IPDF_JsPlatform*, void*, int, FPDF_WIDESTRING); void (*)(struct _IPDF_JsPlatform*, int); int (*)(struct _IPDF_JsPlatform*, void*, int); void*; void*; unsigned int }
+struct UNSUPPORT_INFO	{ int; void (*)(struct _UNSUPPORT_INFO*, int) }
