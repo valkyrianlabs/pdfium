@@ -12,6 +12,9 @@ repo=$(cd "$(dirname "$0")/../.." && pwd)
 version=$(tr -d '[:space:]' < "$repo/VERSION")
 soversion=$(tr -d '[:space:]' < "$repo/abi/soversion")
 work=$(mktemp -d)
+# Reports never go into DEB_DIR: release/ holds exactly the checksummed release artifacts.
+reports=${REPORT_DIR:-$repo/build/package-tests}
+mkdir -p "$reports"
 export DEBIAN_FRONTEND=noninteractive
 arch=$(dpkg --print-architecture)
 case "$arch" in
@@ -66,7 +69,7 @@ python3 "$repo/tests/integration.py" --probe "$work/probe" --reference-probe "$w
   --reference-label "legacy 20250629-1" \
   --reference-known "vertical_text.pdf=the legacy build compiled out the CJK CMaps and renders this page blank" \
   --strict-reference --resources "$repo/upstream/pdfium/testing/resources" \
-  --work "$work/integration" --checks fixtures,reference --report "$deb_dir/legacy-comparison.json" | tail -4
+  --work "$work/integration" --checks fixtures,reference --report "$reports/legacy-comparison.json" | tail -4
 
 step "apt autoremove after the transition"
 apt-get purge -y -qq libpdfium-2025 >/dev/null

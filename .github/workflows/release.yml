@@ -132,6 +132,21 @@ jobs:
         shell: bash -euo pipefail {0}
         run: tests/package/run release clean-install && tests/package/run release legacy-transition
 
+      # The package tests must not have changed release/: what gets uploaded and published is
+      # exactly the checksummed, validated set.
+      - name: Re-verify the release artifacts after the package tests
+        run: |
+          vlr checksums --verify
+          vlr validate-artifacts
+
+      - name: Upload package test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-test-reports-${{ needs.release-check.outputs.version }}
+          path: build/package-tests/
+          if-no-files-found: ignore
+
       - name: Rebuild from the source package and compare
         if: github.event.inputs.verify_rebuild == 'true'
         shell: bash ./tools/ci-guard -- bash -euo pipefail {0}

@@ -12,6 +12,9 @@ version=$(tr -d '[:space:]' < "$repo/VERSION")
 soversion=$(tr -d '[:space:]' < "$repo/abi/soversion")
 runtime="libpdfium${soversion}"
 work=$(mktemp -d)
+# Reports never go into DEB_DIR: release/ holds exactly the checksummed release artifacts.
+reports=${REPORT_DIR:-$repo/build/package-tests}
+mkdir -p "$reports"
 export DEBIAN_FRONTEND=noninteractive
 arch=$(dpkg --print-architecture)
 case "$arch" in
@@ -70,7 +73,7 @@ echo "pkg-config C consumer, <pdfium/...> includes, C++ scopers and find_package
 step "integration tests against the installed library"
 python3 "$repo/tests/integration.py" --probe "$work/probe" --resources "$repo/upstream/pdfium/testing/resources" \
   --work "$work/integration" --checks fixtures,malformed,corpus,pixel,consistency \
-  --report "$deb_dir/package-integration.json" | tail -3
+  --report "$reports/package-integration.json" | tail -3
 
 step "upgrade to a newer package revision"
 for package in "$runtime" libpdfium-dev; do
