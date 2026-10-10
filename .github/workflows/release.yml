@@ -44,9 +44,9 @@ env:
   RELEASE_REF: ${{ github.event.inputs.ref || github.ref }}
   CI_CACHE_NAMES: ccache pdfium-git
   PDFIUM_CACHE_DIR: /cache/pdfium-git
-  PDFIUM_JOBS: "4"
+  PDFIUM_JOBS: "10"
   CI_MEMORY: 8g
-  DEB_BUILD_OPTIONS: parallel=4
+  DEB_BUILD_OPTIONS: parallel=10
 
 jobs:
   release-check:

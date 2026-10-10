@@ -14,7 +14,7 @@ Nothing runs on the host directly:
 
 | Control | Default | Where |
 |---|---|---|
-| Compile parallelism | `PDFIUM_JOBS=4` (`ninja -j`, `DEB_BUILD_OPTIONS=parallel=4`, LTO jobs) | workflow `env`, `debian/rules` |
+| Compile parallelism | `PDFIUM_JOBS=10` (`ninja -j`, `DEB_BUILD_OPTIONS=parallel=10`, LTO jobs) | workflow `env`, `debian/rules` |
 | Container memory | `CI_MEMORY=8g` (10g for sanitizers) | `ci/run-ci --memory` |
 | One heavy PDFium build per runner | `flock ~/.cache/pdfium-ci/heavy-build.lock`, waits up to 90 min | `tools/ci-guard` |
 | Free disk before heavy steps | 8 GiB at work tree, caches, Podman storage | `tools/ci-guard` (`PDFIUM_MIN_FREE_GIB`) |
@@ -22,11 +22,12 @@ Nothing runs on the host directly:
 | Workflow concurrency | per ref (CI cancels superseded runs; releases queue) | workflow `concurrency` |
 | Job timeouts | 15 / 60 / 90 / 120 min | workflows |
 
-Measured on the dev machine (i9-13900H): a full native build at `-j8` takes about 66 s; the whole
-release pipeline (`build-deb` with LTO and tests, snapshot, validation) about 2 min; the rehearsal
-with all package tests about 5 min. `build-deb` reports the container's peak memory
-(`memory.peak`) in the workflow log; check it on the first VPS runs and tune `PDFIUM_JOBS` /
-`CI_MEMORY`, because the VPS's CPU and memory could not be inspected from here.
+Measured on the VPS runner at `-j4` (first runs, 2026-10-10): CI build + integration tests +
+audit + ABI 166 s, peak container memory 1.1 GiB; release `build-deb` (LTO, source snapshot,
+tests) 249 s, peak 1.9 GiB; the whole release dry run including package tests and the
+rebuild-from-source check about 9.5 min. Parallelism was then raised to 10 (the runner has CPU to
+spare); the workflow logs print `memory.peak` for every heavy step, so `PDFIUM_JOBS` / `CI_MEMORY`
+can be tuned from real numbers.
 
 ## Caches (all persistent, all bounded)
 
