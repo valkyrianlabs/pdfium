@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Run the package tests in disposable stock Ubuntu 24.04 containers (ci/run-ci --image).
 #
-#   tests/package/run [DEB_DIR] [clean-install|legacy-transition|rebuild-from-source|all]
+#   tests/package/run [DEB_DIR] [clean-install|legacy-transition|rebuild-from-source|published|all]
 #
 # DEB_DIR defaults to release/ (where `vlr build-deb` puts the packages). The repository is
 # mounted, so the tests use its consumer sources and the prepared upstream/ test documents.
@@ -12,9 +12,9 @@ which=${2:-all}
 image=$(sed -n 's/^FROM //p' "$repo/ci/Containerfile" | head -n1)
 case "$which" in
   all) suites=(clean-install legacy-transition rebuild-from-source) ;;
-  clean-install | legacy-transition | rebuild-from-source) suites=("$which") ;;
+  clean-install | legacy-transition | rebuild-from-source | published) suites=("$which") ;;
   *) echo "unknown suite $which" >&2; exit 2 ;;
 esac
 for suite in "${suites[@]}"; do
-  "$repo/ci/run-ci" --image "$image" --root env REBUILD_JOBS="${REBUILD_JOBS:-4}" LEGACY_DEB_DIR="${LEGACY_DEB_DIR:-}" bash "tests/package/$suite.sh" "$deb_dir"
+  "$repo/ci/run-ci" --image "$image" --root env REBUILD_JOBS="${REBUILD_JOBS:-4}" LEGACY_DEB_DIR="${LEGACY_DEB_DIR:-}" APT_URL="${APT_URL:-}" bash "tests/package/$suite.sh" "$deb_dir"
 done
