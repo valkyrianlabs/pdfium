@@ -2,12 +2,12 @@
   "schema": 1,
   "pdfium": {
     "git": "https://pdfium.googlesource.com/pdfium",
-    "commit": "bc8e654f49c980f64e08067329ff35539db80610",
-    "tree": "812753f66e3b303eedb56587c78530b626543869",
-    "committed": "2026-09-24T05:43:37-07:00",
-    "subject": "[M155] Revert \"Fix mixed-direction line extraction\"",
+    "commit": "39f0ed4a657e53ed743a16d10d77dec086a08e03",
+    "tree": "976436a689731da89bb06991b7e82311d1ad0e8f",
+    "committed": "2026-10-09T19:04:07-07:00",
+    "subject": "[M155] Correctly initialize current cell in agg::outline_aa",
     "branch": "chromium/8059",
-    "chromium_version": "155.0.8059.39",
+    "chromium_version": "155.0.8059.84",
     "milestone": 155,
     "exclude": [
       "testing/resources/fonts/**",
@@ -70,6 +70,6 @@
     "source": "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Linux&num=1",
     "channel": "Stable",
     "platform": "Linux",
-    "checked": "2026-10-10"
+    "checked": "2026-10-19"
   }
 }
