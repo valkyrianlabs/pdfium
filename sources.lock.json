@@ -2,13 +2,13 @@
   "schema": 1,
   "pdfium": {
     "git": "https://pdfium.googlesource.com/pdfium",
-    "commit": "bc8e654f49c980f64e08067329ff35539db80610",
-    "tree": "812753f66e3b303eedb56587c78530b626543869",
-    "committed": "2026-09-24T05:43:37-07:00",
-    "subject": "[M155] Revert \"Fix mixed-direction line extraction\"",
-    "branch": "chromium/8059",
-    "chromium_version": "155.0.8059.39",
-    "milestone": 155,
+    "commit": "2f22dfe030ded6a7666aeea4899d400bd2e338a4",
+    "tree": "169a013aea8c86c18e4f2fdea6a6c1b7f15fdfe6",
+    "committed": "2026-10-17T14:38:18-07:00",
+    "subject": "[M156] Guard against re-entrant destruction of the CJS_Runtime",
+    "branch": "chromium/8078",
+    "chromium_version": "156.0.8078.47",
+    "milestone": 156,
     "exclude": [
       "testing/resources/fonts/**",
       "testing/resources/font_tests/**",
@@ -70,6 +70,6 @@
     "source": "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Linux&num=1",
     "channel": "Stable",
     "platform": "Linux",
-    "checked": "2026-10-10"
+    "checked": "2026-10-26"
   }
 }

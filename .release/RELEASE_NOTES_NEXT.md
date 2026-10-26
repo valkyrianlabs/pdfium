@@ -1,9 +1,4 @@
-<!--
-vl-release staged release notes: the user-facing story of the NEXT release.
-Maintained continuously while working; `vlr prepare` promotes it into the release notes
-history (and the GitHub release) and resets this file to this template.
+# PDFium from Chromium 156
 
-Format: the first line is "# <release title>" WITHOUT a version number (vlr adds it).
-Everything after the title is the Markdown release body. Describe the resulting behavior
-for users and operators; keep it representative of what actually ships.
--->
+Updates PDFium to `chromium/8078` (Chromium 156.0.8078.47, the revision Chrome Stable ships), commit
+`2f22dfe030de`.

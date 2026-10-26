@@ -7,3 +7,4 @@ Format: one "- " bullet per change (concise, technical). Indent continuation lin
 Optional "## Section" headings group bullets; if used, every bullet must be under one.
 One level of nested "  - " detail bullets is allowed. Consolidate; don't paste commit logs.
 -->
+- Update PDFium to chromium/8078 (Chromium 156.0.8078.47, 2f22dfe030de).
