@@ -51,7 +51,7 @@ env:
 jobs:
   release-check:
     name: Release check
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     defaults:
       run:
         shell: bash ./ci/run-ci bash -euo pipefail {0}
@@ -97,7 +97,7 @@ jobs:
   release-artifacts:
     name: Build, test and validate release artifacts
     needs: release-check
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     defaults:
       run:
         shell: bash ./ci/run-ci bash -euo pipefail {0}
@@ -167,7 +167,7 @@ jobs:
 
   publish-debian:
     name: Publish Debian packages
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     defaults:
       run:
         shell: bash ./ci/run-ci bash -euo pipefail {0}
@@ -206,7 +206,7 @@ jobs:
 
   github-release:
     name: GitHub release
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     defaults:
       run:
         shell: bash ./ci/run-ci bash -euo pipefail {0}
@@ -238,7 +238,7 @@ jobs:
 
   finalize:
     name: Record the release on main
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     defaults:
       run:
         shell: bash ./ci/run-ci bash -euo pipefail {0}

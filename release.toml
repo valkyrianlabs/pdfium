@@ -9,7 +9,7 @@ requires = ">=0.3,<1"
 [project]
 name = "Vaulthalla PDFium"
 package = "libpdfium"
-repository = "vaulthalla/pdfium"
+repository = "valkyrianlabs/pdfium"
 
 [version]
 # <Chromium milestone>.<Chromium branch>.<release> — e.g. 155.8059.0 packages PDFium from

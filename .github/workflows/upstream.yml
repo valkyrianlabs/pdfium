@@ -27,7 +27,7 @@ env:
 
 jobs:
   discover:
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     defaults:
       run:
         shell: bash ./ci/run-ci bash -euo pipefail {0}
@@ -53,7 +53,7 @@ jobs:
   candidate:
     needs: discover
     if: needs.discover.outputs.update == 'true'
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     permissions:
       contents: write
       pull-requests: write

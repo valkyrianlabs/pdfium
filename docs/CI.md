@@ -1,7 +1,7 @@
 # CI and build resources
 
-The workflows run on the shared self-hosted VPS runner (`[self-hosted, Linux, X64, vaulthalla,
-vps-ci]`, user `gh-vaulthalla`, in the `ci.slice` pool it shares with the ValkyrianLabs runner).
+The workflows run on the Valkyrian Labs VPS build pool (valkyrianlabs org runners,
+`[self-hosted, Linux, X64, vps-ci]`, in the shared `ci.slice` pool).
 Nothing runs on the host directly:
 
 - Every step runs in a disposable rootless Podman container: `ci/run-ci` (copied verbatim from

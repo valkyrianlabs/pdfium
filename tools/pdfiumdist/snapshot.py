@@ -152,7 +152,7 @@ def run_snapshot(repo: Repo, *, output: str, version: str | None, revision: int)
         "debian_version": debian_version,
         "source_date_epoch": mtime,
         "created": dt.datetime.fromtimestamp(mtime, dt.timezone.utc).isoformat(),
-        "repository": {"url": "https://github.com/vaulthalla/pdfium", "commit": head or None,
+        "repository": {"url": "https://github.com/valkyrianlabs/pdfium", "commit": head or None,
                        "modified": dirty},
         "upstream": lock,
         "upstream_content_sha256": stamp.get("content"),

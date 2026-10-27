@@ -29,7 +29,7 @@ jobs:
     name: Unit tests and repository checks
     # Self-hosted runner: never run code from forks on it.
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     defaults:
       run:
         shell: bash ./ci/run-ci bash -euo pipefail {0}
@@ -52,7 +52,7 @@ jobs:
   build:
     name: Meson build, integration tests, audit, ABI
     needs: checks
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     defaults:
       run:
         shell: bash ./tools/ci-guard -- ./ci/run-ci bash -euo pipefail {0}
