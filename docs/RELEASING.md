@@ -86,8 +86,10 @@ The tag push starts `release.yml`:
 
 A dry run without publishing: run the workflow by hand with `publish: dry-run`.
 
-`release.toml [publish.apt]` targets apt.vaulthalla.sh only (where Vaulthalla installs
-`libpdfium-dev` from). Do not publish to apt.valkyrianlabs.com.
+`release.toml [publish.apt]` targets the Valkyrian Labs APT repository, apt.valkyrianlabs.com
+(where Vaulthalla installs `libpdfium-dev` from, since 156.8078.0). apt.vaulthalla.sh is an alias
+of the same index, signed by the same Valkyrian Labs LLC key; the old `vaulthalla-apt` Nexus repo
+is no longer published to.
 
 ## Publication checklist (first release)
 

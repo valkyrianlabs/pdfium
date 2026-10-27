@@ -82,9 +82,10 @@ forbidden_paths = [
 ]
 
 [publish.apt]
-# Where Vaulthalla's builds install libpdfium-dev from. Upload URL and credentials come from the
+# The Valkyrian Labs APT repository, where Vaulthalla's builds install libpdfium-dev from
+# (apt.vaulthalla.sh is an alias of the same index). Upload URL and credentials come from the
 # environment (NEXUS_APT_REPO, NEXUS_USER, NEXUS_PASSWORD); RELEASE_PUBLISH_MODE gates uploads.
-repository_url = "https://apt.vaulthalla.sh"
+repository_url = "https://apt.valkyrianlabs.com"
 suite = "stable"
 components = ["main"]
 architectures = ["amd64"]

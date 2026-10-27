@@ -23,10 +23,10 @@ this file says how it applies here.
 ## Release channels
 
 - **Debian packages** (built by `vlr build-deb` from `debian/`, revision 1):
-  - `libpdfium8059`: architecture `amd64`; must ship `usr/lib/x86_64-linux-gnu/libpdfium.so.8059`, `usr/lib/x86_64-linux-gnu/libpdfium.so.8059.0.0`, `usr/share/doc/libpdfium8059/copyright`, `usr/share/doc/libpdfium8059/sources.lock.json`; must never ship `usr/include/*`, `usr/lib/x86_64-linux-gnu/libpdfium.so`, `usr/lib/x86_64-linux-gnu/pkgconfig/*`, `usr/lib/x86_64-linux-gnu/*.a`; ships byte-identical copies of `sources.lock.json`
-  - `libpdfium-dev`: architecture `amd64`; must ship `usr/include/pdfium/fpdfview.h`, `usr/include/pdfium/fpdf_text.h`, `usr/include/pdfium/fpdf_thumbnail.h`, `usr/include/pdfium/cpp/fpdf_scopers.h`, `usr/include/pdfium/public`, `usr/lib/x86_64-linux-gnu/libpdfium.so`, `usr/lib/x86_64-linux-gnu/pkgconfig/pdfium.pc`, `usr/lib/x86_64-linux-gnu/cmake/pdfium/PdfiumConfig.cmake`, `usr/lib/x86_64-linux-gnu/cmake/pdfium/PdfiumConfigVersion.cmake`, `usr/share/doc/libpdfium-dev/copyright`; must never ship `usr/lib/x86_64-linux-gnu/libpdfium.so.*`, `usr/lib/x86_64-linux-gnu/*.a`, `usr/include/pdfium/*.cpp`
+  - `libpdfium8059`: architecture `amd64`; must ship `usr/lib/*/libpdfium.so.8059`, `usr/lib/*/libpdfium.so.8059.0.0`, `usr/share/doc/libpdfium8059/copyright`, `usr/share/doc/libpdfium8059/sources.lock.json`; must never ship `*.pdf`, `*.ttf`, `*.otf`, `*.cff`, `*/testing/*`, `usr/include/*`, `usr/lib/*/libpdfium.so`, `usr/lib/*/pkgconfig/*`, `usr/lib/*/*.a`; ships byte-identical copies of `sources.lock.json`
+  - `libpdfium-dev`: architecture `amd64`; must ship `usr/include/pdfium/fpdfview.h`, `usr/include/pdfium/fpdf_text.h`, `usr/include/pdfium/fpdf_thumbnail.h`, `usr/include/pdfium/cpp/fpdf_scopers.h`, `usr/include/pdfium/public`, `usr/lib/*/libpdfium.so`, `usr/lib/*/pkgconfig/pdfium.pc`, `usr/lib/*/cmake/pdfium/PdfiumConfig.cmake`, `usr/lib/*/cmake/pdfium/PdfiumConfigVersion.cmake`, `usr/share/doc/libpdfium-dev/copyright`; must never ship `*.pdf`, `*.ttf`, `*.otf`, `*.cff`, `*/testing/*`, `usr/lib/*/libpdfium.so.*`, `usr/lib/*/*.a`, `usr/include/pdfium/*.cpp`
   - pre-build: `python3 tools/pdfium-dist prepare`; `python3 tools/pdfium-dist snapshot --output build/source`
-- **APT**: https://apt.vaulthalla.sh (suite `stable`, components main), published by release CI with `vlr publish-deb`
+- **APT**: https://apt.valkyrianlabs.com (suite `stable`, components main), published by release CI with `vlr publish-deb`
 
 ## Before considering substantial work complete
 

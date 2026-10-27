@@ -175,9 +175,9 @@ jobs:
     if: needs.release-check.outputs.publish_required == 'true'
     environment: Production
     timeout-minutes: 45
-    # One APT publication at a time across tags (and with Vaulthalla's, which shares the repository).
+    # One APT publication at a time across tags and every Valkyrian Labs publisher (one repository).
     concurrency:
-      group: vaulthalla-apt-publish
+      group: valkyrianlabs-apt-publish
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4

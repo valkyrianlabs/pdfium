@@ -2,7 +2,7 @@
 # Transition from the legacy packages (libpdfium-2025 / libpdfium-dev 20250629-1) to these
 # packages, and a differential comparison of both builds (run as root by tests/package/run).
 # The legacy .debs come from LEGACY_DEB_DIR (a directory inside the repository, e.g. a copy of
-# the last legacy build) or, failing that, from apt.vaulthalla.sh (read-only); when neither has
+# the last legacy build) or, failing that, from apt.valkyrianlabs.com (read-only); when neither has
 # them the suite is skipped. Nothing is published.
 #
 #   [LEGACY_DEB_DIR=DIR] tests/package/legacy-transition.sh DEB_DIR
@@ -37,15 +37,15 @@ if [ -n "${LEGACY_DEB_DIR:-}" ] && ls "$LEGACY_DEB_DIR"/libpdfium-dev_20250629-1
     "$LEGACY_DEB_DIR"/libpdfium-dev_20250629-1_${arch}.deb >/dev/null
 else
   install -d -m 0755 /etc/apt/keyrings
-  curl -fsSL https://apt.vaulthalla.sh/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/vaulthalla.gpg
-  echo "deb [arch=${arch} signed-by=/etc/apt/keyrings/vaulthalla.gpg] https://apt.vaulthalla.sh stable main" \
-    > /etc/apt/sources.list.d/vaulthalla.list
+  curl -fsSL https://apt.valkyrianlabs.com/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/valkyrianlabs.gpg
+  echo "deb [arch=${arch} signed-by=/etc/apt/keyrings/valkyrianlabs.gpg] https://apt.valkyrianlabs.com stable main" \
+    > /etc/apt/sources.list.d/valkyrianlabs.list
   apt-get update -qq
   if ! apt-cache show libpdfium-dev=20250629-1 >/dev/null 2>&1; then
-    echo "SKIP: no legacy packages (set LEGACY_DEB_DIR; apt.vaulthalla.sh no longer publishes them)"
+    echo "SKIP: no legacy packages (set LEGACY_DEB_DIR; the APT repository no longer publishes them)"
     exit 0
   fi
-  echo "from apt.vaulthalla.sh"
+  echo "from apt.valkyrianlabs.com"
   apt-get install -y -qq --no-install-recommends libpdfium-dev=20250629-1 >/dev/null
 fi
 echo "legacy: $(dpkg-query -W -f '${Package} ${Version}\n' libpdfium-2025 libpdfium-dev | tr '\n' ' ')"

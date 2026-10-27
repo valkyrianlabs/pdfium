@@ -12,8 +12,8 @@ repo=$(cd "$(dirname "$0")/../.." && pwd)
 version=$(tr -d '[:space:]' < "$repo/VERSION")
 soversion=$(tr -d '[:space:]' < "$repo/abi/soversion")
 runtime="libpdfium${soversion}"
-apt_url=${APT_URL:-https://apt.vaulthalla.sh}
-[ -n "$apt_url" ] || apt_url=https://apt.vaulthalla.sh
+apt_url=${APT_URL:-https://apt.valkyrianlabs.com}
+[ -n "$apt_url" ] || apt_url=https://apt.valkyrianlabs.com
 work=$(mktemp -d)
 export DEBIAN_FRONTEND=noninteractive
 arch=$(dpkg --print-architecture)
@@ -25,9 +25,9 @@ step "configure $apt_url"
 apt-get update -qq
 apt-get install -y -qq --no-install-recommends ca-certificates curl gnupg >/dev/null
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL "$apt_url/pubkey.gpg" | gpg --dearmor -o /etc/apt/keyrings/vaulthalla.gpg
-echo "deb [arch=${arch} signed-by=/etc/apt/keyrings/vaulthalla.gpg] $apt_url stable main" \
-  > /etc/apt/sources.list.d/vaulthalla.list
+curl -fsSL "$apt_url/pubkey.gpg" | gpg --dearmor -o /etc/apt/keyrings/valkyrianlabs.gpg
+echo "deb [arch=${arch} signed-by=/etc/apt/keyrings/valkyrianlabs.gpg] $apt_url stable main" \
+  > /etc/apt/sources.list.d/valkyrianlabs.list
 apt-get update -qq
 
 step "apt resolution"
