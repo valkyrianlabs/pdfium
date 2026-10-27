@@ -39,7 +39,8 @@ tools/release-rehearsal            # prepare → build-deb → validate → pack
 
 ## Updating upstream (summary)
 
-1. `tools/upstream-candidate` (or the weekly `upstream.yml` workflow, which opens a PR).
+1. `tools/upstream-candidate` (or the weekly `upstream.yml` workflow, which opens a PR and releases
+   it by itself when `pdfium-dist gate` passes: docs/MAINTENANCE.md, *Auto-release*).
 2. Fix every `DRIFT` line of the audit in `meson/**` / `upstream.toml`; re-run until clean.
 3. ABI: additions keep the SONAME; a break triggers `soname-bump <branch>` then `abi --update`.
 4. Edit `.release/*_NEXT.md`, merge, `vlr cut … --push`.

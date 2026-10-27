@@ -61,6 +61,15 @@ Consumers: `pkg-config pdfium` gives `-I/usr/include/pdfium -lpdfium`, so both
 `#include <pdfium/fpdfview.h>` (Vaulthalla) and `#include <fpdfview.h>` work; CMake consumers use
 `find_package(Pdfium)` and `Pdfium::pdfium`. Packages target Ubuntu 24.04 (noble), amd64.
 
+## Automatic releases
+
+`upstream.yml` releases a clean upstream candidate by itself (gate: docs/MAINTENANCE.md,
+*Auto-release*): it merges the pull request, runs `vlr cut <VERSION> --push --skip-tests` on the
+merge commit, and dispatches this workflow on the tag with `publish: publish`. The tag push itself
+starts nothing (GITHUB_TOKEN pushes never trigger workflows), so there is exactly one release run.
+Finalize pushes the release record to `main` with `RELEASE_FINALIZE_TOKEN` when set, else the job's
+token (enough while `main` is unprotected). Set `UPSTREAM_AUTO_RELEASE=false` to stop it.
+
 ## Cutting a release
 
 ```sh
@@ -96,6 +105,7 @@ is no longer published to.
 - [x] Legacy packages removed from apt.vaulthalla.sh.
 - [ ] Repository `valkyrianlabs/pdfium` with the `Production` environment, `RELEASE_PUBLISH_MODE`,
       Nexus secrets/variables, and (for finalize on a protected `main`) `RELEASE_FINALIZE_TOKEN`.
-- [ ] "Allow GitHub Actions to create and approve pull requests" for `upstream.yml`.
+- [ ] "Allow GitHub Actions to create and approve pull requests" for `upstream.yml` (it opens, and
+      for auto-releases merges, the upstream pull requests).
 - [ ] Rebuild Vaulthalla against the new `libpdfium-dev` (its runtime dependency becomes
       `libpdfium8059`).

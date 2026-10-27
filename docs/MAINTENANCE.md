@@ -11,7 +11,8 @@ The Chromium Dashboard (`fetch_releases`) reports the exact PDFium commit each C
 
 **Tracking policy** (`upstream.toml [tracking]`): adopt the PDFium commit Chrome **Stable** ships on
 **Linux**. `tools/pdfium-dist discover` reads it from the dashboard and checks on googlesource.com
-that it belongs to the named release branch. Nothing is adopted or released automatically.
+that it belongs to the named release branch. A candidate that needs no judgement is released
+automatically (see *Auto-release* below); everything else waits for a maintainer.
 
 ## The pins
 
@@ -43,7 +44,32 @@ cat build/upstream-candidate/report.md
 The weekly `upstream.yml` workflow does the same and opens a pull request with the report.
 `upstream-candidate` pins the revision, sets `VERSION` (see `docs/RELEASING.md`), prepares the
 sources, runs the static audit, builds, runs the integration tests, the full audit and the ABI
-check, and stages templated release docs. Then work through the report:
+check, records the audit baseline when there is nothing to review, stages release docs from those
+facts, and writes `build/upstream-candidate/result.json`.
+
+### Auto-release
+
+`tools/pdfium-dist gate` (`tools/pdfiumdist/gate.py`) reads `result.json`. The candidate is released
+without a maintainer only when all of these hold:
+
+- the candidate passed: build, integration tests, both audits, `vlr check`, unit tests;
+- the audit has **no DRIFT finding and no new REVIEW item** (nothing a maintainer has not seen;
+  standing items accepted at the last `--update-baseline`, `audit/baseline.json` `accepted_review`,
+  do not count);
+- the ABI is **identical or additions only** (same SONAME; a break always waits for a maintainer,
+  since every consumer must be rebuilt);
+- `main` has not moved since the candidate was built (otherwise the release would contain untested
+  commits).
+
+Then `upstream.yml` merges the pull request, `vlr cut <VERSION> --push` tags the merge commit
+(VERSION is already set, so there is no version commit), and `release.yml` is dispatched on the tag
+with `publish: publish`: the normal release transaction (release check, `build-deb`, package tests,
+APT publication, GitHub release, finalize). In practice: newer cherry-picks on the same Chromium
+branch release by themselves; a new milestone usually brings REVIEW items or drift and waits.
+Anything that fails the gate stays a pull request labelled `needs-review`, with the reasons in its
+body. The repository variable `UPSTREAM_AUTO_RELEASE=false` turns auto-release off.
+
+When a candidate needs a maintainer, work through the report:
 
 ### 1. Reconcile audit findings (`DRIFT` lines)
 

@@ -50,7 +50,7 @@ once locally). Fixing it belongs in the shared script (e.g. not removing images 
 |---|---|---|
 | `ci.yml` | push to main, PRs from this repository | unit tests, `vlr check`, source verification; guarded build, integration tests, audit, ABI |
 | `release.yml` | `v*` tag, manual | `docs/RELEASING.md` |
-| `upstream.yml` | weekly, manual | discover; candidate build/test; pull request with the report |
+| `upstream.yml` | weekly, manual | discover; candidate build/test; pull request with the report; on a passing `pdfium-dist gate`, merge, `vlr cut` and dispatch `release.yml` on the tag |
 | `sanitizers.yml` | monthly, manual | ASan + UBSan build over all test documents |
 
 Fork pull requests never run on the self-hosted runner.

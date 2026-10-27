@@ -1,9 +1,17 @@
 name: Upstream watch
 
 # Weekly: is there a newer PDFium revision in Chrome Stable? If so, build and test it as a
-# candidate (tools/upstream-candidate) and open a pull request with the report. Nothing is
-# released automatically: a maintainer reviews, reconciles anything the audit flags, merges, and
-# cuts the release with `vlr cut` (docs/MAINTENANCE.md).
+# candidate (tools/upstream-candidate) and open a pull request with the report.
+#
+# Auto-release: when `tools/pdfium-dist gate` passes (candidate green, no audit DRIFT or REVIEW
+# item, ABI identical or additions only) and main has not moved since the candidate was built, the
+# pull request is merged, `vlr cut <VERSION>` tags the merge, and release.yml is dispatched on the
+# tag to publish. Anything else stays a pull request labelled `needs-review`, with the reasons, for a
+# maintainer to reconcile, merge and cut (docs/MAINTENANCE.md). The repository variable
+# UPSTREAM_AUTO_RELEASE=false turns auto-release off (pull requests only).
+#
+# A tag pushed with GITHUB_TOKEN starts no workflow, so the release is started with
+# workflow_dispatch (which GITHUB_TOKEN may trigger) on the tag, exactly like a manual publish.
 #
 # Needs "Allow GitHub Actions to create and approve pull requests" in the repository settings.
 
@@ -57,7 +65,10 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: write
     timeout-minutes: 90
+    env:
+      AUTO_RELEASE: ${{ vars.UPSTREAM_AUTO_RELEASE != 'false' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -66,10 +77,12 @@ jobs:
         id: existing
         shell: bash ./ci/run-ci bash -euo pipefail {0}
         env:
-          GH_TOKEN: ${{ github.token }}
           BRANCH: upstream/${{ needs.discover.outputs.branch }}-${{ needs.discover.outputs.commit }}
         run: |
-          if git ls-remote --exit-code origin "refs/heads/${BRANCH//chromium\//chromium-}" >/dev/null; then
+          branch="${BRANCH//chromium\//chromium-}"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          echo "base=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code origin "refs/heads/$branch" >/dev/null; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
@@ -80,21 +93,78 @@ jobs:
         continue-on-error: true
         shell: bash ./tools/ci-guard -- ./ci/run-ci bash -euo pipefail {0}
         run: tools/upstream-candidate
+      - name: Release gate
+        id: gate
+        if: steps.existing.outputs.exists == 'false'
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+        run: |
+          result=build/upstream-candidate/result.json
+          if [ ! -f "$result" ]; then
+            printf 'release=false\nblockers<<GATE_EOF\n- the candidate stopped before writing %s\nGATE_EOF\n' "$result" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          python3 tools/pdfium-dist gate "$result" --github-output
       - name: Open a pull request with the report
+        id: pr
         if: steps.existing.outputs.exists == 'false'
         shell: bash ./ci/run-ci bash -euo pipefail {0}
         env:
           GH_TOKEN: ${{ github.token }}
           OUTCOME: ${{ steps.candidate.outcome }}
-          BRANCH: upstream/${{ needs.discover.outputs.branch }}-${{ needs.discover.outputs.commit }}
+          RELEASE: ${{ steps.gate.outputs.release }}
+          BLOCKERS: ${{ steps.gate.outputs.blockers }}
+          BRANCH: ${{ steps.existing.outputs.branch }}
         run: |
-          branch="${BRANCH//chromium\//chromium-}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git switch -c "$branch"
-          git add -A sources.lock.json VERSION abi debian release.toml .release
+          git switch -c "$BRANCH"
+          git add -A sources.lock.json VERSION abi audit debian release.toml .release
           git commit -m "Update PDFium to ${{ needs.discover.outputs.branch }} (${{ needs.discover.outputs.commit }})"
-          git push origin "$branch"
+          git push origin "$BRANCH"
+          body=build/upstream-candidate/pr-body.md
+          cp build/upstream-candidate/report.md "$body"
           title="Update PDFium to ${{ needs.discover.outputs.branch }}"
-          [ "$OUTCOME" = "success" ] || title="$title (needs work)"
-          gh pr create --base main --head "$branch" --title "$title" --body-file build/upstream-candidate/report.md
+          labels=(--label upstream)
+          gh label create upstream --color 0E8A16 --description "Upstream update (upstream.yml)" --force >/dev/null
+          if [ "$RELEASE" = "true" ] && [ "$AUTO_RELEASE" = "true" ]; then
+            printf '\n## Auto-release\n\nThe release gate passed: this pull request is merged and released automatically.\n' >> "$body"
+          else
+            gh label create needs-review --color D93F0B --description "Needs a maintainer before release" --force >/dev/null
+            labels+=(--label needs-review)
+            [ "$OUTCOME" = "success" ] || title="$title (needs work)"
+            if [ "$RELEASE" = "true" ]; then
+              printf '\n## Auto-release\n\nThe release gate passed, but auto-release is off (UPSTREAM_AUTO_RELEASE=false).\n' >> "$body"
+            else
+              printf '\n## Auto-release\n\nNot released automatically:\n\n%s\n' "$BLOCKERS" >> "$body"
+            fi
+          fi
+          url=$(gh pr create --base main --head "$BRANCH" --title "$title" --body-file "$body" "${labels[@]}")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+      - name: Merge, tag and release
+        if: steps.existing.outputs.exists == 'false' && steps.gate.outputs.release == 'true' && env.AUTO_RELEASE == 'true'
+        shell: bash ./ci/run-ci bash -euo pipefail {0}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE: ${{ steps.existing.outputs.base }}
+          BRANCH: ${{ steps.existing.outputs.branch }}
+          PR: ${{ steps.pr.outputs.url }}
+          VERSION_EXPECTED: ${{ steps.gate.outputs.version }}
+        run: |
+          # The candidate was built on BASE: if main moved since, what would be released is untested.
+          head=$(git ls-remote origin refs/heads/main | cut -f1)
+          if [ "$head" != "$BASE" ]; then
+            gh label create needs-review --color D93F0B --description "Needs a maintainer before release" --force >/dev/null
+            gh pr edit "$PR" --add-label needs-review
+            gh pr comment "$PR" --body "Not released automatically: main moved from \`${BASE:0:12}\` to \`${head:0:12}\` while the candidate was built. Merge and cut by hand (\`vlr cut $VERSION_EXPECTED --push\`), or re-run Upstream watch after deleting this branch."
+            exit 0
+          fi
+          gh pr merge "$PR" --squash --delete-branch --match-head-commit "$(git rev-parse HEAD)"
+          git fetch --quiet origin main
+          git switch --quiet -C main origin/main
+          [ "$(tr -d '[:space:]' < VERSION)" = "$VERSION_EXPECTED" ] || { echo "::error::main's VERSION is not $VERSION_EXPECTED"; exit 1; }
+          # VERSION is already set and unreleased, so `vlr cut` tags the merge commit (no version commit).
+          vlr cut "$VERSION_EXPECTED" --push --skip-tests --json > build/cut.json
+          cat build/cut.json
+          tag=$(python3 -c 'import json; print(json.load(open("build/cut.json"))["tag"])')
+          gh workflow run release.yml --ref "$tag" -f publish=publish
+          gh pr comment "$PR" --body "Released automatically: tagged \`$tag\` and started release.yml on it (${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/workflows/release.yml)."
