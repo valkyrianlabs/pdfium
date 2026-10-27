@@ -11,9 +11,12 @@
 #   3. export the sources, configure and build with Meson, run the integration tests
 #   4. upstream audit and ABI check; on an ABI break, move to the new SONAME (soname-bump) and
 #      record the new API; on additions, record them (Debian symbols file)
-#   5. stage templated release docs if none are staged
-# Every step's result goes to build/upstream-candidate/report.md; the exit status is 0 only if the
-# build, tests and audit passed. An ABI break is reported for review but is not a failure.
+#   5. on a clean audit (no DRIFT, no REVIEW item) record the new upstream facts in audit/baseline.json
+#   6. stage release docs from the facts above (appended to anything already staged)
+# Every step's result goes to build/upstream-candidate/report.md and the machine-readable
+# build/upstream-candidate/result.json (`tools/pdfium-dist gate` decides from it whether upstream.yml
+# may release without a maintainer). The exit status is 0 only if the build, tests and audit passed.
+# An ABI break is reported for review but is not a failure.
 set -uo pipefail
 repo=$(cd "$(dirname "$0")/.." && pwd)
 cd "$repo"
@@ -90,6 +93,7 @@ else
   record "ABI check (public headers only; no library was built)" dist abi || true
 fi
 soversion=$(tr -d '[:space:]' < abi/soversion)
+abi_class=$(python3 -c 'import sys; sys.path.insert(0, "tools"); from pdfiumdist.gate import abi_class; print(abi_class(int(sys.argv[1])))' "$abi_rc")
 if [ "$abi_rc" -eq 1 ]; then
   record "SONAME bump (ABI break)" dist soname-bump "$branch_number" || status=1
   soversion=$branch_number
@@ -100,27 +104,58 @@ if [ "$abi_rc" -eq 1 ] || [ "$abi_rc" -eq 3 ]; then
   record "Record the API (abi/public-api.txt, symbols file)" dist abi --library build/candidate/libpdfium.so --update || status=1
 fi
 
-if ! grep -q '^# ' .release/RELEASE_NOTES_NEXT.md; then
-  cat > .release/RELEASE_NOTES_NEXT.md <<EOF
-# PDFium from Chromium ${milestone}
+# Audit counts from the run with compile defines (absent if the build stopped earlier).
+drift=None
+review=None
+if [ -f "$out/audit.json" ]; then
+  drift=$(python3 -c 'import json, sys; print(len(json.load(open(sys.argv[1]))["findings"]))' "$out/audit.json")
+  review=$(python3 -c 'import json, sys; print(len(json.load(open(sys.argv[1]))["review"]))' "$out/audit.json")
+fi
+# Nothing new to review: record this revision's facts, as a maintainer would after reading none.
+if [ "$status" -eq 0 ] && [ "$drift" = 0 ] && [ "$review" = 0 ]; then
+  record "Audit baseline (no review items)" dist audit --builddir build/candidate --update-baseline || status=1
+fi
 
-Updates PDFium to \`${new_branch}\` (Chromium ${chromium}, the revision Chrome Stable ships), commit
-\`${new_commit:0:12}\`.
-EOF
-  if [ "$abi_rc" -eq 1 ]; then
-    printf '\nThe ABI changed: the runtime package is now `libpdfium%s` (`libpdfium.so.%s`). Rebuild consumers against `libpdfium-dev`.\n' "$soversion" "$soversion" >> .release/RELEASE_NOTES_NEXT.md
-  fi
+case "$abi_class" in
+  identical) abi_note="The public API and ABI are unchanged (\`libpdfium.so.${soversion}\`)." ;;
+  additions) abi_note="The public API gains new functions or constants; the ABI stays compatible (\`libpdfium.so.${soversion}\`, new symbols recorded in the Debian symbols file)." ;;
+  break) abi_note="The ABI changed: the runtime package is now \`libpdfium${soversion}\` (\`libpdfium.so.${soversion}\`). Rebuild consumers against \`libpdfium-dev\`." ;;
+  *) abi_note="The ABI was not checked against a built library." ;;
+esac
+if [ "$new_branch" != "$old_branch" ]; then
+  update_line="Updates PDFium to \`${new_branch}\` (Chromium ${chromium}, the revision Chrome Stable ships), commit \`${new_commit:0:12}\`."
+else
+  update_line="Updates PDFium to a newer revision of \`${new_branch}\` (Chromium ${chromium}, the revision Chrome Stable ships), commit \`${new_commit:0:12}\`."
 fi
-if ! grep -q '^- ' .release/CHANGELOG_NEXT.md; then
-  {
-    echo "- Update PDFium to ${new_branch} (Chromium ${chromium}, ${new_commit:0:12})."
-    [ "$abi_rc" -eq 1 ] && echo "- Move to SONAME libpdfium.so.${soversion} (incompatible upstream API changes)."
-  } >> .release/CHANGELOG_NEXT.md
+if ! grep -q '^# ' .release/RELEASE_NOTES_NEXT.md; then
+  printf '# PDFium from Chromium %s\n' "$milestone" >> .release/RELEASE_NOTES_NEXT.md
 fi
+{
+  printf '\n%s %s\n' "$update_line" "$abi_note"
+  printf '\nUpstream changes: https://pdfium.googlesource.com/pdfium/+log/%s..%s\n' "$old_commit" "$new_commit"
+} >> .release/RELEASE_NOTES_NEXT.md
+{
+  echo "- Update PDFium to ${new_branch} (Chromium ${chromium}, ${new_commit:0:12})."
+  [ "$abi_rc" -eq 1 ] && echo "- Move to SONAME libpdfium.so.${soversion} (incompatible upstream API changes)."
+  [ "$abi_rc" -eq 3 ] && echo "- Record the upstream API additions in the symbols file (same SONAME)."
+  true
+} >> .release/CHANGELOG_NEXT.md
 record "vl-release check" vlr check || status=1
 record "Repository consistency" python3 -m unittest discover -s tests/unit -t . || status=1
 
 { printf '\n## Summary\n\n'; cat "$out/summary"; } >> "$report"
+python3 - "$out/result.json" <<EOF
+import json, sys
+json.dump({
+    "status": "passed" if $status == 0 else "failed",
+    "abi": "$abi_class", "soversion": "$soversion",
+    "drift": $drift, "review": $review,
+    "old_version": "$old_version", "new_version": "$new_version",
+    "old_branch": "$old_branch", "new_branch": "$new_branch",
+    "old_commit": "$old_commit", "new_commit": "$new_commit",
+    "chromium_version": "$chromium", "milestone": "$milestone",
+}, open(sys.argv[1], "w"), indent=2)
+EOF
 sed -i "1a\\
 \\
 **Result: $([ "$status" -eq 0 ] && echo 'build, tests and audit passed' || echo 'NEEDS WORK: see the failing steps')**$([ "$abi_rc" -eq 1 ] && echo ' — ABI break, SONAME bumped')" "$report"

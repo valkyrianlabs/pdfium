@@ -141,6 +141,13 @@ def cmd_verify_snapshot(args: argparse.Namespace) -> int:
     return run_verify_snapshot(find_repo(), args.directory, offline=args.offline)
 
 
+def cmd_gate(args: argparse.Namespace) -> int:
+    from .gate import run_gate
+
+    status = run_gate(args.result, github_output=args.github_output)
+    return 0 if args.github_output is not None else status
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pdfium-dist", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -200,6 +207,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("directory", help="directory with the snapshot artifacts and provenance record")
     p.add_argument("--offline", action="store_true")
     p.set_defaults(func=cmd_verify_snapshot)
+
+    p = sub.add_parser("gate", help="decide whether an upstream candidate may be released without a maintainer")
+    p.add_argument("result", nargs="?", default="build/upstream-candidate/result.json",
+                   help="the candidate's result.json (default: build/upstream-candidate/result.json)")
+    p.add_argument("--github-output", nargs="?", const="", default=None,
+                   help="append release/version/blockers to this file ($GITHUB_OUTPUT without a value) and exit 0")
+    p.set_defaults(func=cmd_gate)
     return parser
 
 
