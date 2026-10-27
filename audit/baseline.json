@@ -1,7 +1,7 @@
 {
   "include_prefixes": {
     "build/build_config.h": 44,
-    "third_party/abseil-cpp": 3,
+    "third_party/abseil-cpp": 4,
     "third_party/agg23": 9,
     "third_party/dragonbox": 1,
     "third_party/fast_float": 2,
@@ -12,7 +12,7 @@
     "third_party/skia": 17,
     "third_party/zlib": 1
   },
-  "pdfium": "bc8e654f49c980f64e08067329ff35539db80610",
+  "pdfium": "2f22dfe030ded6a7666aeea4899d400bd2e338a4",
   "pdfium_gni_args": [
     "enable_callgrind",
     "pdf_bundle_freetype",
@@ -86,16 +86,6 @@
       ],
       "external_deps": [],
       "sources": 54
-    },
-    "//core/fpdfapi/edit:contentstream_write_utils": {
-      "defines": [
-        "OPJ_STATIC",
-        "PDF_USE_AGG"
-      ],
-      "external_deps": [
-        "//third_party/dragonbox:dragonbox"
-      ],
-      "sources": 1
     },
     "//core/fpdfapi/edit:edit": {
       "defines": [
@@ -179,10 +169,11 @@
       "external_deps": [
         "//:freetype_common",
         "//third_party/abseil-cpp:absl",
+        "//third_party/dragonbox:dragonbox",
         "//third_party/fast_float:fast_float",
         "//third_party/icu:icuuc"
       ],
-      "sources": 39
+      "sources": 40
     },
     "//core/fxge:fxge": {
       "defines": [

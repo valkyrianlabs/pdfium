@@ -112,7 +112,6 @@ use_clang_modules = false
 "//core/fdrm:fdrm" = "fdrm"
 "//core/fpdfapi/cmaps:cmaps" = "fpdfapi_cmaps"
 "//core/fpdfapi/edit:edit" = "fpdfapi_edit"
-"//core/fpdfapi/edit:contentstream_write_utils" = "fpdfapi_contentstream_write_utils"
 "//core/fpdfapi/font:font" = "fpdfapi_font"
 "//core/fpdfapi/page:page" = "fpdfapi_page"
 "//core/fpdfapi/parser:parser" = "fpdfapi_parser"

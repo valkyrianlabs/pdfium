@@ -7,7 +7,7 @@ pdfium_components += [{
   'name': 'fxcrt',
   'gn': '//core/fxcrt:fxcrt',
   'dir': 'core/fxcrt',
-  'dependencies': [fast_float_dep],
+  'dependencies': [fast_float_dep, dragonbox_dep],
   'sources': [
     'binary_buffer.cpp',
     'bytestring.cpp',
@@ -33,6 +33,7 @@ pdfium_components += [{
     'fx_system.cpp',
     'fx_unicode.cpp',
     'observed_ptr.cpp',
+    'stream_write_utils.cpp',
     'string_data_template.cpp',
     'string_template.cpp',
     'widestring.cpp',

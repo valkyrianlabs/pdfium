@@ -1,6 +1,6 @@
 # libpdfium public API of the current SONAME (tools/pdfium-dist abi --update; do not edit).
 # soversion 8059
-# pdfium bc8e654f49c980f64e08067329ff35539db80610
+# pdfium 2f22dfe030ded6a7666aeea4899d400bd2e338a4
 const FLATTEN_FAIL	0
 const FLATTEN_NOTHINGTODO	2
 const FLATTEN_SUCCESS	1
@@ -377,6 +377,7 @@ func FPDFAnnot_SetRect	FPDF_BOOL FPDFAnnot_SetRect(FPDF_ANNOTATION, const FS_REC
 func FPDFAnnot_SetStringValue	FPDF_BOOL FPDFAnnot_SetStringValue(FPDF_ANNOTATION, FPDF_BYTESTRING, FPDF_WIDESTRING)
 func FPDFAnnot_SetURI	FPDF_BOOL FPDFAnnot_SetURI(FPDF_ANNOTATION, const char*)
 func FPDFAnnot_UpdateObject	FPDF_BOOL FPDFAnnot_UpdateObject(FPDF_ANNOTATION, FPDF_PAGEOBJECT)
+func FPDFAttachment_GetAFRelationship	unsigned long FPDFAttachment_GetAFRelationship(FPDF_ATTACHMENT, FPDF_WCHAR*, unsigned long)
 func FPDFAttachment_GetDescription	unsigned long FPDFAttachment_GetDescription(FPDF_ATTACHMENT, FPDF_WCHAR*, unsigned long)
 func FPDFAttachment_GetFile	FPDF_BOOL FPDFAttachment_GetFile(FPDF_ATTACHMENT, void*, unsigned long, unsigned long*)
 func FPDFAttachment_GetName	unsigned long FPDFAttachment_GetName(FPDF_ATTACHMENT, FPDF_WCHAR*, unsigned long)
@@ -512,6 +513,7 @@ func FPDFPageObj_GetLineJoin	int FPDFPageObj_GetLineJoin(FPDF_PAGEOBJECT)
 func FPDFPageObj_GetMark	FPDF_PAGEOBJECTMARK FPDFPageObj_GetMark(FPDF_PAGEOBJECT, unsigned long)
 func FPDFPageObj_GetMarkedContentID	int FPDFPageObj_GetMarkedContentID(FPDF_PAGEOBJECT)
 func FPDFPageObj_GetMatrix	FPDF_BOOL FPDFPageObj_GetMatrix(FPDF_PAGEOBJECT, FS_MATRIX*)
+func FPDFPageObj_GetRenderedFillPattern	FPDF_BITMAP FPDFPageObj_GetRenderedFillPattern(FPDF_DOCUMENT, FPDF_PAGEOBJECT)
 func FPDFPageObj_GetRenderedStrokePattern	FPDF_BITMAP FPDFPageObj_GetRenderedStrokePattern(FPDF_DOCUMENT, FPDF_PAGEOBJECT)
 func FPDFPageObj_GetRotatedBounds	FPDF_BOOL FPDFPageObj_GetRotatedBounds(FPDF_PAGEOBJECT, FS_QUADPOINTSF*)
 func FPDFPageObj_GetStrokeColor	FPDF_BOOL FPDFPageObj_GetStrokeColor(FPDF_PAGEOBJECT, unsigned int*, unsigned int*, unsigned int*, unsigned int*)

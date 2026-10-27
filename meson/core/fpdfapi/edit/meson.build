@@ -20,14 +20,3 @@ pdfium_components += [{
     'cpdf_stringarchivestream.cpp',
   ],
 }]
-
-# contentstream_write_utils
-pdfium_components += [{
-  'name': 'fpdfapi_contentstream_write_utils',
-  'gn': '//core/fpdfapi/edit:contentstream_write_utils',
-  'dir': 'core/fpdfapi/edit',
-  'dependencies': [dragonbox_dep],
-  'sources': [
-    'cpdf_contentstream_write_utils.cpp',
-  ],
-}]

@@ -97,6 +97,7 @@ libpdfium.so.8059 libpdfium8059 #MINVER#
  FPDFAnnot_SetStringValue@Base 155.8059.0
  FPDFAnnot_SetURI@Base 155.8059.0
  FPDFAnnot_UpdateObject@Base 155.8059.0
+ FPDFAttachment_GetAFRelationship@Base 156.8078.0
  FPDFAttachment_GetDescription@Base 155.8059.0
  FPDFAttachment_GetFile@Base 155.8059.0
  FPDFAttachment_GetName@Base 155.8059.0
@@ -232,6 +233,7 @@ libpdfium.so.8059 libpdfium8059 #MINVER#
  FPDFPageObj_GetMark@Base 155.8059.0
  FPDFPageObj_GetMarkedContentID@Base 155.8059.0
  FPDFPageObj_GetMatrix@Base 155.8059.0
+ FPDFPageObj_GetRenderedFillPattern@Base 156.8078.0
  FPDFPageObj_GetRenderedStrokePattern@Base 155.8059.0
  FPDFPageObj_GetRotatedBounds@Base 155.8059.0
  FPDFPageObj_GetStrokeColor@Base 155.8059.0
