@@ -65,7 +65,20 @@ class GateTest(unittest.TestCase):
             text = output.read_text()
             self.assertIn("release=false\n", text)
             self.assertIn("version=156.8078.0\n", text)
-            self.assertIn("- 1 audit REVIEW item(s)", text)
+            self.assertIn("- 1 new audit REVIEW item(s)", text)
+
+    def test_accepted_review_items_do_not_count(self):
+        from pdfiumdist import audit
+
+        standing = {"kind": "headers", "message": "public/fpdf_thumbnail.h is installed although x omits it"}
+        new = {"kind": "gn-args", "message": "pdfium.gni declares a new build argument 'x'"}
+        baseline = {"accepted_review": [standing["message"]]}
+        self.assertEqual(audit.unaccepted([standing, new], baseline), [new])
+        self.assertEqual(audit.unaccepted([standing], {}), [standing])
+
+    def test_baseline_accepts_the_standing_items(self):
+        baseline = json.loads((ROOT / "audit/baseline.json").read_text())
+        self.assertIn("accepted_review", baseline)
 
     def test_workflow_releases_through_the_gate(self):
         workflow = (ROOT / ".github/workflows/upstream.yml").read_text()

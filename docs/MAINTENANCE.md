@@ -53,7 +53,9 @@ facts, and writes `build/upstream-candidate/result.json`.
 without a maintainer only when all of these hold:
 
 - the candidate passed: build, integration tests, both audits, `vlr check`, unit tests;
-- the audit has **no DRIFT finding and no REVIEW item** (nothing a maintainer has not seen);
+- the audit has **no DRIFT finding and no new REVIEW item** (nothing a maintainer has not seen;
+  standing items accepted at the last `--update-baseline`, `audit/baseline.json` `accepted_review`,
+  do not count);
 - the ABI is **identical or additions only** (same SONAME; a break always waits for a maintainer,
   since every consumer must be rebuilt);
 - `main` has not moved since the candidate was built (otherwise the release would contain untested

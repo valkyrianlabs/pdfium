@@ -13,8 +13,11 @@ configuration and must be reconciled before a release:
 
 Review items (reported, not fatal) compare upstream facts with audit/baseline.json, the facts a
 maintainer last reviewed: new pdfium.gni build arguments, changed DEPS pins of libraries we take
-from the system, changed per-target defines/external deps. `--update-baseline` records the
-current facts once they have been reviewed.
+from the system, changed per-target defines/external deps, plus standing notes (a public header we
+install although upstream's header list omits it). `--update-baseline` records the current facts
+once they have been reviewed, and the review items present then as accepted (`accepted_review`):
+later runs report only the items not accepted yet as new (`new_review` in --json), which is what
+the auto-release gate (gate.py) counts.
 """
 
 from __future__ import annotations
@@ -381,6 +384,12 @@ def compare_baseline(report: Report, baseline: dict) -> None:
         report.note("includes", f"compiled sources now include {prefix}/...")
 
 
+def unaccepted(review: list[dict], baseline: dict) -> list[dict]:
+    """The review items a maintainer has not accepted yet (absent from the baseline's accepted_review)."""
+    accepted = set(baseline.get("accepted_review", []))
+    return [item for item in review if item["message"] not in accepted]
+
+
 def run_audit(repo: Repo, *, builddir: str | None, json_out: str | None, update_baseline: bool,
               cpu: str | None = None) -> int:
     directory = Path(builddir) if builddir else None
@@ -395,14 +404,15 @@ def run_audit(repo: Repo, *, builddir: str | None, json_out: str | None, update_
           + (f", target cpu {cpu}" if cpu else ""))
     for finding in report.findings:
         print(f"  DRIFT  [{finding['kind']}] {finding['message']}")
+    new_review = unaccepted(report.review, baseline)
     for item in report.review:
-        print(f"  REVIEW [{item['kind']}] {item['message']}")
+        print(f"  REVIEW [{item['kind']}] {item['message']}" + ("" if item in new_review else "  (accepted)"))
     mapped = sum(1 for v in repo.policy()["audit"]["targets"].values() if v not in ("headers-only", "public-headers", "pdfium"))
-    print(f"audit: {len(report.findings)} drift finding(s), {len(report.review)} review item(s); "
-          f"{len(report.facts['targets'])} GN targets in the graph, {mapped} Meson components")
+    print(f"audit: {len(report.findings)} drift finding(s), {len(report.review)} review item(s) "
+          f"({len(new_review)} new); {len(report.facts['targets'])} GN targets in the graph, {mapped} Meson components")
     if json_out:
-        Path(json_out).write_text(json.dumps({"findings": report.findings, "review": report.review, "facts": report.facts},
-                                             indent=2) + "\n")
+        Path(json_out).write_text(json.dumps({"findings": report.findings, "review": report.review,
+                                              "new_review": new_review, "facts": report.facts}, indent=2) + "\n")
     if update_baseline:
         if cpu:
             print("audit: the baseline records the default profile; drop --cpu to update it")
@@ -411,6 +421,7 @@ def run_audit(repo: Repo, *, builddir: str | None, json_out: str | None, update_
             print("audit: refusing to update the baseline while drift findings remain")
             return 1
         baseline_path.parent.mkdir(exist_ok=True)
-        baseline_path.write_text(json.dumps(report.facts, indent=2, sort_keys=True) + "\n")
+        recorded = {**report.facts, "accepted_review": sorted(item["message"] for item in report.review)}
+        baseline_path.write_text(json.dumps(recorded, indent=2, sort_keys=True) + "\n")
         print(f"audit: recorded {baseline_path.relative_to(repo.root)}")
     return 1 if report.findings else 0

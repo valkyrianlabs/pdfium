@@ -1,4 +1,7 @@
 {
+  "accepted_review": [
+    "public/fpdf_thumbnail.h is installed although //:pdfium_public_headers_impl omits it"
+  ],
   "include_prefixes": {
     "build/build_config.h": 44,
     "third_party/abseil-cpp": 4,

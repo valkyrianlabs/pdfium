@@ -5,8 +5,9 @@ maintainer only when nothing in it needs judgement:
 
   status    the build, integration tests, audits, `vlr check` and the unit tests passed
   drift     no audit DRIFT finding (the Meson build mirrors upstream)
-  review    no audit REVIEW item (no new pdfium.gni argument, moved system DEPS pin, changed
-            per-target defines or externals: facts a maintainer has not seen)
+  review    no new audit REVIEW item (no new pdfium.gni argument, moved system DEPS pin, changed
+            per-target defines or externals, unaccepted standing note: facts a maintainer has not
+            seen; items accepted in audit/baseline.json `accepted_review` do not count)
   abi       identical or additions only (same SONAME); a break moves the SONAME and every
             consumer must be rebuilt, so it is always a maintainer's release
 
@@ -39,7 +40,7 @@ def blockers(result: dict) -> list[str]:
     elif drift:
         found.append(f"{drift} audit DRIFT finding(s) to reconcile")
     if result.get("review"):
-        found.append(f"{result['review']} audit REVIEW item(s) to read before the baseline is updated")
+        found.append(f"{result['review']} new audit REVIEW item(s) to read before the baseline is updated")
     abi = result.get("abi", "unknown")
     if abi == "break":
         found.append(f"ABI break: the SONAME moves to libpdfium.so.{result.get('soversion')}; consumers must be rebuilt")
