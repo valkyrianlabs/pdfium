@@ -19,8 +19,8 @@ Build-Depends:
  zlib1g-dev,
 Standards-Version: 4.6.2
 Homepage: https://pdfium.googlesource.com/pdfium
-Vcs-Browser: https://github.com/vaulthalla/pdfium
-Vcs-Git: https://github.com/vaulthalla/pdfium.git
+Vcs-Browser: https://github.com/valkyrianlabs/pdfium
+Vcs-Git: https://github.com/valkyrianlabs/pdfium.git
 
 Package: libpdfium8059
 Architecture: any

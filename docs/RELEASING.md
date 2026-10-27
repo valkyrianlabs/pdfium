@@ -94,7 +94,7 @@ is no longer published to.
 ## Publication checklist (first release)
 
 - [x] Legacy packages removed from apt.vaulthalla.sh.
-- [ ] Repository `vaulthalla/pdfium` with the `Production` environment, `RELEASE_PUBLISH_MODE`,
+- [ ] Repository `valkyrianlabs/pdfium` with the `Production` environment, `RELEASE_PUBLISH_MODE`,
       Nexus secrets/variables, and (for finalize on a protected `main`) `RELEASE_FINALIZE_TOKEN`.
 - [ ] "Allow GitHub Actions to create and approve pull requests" for `upstream.yml`.
 - [ ] Rebuild Vaulthalla against the new `libpdfium-dev` (its runtime dependency becomes

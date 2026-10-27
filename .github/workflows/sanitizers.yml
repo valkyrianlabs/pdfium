@@ -29,7 +29,7 @@ env:
 
 jobs:
   asan-ubsan:
-    runs-on: [self-hosted, Linux, X64, vaulthalla, vps-ci]
+    runs-on: [self-hosted, Linux, X64, vps-ci]
     defaults:
       run:
         shell: bash ./tools/ci-guard -- ./ci/run-ci bash -euo pipefail {0}
